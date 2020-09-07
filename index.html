@@ -11,29 +11,27 @@
 <body>
     <div class="center">
         <img src="images/logonova.jpg" alt="RiddleZinho - um pequeno jogo tipo riddle">
-        
-        <ul class="menu">
-            <li>
-                <a href="jogar.html" tabindex="0" title="jogar">jogar</a>
-            </li>
-            <li>
-                <a href="#" data-toggle="modal" data-target="#regrasModal">regras</a>
-            </li>
-            <li>
-                <a href="#" data-toggle="modal" data-target="#facebookModal">facebook</a>
-            </li>
-            <li>
-              <a href="#" data-toggle="modal" data-target="#telegramModal">telegram</a>                
-            </li>
-            <li>
-              <a href="#" data-toggle="modal" data-target="#reconstrucaoModal">reconstrução</a>
-            </li>
-        </ul>
     </div>
-
+    <ul class="menu center">
+      <li>
+          <a href="jogar.html" tabindex="0" title="jogar">JOGAR</a>
+      </li>
+      <li>
+          <a href="#" data-toggle="modal" data-target="#regrasModal">REGRAS</a>
+      </li>
+      <li>
+          <a href="#" data-toggle="modal" data-target="#facebookModal">FACEBOOK</a>
+      </li>
+      <li>
+        <a href="#" data-toggle="modal" data-target="#telegramModal">TELEGRAM</a>                
+      </li>
+      <li>
+        <a href="#" data-toggle="modal" data-target="#reconstrucaoModal">RECONSTRUÇÃO</a>
+      </li>
+  </ul>
 <!-- Modal Regras -->
 
-<div class="modal" tabindex="-1" id="regrasModal" aria-labelledby="regrasModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal" tabindex="-1" id="regrasModal" aria-labelledby="regrasModal" aria-hidden="true" data-backdrop="static" data-keyboard="true">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
@@ -193,7 +191,7 @@
 </div>
 
 <!-- Modal Facebook -->
-<div class="modal" tabindex="-1" id="facebookModal" aria-labelledby="facebookModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal" tabindex="-1" id="facebookModal" aria-labelledby="facebookModal" aria-hidden="true" data-backdrop="static" data-keyboard="true">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
@@ -219,7 +217,7 @@
 </div>
 
 <!-- Modal Telegram -->
-<div class="modal" tabindex="-1" id="telegramModal" aria-labelledby="telegramModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal" tabindex="-1" id="telegramModal" aria-labelledby="telegramModal" aria-hidden="true" data-backdrop="static" data-keyboard="true">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -242,7 +240,7 @@
 </div>
 
 <!-- Modal reconstrução -->
-<div class="modal" tabindex="-1" id="reconstrucaoModal" aria-labelledby="reconstrucaoModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal" tabindex="-1" id="reconstrucaoModal" aria-labelledby="reconstrucaoModal" aria-hidden="true" data-backdrop="static" data-keyboard="true">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -266,5 +264,16 @@
  <!-- Javascript just for the index page -->  
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<!-- GA -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177432203-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-177432203-1');
+</script>
+
 </body>
 </html>

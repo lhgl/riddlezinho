@@ -1,15 +1,22 @@
-div.center { 
+.center { 
     display: flex;
     justify-content: center;
 }
 
 ul.menu {
-    color: whitesmoke;
+    margin: 2.5rem 0 0 2rem;
 }
+
+ul.menu li a {
+    margin-right: 1.5rem;
+    color: #000146;
+    font-weight: bold;
+    text-shadow: 0 0 5px #ddd, 0 0 5px #ddd, 0 0 5px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6;
+}
+
 span.question {
     color: forestgreen;
 }
-
 span.answer {
     text-align: justify;
     line-height: 2rem;
@@ -18,7 +25,7 @@ span.answer {
 .modal-body > p > br {
     display:block;
     content:""; 
-    margin-top:0.5em; 
+    margin-top:0.5rem; 
     line-height:190%; 
     /* vertical-align: top; */
 }

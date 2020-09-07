@@ -1,0 +1,24 @@
+div.center { 
+    display: flex;
+    justify-content: center;
+}
+
+ul.menu {
+    color: whitesmoke;
+}
+span.question {
+    color: forestgreen;
+}
+
+span.answer {
+    text-align: justify;
+    line-height: 2rem;
+}
+
+.modal-body > p > br {
+    display:block;
+    content:""; 
+    margin-top:0.5em; 
+    line-height:190%; 
+    /* vertical-align: top; */
+}

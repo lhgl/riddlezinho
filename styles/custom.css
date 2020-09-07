@@ -29,3 +29,7 @@ span.answer {
     line-height:190%; 
     /* vertical-align: top; */
 }
+
+i.new-text{
+    color: teal;
+}

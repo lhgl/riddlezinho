@@ -8,11 +8,24 @@ ul.menu {
 }
 
 ul.menu li a {
-    margin-right: 1.5rem;
     color: #000146;
+    margin-right: 2rem;
     font-weight: bold;
     text-shadow: 0 0 5px #ddd, 0 0 5px #ddd, 0 0 5px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6;
 }
+
+.flex {
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;    
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
 
 span.question {
     color: forestgreen;

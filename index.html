@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="../styles/reset.css">
-    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/custom.css">
     <title>RiddleZinho - um pequeno jogo tipo riddle</title>
 </head>
 <body>
     <div class="center">
-        <img src="../images/logonova.jpg" alt="RiddleZinho - um pequeno jogo tipo riddle">
+        <img src="images/logonova.jpg" alt="RiddleZinho - um pequeno jogo tipo riddle">
         
         <ul class="menu">
             <li>
@@ -19,9 +19,15 @@
             <li>
                 <a href="#" data-toggle="modal" data-target="#regrasModal">regras</a>
             </li>
-            <li>facebook</li>
-            <li>telegram</li>
-            <li>reconstrução</li>
+            <li>
+                <a href="#" data-toggle="modal" data-target="#facebookModal">facebook</a>
+            </li>
+            <li>
+              <a href="#" data-toggle="modal" data-target="#telegramModal">telegram</a>                
+            </li>
+            <li>
+              <a href="#" data-toggle="modal" data-target="#reconstrucaoModal">reconstrução</a>
+            </li>
         </ul>
     </div>
 
@@ -184,7 +190,78 @@
         </div>
       </div>
     </div>
+</div>
+
+<!-- Modal Facebook -->
+<div class="modal" tabindex="-1" id="facebookModal" aria-labelledby="facebookModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Facebook</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>           
+            Desde que foi lançado, em quatro de julho de 2008, o RiddleZinho possui uma ativa comunidade no Orkut. 
+            Nesta comunidade, você pode pedir dicas sobre a fase em que você está, além de fornecer dicas para outros jogadores que estão pedindo ajuda em fases que você eventualmente já jogou. 
+            Mas não se esqueça: NUNCA escreva a resposta completa, nem dê dicas excessivamente literais.  
+            TODO: Mudar o texto e apontar para o facebook. 
+            Link: https://www.facebook.com/groups/149543160395  (target _blank)
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal Telegram -->
+<div class="modal" tabindex="-1" id="telegramModal" aria-labelledby="telegramModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Telegram</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>         
+          TODO: Fazer o texto e apontar para o grupo do telegram. 
+          Link: https://t.me/joinchat/GjOfwRzpo0Uwt6A-3PxI8g     
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- Modal reconstrução -->
+<div class="modal" tabindex="-1" id="reconstrucaoModal" aria-labelledby="reconstrucaoModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reconstrução</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>         
+          Escrever o texto sobre a reconstrucao do site   
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
  <!-- Javascript just for the index page -->  
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

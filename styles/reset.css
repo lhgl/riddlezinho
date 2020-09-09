@@ -68,3 +68,8 @@ textarea,
 select {
   font: inherit;
 }
+
+.center { 
+  display: flex;
+  justify-content: center;
+}

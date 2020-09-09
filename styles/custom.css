@@ -1,17 +1,38 @@
-.center { 
-    display: flex;
-    justify-content: center;
+hr {
+    border-color: #808080;
+    width: 60%;
 }
 
-ul.menu {
+ul li a {
+    color: #000146;
+    font-weight: bold;
+    text-shadow: 0 0 5px #ddd, 0 0 5px #ddd, 0 0 5px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6;
+}
+
+.voltar-link {
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    font-size: small;
+    text-decoration: underline;
+}
+
+
+ul.menu-principal {
     margin: 2.5rem 0 0 2rem;
 }
 
-ul.menu li a {
-    color: #000146;
+ul.menu-principal li a {
     margin-right: 2rem;
-    font-weight: bold;
-    text-shadow: 0 0 5px #ddd, 0 0 5px #ddd, 0 0 5px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6, 0 0 5px #0073e6, 0 0 10px #0073e6;
+}
+
+ul.menu-secundario {
+    align-items: center;
+}
+
+ul.menu-secundario li a {
+    font-size: xxx-large;
+    font-size: -webkit-xxx-large;
 }
 
 .flex {
@@ -27,10 +48,10 @@ ul.menu li a {
     justify-content: center;
   }
 
-span.question {
+span.pergunta {
     color: forestgreen;
 }
-span.answer {
+span.resposta {
     text-align: justify;
     line-height: 2rem;
 }
@@ -43,6 +64,6 @@ span.answer {
     /* vertical-align: top; */
 }
 
-i.new-text{
+i.texto-novo {
     color: teal;
 }

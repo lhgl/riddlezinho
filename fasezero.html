@@ -10,11 +10,15 @@
 <body>
         <h1 class="titulo-fase center">Fase Zero</h1>
         <div class="center">
-            <img src="images/fases/eletrocardiograma.jpg" alt="">
+            <img src="images/fases/eletrocardiograma.jpg" alt="eletrocardiograma" title="eletrocardiograma">
         </div>
         <p class="frase-fase center">
             Batatinha quando nasce, se esparrama pelo chão. Menininha quando dorme, põe a mão no...
         </p>
+        <div class="center">
+            <input type="text" name="senha" id="senha" class="senha" placeholder="Senha" onkeyup="limparString(this);">
+            <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
+        </div>
         <p class="center">
             <span>
                 <i class="rz-cinza">R</i>
@@ -22,6 +26,16 @@
                 <i class="rz-cinza">1</i>
             </span>
         </p>
-</p>
+
+<script src="scripts/fases.js" async></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177432203-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-177432203-1');
+</script>
 </body>
 </html>

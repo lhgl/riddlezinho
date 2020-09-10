@@ -2,10 +2,13 @@ h1.titulo-fase {
     color: #008000;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 1.1rem;
+    line-height: 5.5em;
+
 }
 p.frase-fase {
     color: whitesmoke;
+    margin: 2rem;
 }
 
 i.rz-cinza{
@@ -21,4 +24,37 @@ i.rz-branco{
     font-size: 3em;
     font-style: normal;
     font-weight: 700;
+}
+#senha {
+    box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box; 
+	padding: 0.1rem;
+	outline: none;
+	border: 1px solid #B0CFE0;
+    font-family: 'Courier New', Courier, monospace
+}
+#senha:focus{
+    box-shadow: 0 0 5px #B0CFE0;
+	border:1px solid #B0CFE0;
+}
+
+#senha-ir{
+    -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
+	-webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
+	box-shadow: inset 0px 1px 0px 0px #3985B1;
+	background-color: #216288;
+	border: 1px solid #17445E;
+	display: inline-block;
+	cursor: pointer;
+	color: #FFFFFF;
+	padding: 8px 18px;
+	text-decoration: none;
+    font-size:0.75rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#senha-ir:hover{
+    background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
+	background-color: #28739E;
 }

@@ -2,7 +2,7 @@
 <html lang="pt-br" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/fases.css">
     <title>Complete a poesia</title>
@@ -16,7 +16,7 @@
             Batatinha quando nasce, se esparrama pelo chão. Menininha quando dorme, põe a mão no...
         </p>
         <div class="center">
-            <input type="text" name="senha" id="senha" class="senha" placeholder="Senha" onkeyup="limparString(this);">
+            <input type="text" id="senha" placeholder="Senha" autocapitalize="off" onkeyup="limparString(event);">
             <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
         </div>
         <p class="center">

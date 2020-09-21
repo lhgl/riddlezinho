@@ -8,24 +8,25 @@
     <title>Complete a poesia</title>
 </head>
 <body>
-        <h1 class="titulo-fase center">Fase Zero</h1>
-        <div class="center">
-            <img src="images/fases/eletrocardiograma.jpg" alt="eletrocardiograma" title="eletrocardiograma">
-        </div>
-        <p class="frase-fase center">
-            Batatinha quando nasce, se esparrama pelo chão. Menininha quando dorme, põe a mão no...
-        </p>
-        <div class="center">
-            <input type="text" id="senha" placeholder="Senha" autocapitalize="off" onkeypress="limparString(event);">
-            <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
-        </div>
-        <p class="center">
-            <span>
-                <i class="rz-cinza">R</i>
-                <i class="rz-branco">Z</i>
-                <i class="rz-cinza">1</i>
-            </span>
-        </p>
+    <h1 class="titulo-fase center">Fase Zero</h1>
+    <div class="center">
+        <img src="images/fases/eletrocardiograma.jpg" alt="eletrocardiograma" title="eletrocardiograma">
+    </div>
+    <p class="frase-fase center">
+        Batatinha quando nasce, se esparrama pelo chão. Menininha quando dorme, põe a mão no...
+    </p>
+    <div class="center">
+        <input type="text" id="senha" placeholder="Senha" autocapitalize="off" onkeyup="enviarSenha(event);">
+        <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
+    </div>
+    <a href="#" class="center" onclick="window.location = 'view-source:' + window.location;">ver código-fonte</a>
+    <p class="center">
+        <span>
+            <i class="rz-cinza">R</i>
+            <i class="rz-branco">Z</i>
+            <i class="rz-cinza">1</i>
+        </span>
+    </p>
 
 <script src="scripts/fases.js" async></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -36,6 +37,11 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-177432203-1');
+
+  function viewthesource(){
+window.location="view-source:"+window.location
+}
+</script>
 </script>
 </body>
 </html>

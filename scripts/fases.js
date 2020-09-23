@@ -17,7 +17,7 @@ function removerCaracteresEspeciais(senhaSuja) {
         }
     }
     
-    return senhaLimpa.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    return senhaLimpa.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
 
 function passarDeFase() {

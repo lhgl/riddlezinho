@@ -5,19 +5,7 @@ function enviarSenha(event) {
 }
 
 function removerCaracteresEspeciais(senhaSuja) {
-    const charsInvalidos = "áàãâäéèêëíìîïóòõôöúùûüçÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÖÔÚÙÛÜÇ";
-    const charsValidos = "aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC";
-    let senhaLimpa = "";
-
-    for (let i = 0; i < senhaSuja.length; i++) {
-        if (charsInvalidos.indexOf(senhaSuja.charAt(i)) !== -1) {
-            senhaLimpa += charsValidos.substring(charsInvalidos.search(senhaSuja.substring(i, 1)), 1);
-        } else {
-            senhaLimpa += senhaSuja.substring(i, 1);
-        }
-    }
-
-    return senhaLimpa.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    return senhaSuja.normalize("NFC").toLowerCase();
 }
 
 function passarDeFase() {
@@ -29,4 +17,8 @@ function passarDeFase() {
     const url = window.location.href;
 
     window.location.href = `${url.substring(0, url.lastIndexOf("/"))}/${senhaFormatada}.html`;
+}
+
+function voltar(){
+    window.history.back();
 }

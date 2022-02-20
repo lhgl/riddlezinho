@@ -14,6 +14,7 @@
     <script crossorigin="anonymous"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="styles/reset.css" rel="stylesheet">
     <link href="styles/custom.css" rel="stylesheet">
     <title>RiddleZinho — um pequeno jogo tipo riddle</title>
@@ -27,32 +28,21 @@
         <a href="jogar.html" tabindex="0" title="jogar">JOGAR</a>
     </li>
     <li>
-        <a data-target="#regrasModal" data-toggle="modal" href="#">REGRAS</a>
+        <a data-bs-target="#regrasModal" data-bs-toggle="collapse"  href="#">REGRAS</a>
     </li>
     <li>
-        <a data-target="#facebookModal" data-toggle="modal" href="#">FACEBOOK</a>
-    </li>
-    <li>
-        <a data-target="#telegramModal" data-toggle="modal" href="#">TELEGRAM</a>
-    </li>
-    <li>
-        <a href="https://riddlezinho.blogspot.com/" target="_blank">BLOG</a>
-    </li>
-    <li>
-        <a data-target="#reconstrucaoModal" data-toggle="modal" href="#">RECONSTRUÇÃO</a>
+        <a href="https://riddlezinho.blogspot.com/" target="_blank">ORIGINAL BLOG</a>
     </li>
 </ul>
+
 <!-- Modal Regras -->
 
-<div aria-hidden="true" aria-labelledby="regrasModal" class="modal" data-backdrop="static" data-keyboard="true"
+<div aria-hidden="true" aria-labelledby="regrasModal" data-bs-toggle="collapse" class="collapse" data-backdrop="static" data-keyboard="true"
      id="regrasModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Regras</h5>
-                <button aria-label="Fechar" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <p>
@@ -65,8 +55,7 @@
                     <span class="resposta">
                 Riddle ("enigma", em inglês) é um modo divertido de percorrer sites por meio de senhas que são conseguidas através de pistas presentes nos próprios sites. 
                 <br/>
-                As tais pistas podem estar dispostas em diversos lugares: numa imagem, num texto situado logo abaixo da imagem, num texto camuflado, no título da página ou mesmo no código-fonte do site. <i
-                            class="texto-novo">(caso esteja jogando de um dispositivo móvel e queira ver o código-fonte basta adicionar <b>view-source:</b> no começo do endereço. Exemplo: <b>view-source:</b>victor-rocha.github.io/riddlezinho/atencao.html</i>
+                As tais pistas podem estar dispostas em diversos lugares: numa imagem, num texto situado logo abaixo da imagem, num texto camuflado, no título da página ou mesmo no código-fonte do site.
                 <br/>
                 A livre associação entre as pistas deve levar o jogador a pensar numa senha, espécie de palavra-chave que dará acesso ao site seguinte e assim por diante.
             </span>
@@ -76,10 +65,10 @@
                     <span class="resposta">
                 Para acessar o próximo site <i class="texto-novo">(fase)</i>, o jogador deve substituir a palavra final do endereço virtual pela palavra-senha, pressionando em seguida a tecla "enter" para testar a validade da senha. 
                 <br/>
-                <i class="texto-novo">Caso queira, também há a opção do campo de texto "senha", facilitando para os usuários de dispositivos móveis. A senha deve ser tratada e digitada da mesma maneira como na barra de endereço citada anteriormente. Segue um exemplo. </i>
+                <i class="texto-novo">Caso queira, também há a opção do campo de texto "senha". A senha deve ser tratada e digitada da mesma maneira como na barra de endereço citada anteriormente. Segue um exemplo. </i>
                 <br/>
                 Por exemplo: se o jogador achar que a palavra chave for "atenção", ele deve alterar a última palavra do endereço virtual de modo que fique assim: <br/><i
-                            class="texto-novo">victor-rocha.github.io/riddlezinho/<b>atencao</b>.html</i>  (lembrando que não se escrevem acentos, maiúsculas, espaços ou cedilhas e que o "html" deve ser SEMPRE mantido no final do endereço virtual).
+                            class="texto-novo">url/riddlezinho/<b>atencao</b>.html</i>  (lembrando que não se escrevem acentos, maiúsculas, espaços ou cedilhas e que o "html" deve ser SEMPRE mantido no final do endereço virtual).
                 <br/>
                 Se a resposta estiver correta, o jogador avança para a próxima fase. 
                 <br/>
@@ -101,7 +90,7 @@
                     <span class="resposta">
                 <b>Não.</b> 
                 <br/>
-                Trata-se de um raro mas conhecido bug dos riddles baseados em htm, como é o caso do RiddleZinho. 
+                Trata-se de um raro mas conhecido bug dos riddles baseados em html, como é o caso do RiddleZinho.
                 <br/>
                 A lógica desse erro é bem simples: o jogador testa uma senha que está errada para o seu enigma, mas que coincidentemente está certa para outro, e com isso avança para uma fase situada em algum ponto futuro do jogo, saltando assim várias fases de uma só vez. 
                 <br/>
@@ -149,14 +138,7 @@
                     <span class="resposta">
                 Um riddle é jogado individualmente, embora seja bastante comum a troca de informações com outras pessoas no decorrer do jogo. 
                 <br/>
-                Como se sabe, cada pessoa tem mais experiência que outra em um determinado tipo de assunto, o que torna habitual que cada jogador procure partilhar seus lances com um grupo, como no caso de um <i
-                            class="texto-novo"><a aria-label="Link do grupo do Facebook"
-                                                  href="https://www.facebook.com/groups/149543160395"
-                                                  target="_blank">grupo do Facebook</a> ou no <a
-                            aria-label="Link do grupo no Telegram" href="https://t.me/joinchat/GjOfwRzpo0Uwt6A-3PxI8g"
-                            target="_blank">Telegram</a></i>
-                <br/>
-                Sem compartilhar, o jogo torna-se bem mais difícil. 
+                Como se sabe, cada pessoa tem mais experiência que outra em um determinado tipo de assunto, o que torna habitual que cada jogador procure partilhar seus lances com um grupo. Porém, sem compartilhar, o jogo torna-se bem mais difícil.
             </span>
                     <br/>
                     <span class="pergunta">10. Não consigo passar de fase, e agora?</span>
@@ -169,18 +151,7 @@
                 Em casos de grande dificuldade, partilhe suas dúvidas com outros jogadores.
             </span>
                     <br/>
-                    <span class="pergunta">11. Como partilho minhas dúvidas?</span>
-                    <br/>
-                    <span class="resposta">
-                Escrevendo <i class="texto-novo">posts</i> n<i
-                            class="texto-novo">o grupo do Facebook dedicado ao jogo</i>.
-                <br/>
-                Nesta comunidade, pode pedir dicas sobre a fase em que está, além de fornecer dicas para outros jogadores que estão pedindo ajuda em fases que eventualmente já jogou.
-                <br/>
-                Mas não se esqueça: NUNCA escreva a resposta completa, nem dê dicas excessivamente literais. 
-            </span>
-                    <br/>
-                    <span class="pergunta">12. Aaaaargh! O site travou! O que eu faço?</span>
+                    <span class="pergunta">11. Aaaaargh! O site travou! O que eu faço?</span>
                     <br/>
                     <span class="resposta">
                 Calma, isso pode ocorrer devido ao grande número de pessoas que estão jogando o RiddleZinho simultaneamente. 
@@ -196,8 +167,7 @@
                     <br/>
                     <span class="pergunta">13. Cansei de ler esta apresentação... Como eu faço para jogar de uma vez?</span>
                     <br/>
-                    <span class="resposta">Nada mais fácil: é só clicar em <a aria-label="Link para começar a jogar"
-                                                                              href="jogar.html">jogar</a> e sair jogando! </span>
+                    <span class="resposta">Nada mais fácil: é só clicar em jogar e sair jogando! </span>
                     <br/>
                     Bom jogo a todos!
                     <br/>
@@ -205,153 +175,9 @@
                     Sr. RZ
                 </p>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Fechar</button>
-                <a class="btn btn-success" href="jogar.html" type="button">Jogar</a>
-            </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Facebook -->
-<div aria-hidden="true" aria-labelledby="facebookModal" class="modal" data-backdrop="static" data-keyboard="true"
-     id="facebookModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Facebook</h5>
-                <button aria-label="Fechar" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Desde que foi lançado, em quatro de julho de 2008, o RiddleZinho <i class="texto-novo">sempre</i>
-                    possui<i class="texto-novo">u</i> uma ativa comunidade no <i class="texto-novo">falecido</i> Orkut.
-                    <br/>
-                    Nesta comunidade, pod<i class="texto-novo">ia</i> pedir dicas sobre a fase em que est<i
-                        class="texto-novo">ava</i>, além de fornecer dicas para outros jogadores que est<i
-                        class="texto-novo">avam</i> pedindo ajuda em fases que eventualmente já jogou.
-                    <br/>
-                    <i class="texto-novo">A mesma ideia da falecida comunidade do Orkut prevalece até hoje no grupo do
-                        Facebook. pode accesá-lo <a aria-label="Link do Facebook"
-                                                    href="https://www.facebook.com/groups/149543160395" target="_blank">clicando
-                            aqui</a>
-                        <br/>
-                        Apesar do grupo ser fechado, basta fazer a solicitação que os moderadores irão te aceitar
-                        naturalmente.
-                    </i>
-                    <br/>
-                    Mas não se esqueça: <b>NUNCA</b> escreva a resposta completa, nem dê dicas excessivamente literais.
-                    <br/>
-                    <img alt="Sr. RZ" src="images/rzlogo.png">
-                    Sr. RZ
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Telegram -->
-<div aria-hidden="true" aria-labelledby="telegramModal" class="modal" data-backdrop="static" data-keyboard="true"
-     id="telegramModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Telegram</h5>
-                <button aria-label="Fechar" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Precisa de uma dica urgente para um dos nossos enigmas e não ag<i class="texto-novo">u</i>enta
-                    esperar nem mais um minuto por uma resposta no <i class="texto-novo">Facebook</i>?
-                    <br/>
-                    Então, seus problemas acabaram! Graças à <i class="texto-novo">tecnologia</i> o RiddleZinho agora
-                    possui um grupo de discussão no <i class="texto-novo">Telegram</i>.
-                    Para utilizá-lo, <i class="texto-novo">basta <a aria-label="Link do Telegram"
-                                                                    href="https://t.me/joinchat/GjOfwRzpo0Uwt6A-3PxI8g"
-                                                                    target="_blank">
-                    clicar aqui</a></i>
-                    <br/>
-                    Bom proveito!
-                    <br/>
-                    <img alt="Sr. RZ" src="images/rzlogo.png">
-                    Sr. RZ
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal reconstrução -->
-<div aria-hidden="true" aria-labelledby="reconstrucaoModal" class="modal" data-backdrop="static" data-keyboard="true"
-     id="reconstrucaoModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Reconstrução</h5>
-                <button aria-label="Fechar" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body texto-novo">
-                Olá! Meu nome é Victor, brasileiro e programador, atualmente moro em Cracóvia, na Polônia.
-                <br/>
-                Comecei a jogar o RiddleZinho desde 2009 (não me lembro como ou onde conheci o jogo) e desde
-                então me considero um pequeno viciado e admirador do jogo (porém não muito bom rs).
-                <br/>
-                Por volta de 2018 voltei a jogá-lo desde a Fase Zero e quando parei na fase 49 (eu estava
-                jogando num ritmo meio lento rs) porém, em algum momento de 2020, o <a
-                    href="https://riddlezinho.net76.net/" target="_blank">site original</a> saiu do ar! 😢
-                <br/>
-                Desde então venho tentando contato o Artur Freitas (ou Sr. Z), criador do jogo, para conseguir
-                manter o site no ar, porém sem sucesso :(
-                <br/>
-                Durante o período de quarentena devido ao Covid-19 decidi passar um tempo tentando reconstruir o
-                site da melhor maneira possível.
-                <br/>
-                Utilizei o <a aria-label="Link do Way Back Machine" href="https://archive.org/web/"
-                              target="_blank">Wayback Machine</a> para restaurar as
-                páginas, imagens, legendas e código fonte.
-                <br/>
-                Diria que esse trabalho ainda está em andamento e pretendo continuar o máximo que posso e que o
-                WBM permitir :)
-                <br/>
-                Quanto ao novo site, procurei fazer algumas melhorias que fizeram sentido na minha cabeça.
-                Algumas delas são:
-                <ul>
-                    <li>Grupo do Facebook</li>
-                    <li>Grupo no Telegram</li>
-                    <li>Site responsivo para celulares</li>
-                    <li>Modais/popups para os links da página inicial</li>
-                    <li>Campo de "senha" para facilitar o jogo nos celular, não precisando editar o link diretamente no
-                        navegador
-                    </li>
-                </ul>
-                Procurei também manter muitas coisas originais como os textos, imagens. Algumas palavras e textos onde
-                eu, Victor, interferi ou escrevi, estarão em itálico e verde, como este texto, por exemplo.
-                <br/>
-                Caso encontrem algum bug, erro, sugestões ou até mesmo me ajudar no desenvolvimento, fique a vontade
-                para abrir um pull-request no <a aria-label="Link do Github do projeto"
-                                                 href="https://github.com/victor-rocha/riddlezinho"
-                                                 target="_blank">GitHub do projeto</a> ou me
-                contactar no Telegram.
-                <br/>
-                Bom jogo!
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>

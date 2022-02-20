@@ -1,45 +1,36 @@
 <!DOCTYPE html>
-<html lang="pt-br" dir="ltr">
+<html dir="ltr" lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-    <link rel="mask-icon" href="../safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="../styles/reset.css">
-    <link rel="stylesheet" href="../styles/fases.css">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <link href="../images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="../images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="../images/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link color="#5bbad5" href="../images/safari-pinned-tab.svg" rel="mask-icon">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="#ffffff" name="theme-color">
+    <link href="../styles/reset.css" rel="stylesheet">
+    <link href="../styles/fases.css" rel="stylesheet">
     <title>ovo</title>
 </head>
 <body>
-    <!-- Fase 71 (setenta e um) -->
-    <h1 class="titulo-fase center">Fase 71</h1>
-    <div class="center">
-        <img src="../images/fases/asa.jpg" alt="asa" title="asa" width="460" height="306">
-    </div>
-    <p class="frase-fase center">
-        O que a ARARA é?
-    </p>
-    <p class="center">
-        em 3 palavras
-    </p>
-    <div class="center area-senha">
-        <input type="text" id="senha" placeholder="Senha" autocapitalize="off" onkeyup="enviarSenha(event);">
-        <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
-    </div>
+<!-- Fase 71 (setenta e um) -->
+<h1 class="titulo-fase center">Fase 71</h1>
+<div class="center">
+    <img alt="asa" height="306" src="../images/fases/asa.jpg" title="asa" width="460">
+</div>
+<p class="frase-fase center">
+    O que a ARARA é?
+</p>
+<p class="center">
+    em 3 palavras
+</p>
+<div class="center area-senha">
+    <input autocapitalize="off" id="senha" onkeyup=" enviarSenha();" placeholder="Senha" type="text">
+    <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
+</div>
 
-<script src="../scripts/fases.js" async></script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177432203-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<script async src="../scripts/fases.js"></script>
 
-  gtag('config', 'UA-177432203-1');
-</script>
-</script>
 </body>
 </html>

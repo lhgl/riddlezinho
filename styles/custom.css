@@ -31,7 +31,6 @@ ul.menu-secundario {
 
 ul.menu-secundario li a {
     font-size: xxx-large;
-    font-size: -webkit-xxx-large;
 }
 
 .flex {
@@ -41,25 +40,26 @@ ul.menu-secundario li a {
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
-    display: flex;    
+    display: flex;
     -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
     justify-content: center;
-  }
+}
 
 span.pergunta {
     color: forestgreen;
 }
+
 span.resposta {
     text-align: justify;
     line-height: 2rem;
 }
 
 .modal-body > p > br {
-    display:block;
-    content:""; 
-    margin-top:0.5rem; 
-    line-height:190%; 
+    display: block;
+    content: "";
+    margin-top: 0.5rem;
+    line-height: 190%;
     /* vertical-align: top; */
 }
 

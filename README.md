@@ -42,9 +42,10 @@ apenas um desenvolvedor que quer manter o RiddleZinho vivo!
 O jogo está atualmente hospedado no GitHub Pages e pode accessa-lo e começar a jogar agora mesmo através do
 link https://victor-rocha.github.io/riddlezinho
 
-##  Upgrade
+## Upgrade
 
-Relizei o clone do projeto do Victo-Rocha e ajustei algumas vulnerabilidades e otimizei processos internos. Ainda em fase de ajustes para simplificar etapas de desenvolvimento. 
+Relizei o clone do projeto do Victo-Rocha e ajustei algumas vulnerabilidades e otimizei processos internos. Ainda em
+fase de ajustes para simplificar etapas de desenvolvimento.
 
 Bom jogo! 
 

@@ -39,7 +39,7 @@ apenas um desenvolvedor que quer manter o RiddleZinho vivo!
 
 ## Site
 
-O jogo está atualmente hospedado no GitHub Pages e você pode accessa-lo e começar a jogar agora mesmo através do
+O jogo está atualmente hospedado no GitHub Pages e pode accessa-lo e começar a jogar agora mesmo através do
 link https://victor-rocha.github.io/riddlezinho
 
 ##  Upgrade

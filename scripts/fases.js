@@ -10,7 +10,7 @@ function removerCaracteresEspeciais(senhaSuja) {
     let senhaLimpa = "";
 
     for (let i = 0; i < senhaSuja.length; i++) {
-        if (charsInvalidos.indexOf(senhaSuja.charAt(i)) != -1) {
+        if (charsInvalidos.indexOf(senhaSuja.charAt(i))!== -1) {
             senhaLimpa += charsValidos.substring(charsInvalidos.search(senhaSuja.substring(i, 1)), 1);
         } else {
             senhaLimpa += senhaSuja.substring(i, 1);

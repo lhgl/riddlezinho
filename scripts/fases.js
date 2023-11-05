@@ -5,7 +5,7 @@ function enviarSenha(event) {
 }
 
 function removerCaracteresEspeciais(senhaSuja) {
-    return senhaSuja.normalize("NFC").toLowerCase();
+    return senhaSuja.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
 function passarDeFase() {

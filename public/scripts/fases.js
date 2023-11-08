@@ -22,7 +22,6 @@ function passarDeFase() {
             window.location.href = newUrl;
         } else {
             throw new Error('Arquivo não encontrado');
-            
         }
     })
     .catch(error => {

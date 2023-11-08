@@ -15,7 +15,7 @@ function passarDeFase() {
     }
     const senhaFormatada = removerCaracteresEspeciais(senha);
     const url = window.location.href;
-    const newUrl = `${url.substring(0, url.lastIndexOf("/"))}/${senhaFormatada}.html`;
+    const newUrl = `${url.substring(0, url.lastIndexOf("/"))}/${senhaFormatada}`;
 
     fetch(newUrl).then(response => {
         if (response.ok) {

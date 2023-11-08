@@ -15,8 +15,20 @@ function passarDeFase() {
     }
     const senhaFormatada = removerCaracteresEspeciais(senha);
     const url = window.location.href;
+    const newUrl = `${url.substring(0, url.lastIndexOf("/"))}/${senhaFormatada}.html`;
 
-    window.location.href = `${url.substring(0, url.lastIndexOf("/"))}/${senhaFormatada}.html`;
+    fetch(newUrl).then(response => {
+        if (response.ok) {
+            window.location.href = newUrl;
+        } else {
+            throw new Error('Arquivo não encontrado');
+            
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        alert('Ops, ' + error.message);
+    });
 }
 
 function voltar(){

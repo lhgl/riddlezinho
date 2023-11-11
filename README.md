@@ -44,8 +44,14 @@ link https://victor-rocha.github.io/riddlezinho
 
 ## Upgrade
 
-Relizei o clone do projeto do Victo-Rocha e ajustei algumas vulnerabilidades e otimizei processos internos. Ainda em
-fase de ajustes para simplificar etapas de desenvolvimento.
+* Relizei o clone do projeto do Victo-Rocha
+* Ajustei algumas vulnerabilidades
+* Otimizei processos internos
+* Migrei para NODEJS e Express
+
+É possível acessar o jogo na plataforma https://www.geocities.ws/riddlezinho/ e jogar normalmente.
+
+Ainda em fase de ajustes para simplificar etapas de desenvolvimento.
 
 Bom jogo! 
 

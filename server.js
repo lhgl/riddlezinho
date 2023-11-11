@@ -231,7 +231,7 @@ app.get('/01000001',(req,res)=>{res.render('01000001',{footerpasscode:footerpass
 //19
 app.get('/carokann',(req,res)=>{res.render('carokann',{footerpasscode:footerpasscode,includepasscode:true});});
 //20
-app.get('/edipo',(req,res)=>{res.render('edipo',{footerpasscode:footerpasscode,includepasscode:true});});
+app.get('/ed3ipo',(req,res)=>{res.render('edipo',{footerpasscode:footerpasscode,includepasscode:true});});
 //21
 app.get('/caribe',(req,res)=>{res.render('caribe',{footerpasscode:footerpasscode,includepasscode:true});});
 //22

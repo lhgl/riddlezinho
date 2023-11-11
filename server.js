@@ -203,9 +203,9 @@ app.get('/jesus', (req, res) => {res.render('jesus', { footerpasscode: footerpas
 app.get('/incriveis', (req, res) => {res.render('incriveis', { footerpasscode: footerpasscode, includepasscode : true });});
 //6
 app.get('/atila', (req, res) => {res.render('atila', { footerpasscode: footerpasscode, includepasscode : true });});
-//============================= TO DO =============================
 //7 
 app.get('/xadrez',(req,res)=>{res.render('xadrez',{footerpasscode:footerpasscode,includepasscode:true});});
+//============================= TO DO =============================
 //8
 app.get('/io',(req,res)=>{res.render('io',{footerpasscode:footerpasscode,includepasscode:true});});
 //9
@@ -281,6 +281,62 @@ app.get('/araraarara', (req, res) => {res.render('araraarara', { footerpasscode:
 app.get('/acronimo', (req, res) => {res.render('acronimo', { footerpasscode: footerpasscode, includepasscode : true });});
 //84
 app.get('/arar', (req, res) => {res.render('arar', { footerpasscode: footerpasscode, includepasscode : true });});
+
+//============================= FIX =============================
+app.get('/80000', (req, res) => {res.render('80000', { footerback: footerback, includefooterback : true });});
+app.get('/amparo', (req, res) => {res.render('amparo', { footerback: footerback, includefooterback : true });});
+app.get('/aquiapistatres', (req, res) => {res.render('aquiapistatres', { footerback: footerback, includefooterback : true });});
+app.get('/bisposardinha', (req, res) => {res.render('bisposardinha', { footerback: footerback, includefooterback : true });});
+app.get('/bombaatomica', (req, res) => {res.render('bombaatomica', { footerback: footerback, includefooterback : true });});
+app.get('/bombanuclear', (req, res) => {res.render('bombanuclear', { footerback: footerback, includefooterback : true });});
+app.get('/cemdolares', (req, res) => {res.render('cemdolares', { footerback: footerback, includefooterback : true });});
+app.get('/chapa', (req, res) => {res.render('chapa', { footerback: footerback, includefooterback : true });});
+app.get('/chateaubriand', (req, res) => {res.render('chateaubriand', { footerback: footerback, includefooterback : true });});
+app.get('/cigarro', (req, res) => {res.render('cigarro', { footerback: footerback, includefooterback : true });});
+app.get('/corfix', (req, res) => {res.render('corfix', { footerback: footerback, includefooterback : true });});
+app.get('/corredorvermelho', (req, res) => {res.render('corredorvermelho', { footerback: footerback, includefooterback : true });});
+app.get('/defatigatis', (req, res) => {res.render('defatigatis', { footerback: footerback, includefooterback : true });});
+app.get('/deuteranopia', (req, res) => {res.render('deuteranopia', { footerback: footerback, includefooterback : true });});
+app.get('/edipo', (req, res) => {res.render('edipo', { footerback: footerback, includefooterback : true });});
+app.get('/error', (req, res) => {res.render('error', { footerback: footerback, includefooterback : true });});
+app.get('/escanhoarieis', (req, res) => {res.render('escanhoarieis', { footerback: footerback, includefooterback : true });});
+app.get('/fase64', (req, res) => {res.render('fase64', { footerback: footerback, includefooterback : true });});
+app.get('/fonda', (req, res) => {res.render('fonda', { footerback: footerback, includefooterback : true });});
+app.get('/footerback', (req, res) => {res.render('footerback', { footerback: footerback, includefooterback : true });});
+app.get('/footerpasscode', (req, res) => {res.render('footerpasscode', { footerback: footerback, includefooterback : true });});
+app.get('/halldafama', (req, res) => {res.render('halldafama', { footerback: footerback, includefooterback : true });});
+app.get('/halldosfamosos', (req, res) => {res.render('halldosfamosos', { footerback: footerback, includefooterback : true });});
+app.get('/hulkabilly', (req, res) => {res.render('hulkabilly', { footerback: footerback, includefooterback : true });});
+app.get('/impostoderenda', (req, res) => {res.render('impostoderenda', { footerback: footerback, includefooterback : true });});
+app.get('/index', (req, res) => {res.render('index', { footerback: footerback, includefooterback : true });});
+app.get('/iniciodofim', (req, res) => {res.render('iniciodofim', { footerback: footerback, includefooterback : true });});
+app.get('/jogueriddlezinho', (req, res) => {res.render('jogueriddlezinho', { footerback: footerback, includefooterback : true });});
+app.get('/keeptalking', (req, res) => {res.render('keeptalking', { footerback: footerback, includefooterback : true });});
+app.get('/lancamentodonivel3', (req, res) => {res.render('lancamentodonivel3', { footerback: footerback, includefooterback : true });});
+app.get('/layout', (req, res) => {res.render('layout', { footerback: footerback, includefooterback : true });});
+app.get('/mariademedici', (req, res) => {res.render('mariademedici', { footerback: footerback, includefooterback : true });});
+app.get('/mastimnapolitano', (req, res) => {res.render('mastimnapolitano', { footerback: footerback, includefooterback : true });});
+app.get('/miltonnascimento', (req, res) => {res.render('miltonnascimento', { footerback: footerback, includefooterback : true });});
+app.get('/muralhadachina', (req, res) => {res.render('muralhadachina', { footerback: footerback, includefooterback : true });});
+app.get('/pauloleminski', (req, res) => {res.render('pauloleminski', { footerback: footerback, includefooterback : true });});
+app.get('/pedradaroseta', (req, res) => {res.render('pedradaroseta', { footerback: footerback, includefooterback : true });});
+app.get('/rrd', (req, res) => {res.render('rrd', { footerback: footerback, includefooterback : true });});
+app.get('/saomartinho', (req, res) => {res.render('saomartinho', { footerback: footerback, includefooterback : true });});
+app.get('/seishelices', (req, res) => {res.render('seishelices', { footerback: footerback, includefooterback : true });});
+app.get('/seispoemas', (req, res) => {res.render('seispoemas', { footerback: footerback, includefooterback : true });});
+app.get('/soccer', (req, res) => {res.render('soccer', { footerback: footerback, includefooterback : true });});
+app.get('/sonhodemagia', (req, res) => {res.render('sonhodemagia', { footerback: footerback, includefooterback : true });});
+app.get('/tangerinaagitada', (req, res) => {res.render('tangerinaagitada', { footerback: footerback, includefooterback : true });});
+app.get('/taxonomia', (req, res) => {res.render('taxonomia', { footerback: footerback, includefooterback : true });});
+app.get('/tayassu', (req, res) => {res.render('tayassu', { footerback: footerback, includefooterback : true });});
+app.get('/timesnewroman', (req, res) => {res.render('timesnewroman', { footerback: footerback, includefooterback : true });});
+app.get('/torredasmerces', (req, res) => {res.render('torredasmerces', { footerback: footerback, includefooterback : true });});
+app.get('/trevorjackson', (req, res) => {res.render('trevorjackson', { footerback: footerback, includefooterback : true });});
+app.get('/tubarao', (req, res) => {res.render('tubarao', { footerback: footerback, includefooterback : true });});
+app.get('/umbigo', (req, res) => {res.render('umbigo', { footerback: footerback, includefooterback : true });});
+app.get('/volkswagen', (req, res) => {res.render('volkswagen', { footerback: footerback, includefooterback : true });});
+app.get('/yfotmydfelx', (req, res) => {res.render('yfotmydfelx', { footerback: footerback, includefooterback : true });});
+app.get('/yijetuan', (req, res) => {res.render('yijetuan', { footerback: footerback, includefooterback : true });});
 
 // Handles any requests that don't match the ones above
 app.get('/', (req,res) =>{ res.render('index');});

@@ -2,7 +2,7 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lhgl_riddlezinho&metric=alert_status)](https://sonarcloud.io/dashboard?id=lhgl_riddlezinho)
 
-[![Node.js Version](https://img.shields.io/node/v/lhgl/riddlezinho)](https://nodejs.org/en/download/)
+[![Node.js Version](https://img.shields.io/badge/node-v14.x-green)](https://nodejs.org/en/download/)
 
 ## Reconstrução
 

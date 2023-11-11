@@ -1,60 +1,35 @@
 # RiddleZinho
 
+[![Node.js Version](https://img.shields.io/badge/node-v14.x-green)](https://nodejs.org/en/download/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lhgl_riddlezinho&metric=alert_status)](https://sonarcloud.io/dashboard?id=lhgl_riddlezinho)
 
-[![Node.js Version](https://img.shields.io/badge/node-v14.x-green)](https://nodejs.org/en/download/)
+## Sobre o Projeto
+
+RiddleZinho é um jogo de enigmas que foi reconstruído após o site original sair do ar em fevereiro de 2020. Este projeto é uma tentativa de trazer de volta a diversão e o desafio que muitos jogadores apreciavam.
 
 ## Reconstrução
 
-Em fevereiro de 2020, o site [RiddleZinho](http://riddlezinho.net76.net/) saiu do ar. Sem mais nem menos perdemos o
-nosso jogo 😥 Desde então tenho tentado contato com o Artur Freitas, criador do jogo, e infelizmente, sem nenhum
-sucesso. Devido a quarentena do Covid-19, decidi tentar recriá-lo com a ajuda
-do [WayBack Machine](https://web.archive.org/) e desde então tem sido um passatempo legal por vários motivos. Sei que
-esse jogo foi e sempre será importante na vida de muitas pessoas. A sensação de passar uma fase depois de dias presos
-nela. A sensação de conseguir ajudar o próximo, compartilhar ideias, discussões, enfim...
+Com o apoio de [Victo-Rocha](https://github.com/victor-rocha), que iniciou a reconstrução do jogo, e com a ajuda do [WayBack Machine](https://web.archive.org/), conseguimos recriar uma parte significativa do jogo original. Este projeto tem sido um passatempo divertido e uma maneira de preservar um jogo que tem um lugar especial no coração de muitos jogadores.
 
-## Desenvolvimento
+## Melhorias Recentes
 
-Não vi necessidade de usar nenhum framework super completo ou complexo pois o jogo não possui a necessidade. Portanto,
-decidi usar o bom e velho [Boostrap](https://getbootstrap.com/) com alguns CSS e Javascripts desenvolvidos por mim
-mesmo. A ideia é manter o site responsivo e lightweight
+Recentemente, fizemos várias melhorias no projeto:
 
-## Novas features & atualizações
+* Clonamos o projeto de [Victo-Rocha](https://github.com/victor-rocha), que já tinha muitas correções e melhorias.
+* Ajustamos algumas vulnerabilidades.
+* Otimizamos processos internos.
+* Migramos para Node.js e Express.
 
-Aproveitei esse renascimento do RiddleZinho para acrescentar algumas pequenas novas features, principalmente pensando
-nas pessoas que irão jogar pelo navegador do celular. Aqui estão algumas novas features:
+Estamos continuamente trabalhando para simplificar as etapas de desenvolvimento e melhorar a experiência do jogo.
 
-* Site responsivo
-* Links para o grupo do Facebook e Telegram
-* Modais/popups ao invés de páginas internas para Regras, etc.
-* Campo de texto para a "senha" da próxima fase facilitando o "gameplay"
+## Como Jogar
 
-## To-do
+Para jogar RiddleZinho, baixe o projeto e inicie o serve.js (NODEJS). Isso irá subir na localmente em seu PC em localhost:5000. Esperamos que você se divirta e aproveite o desafio!
 
-* Hall da Fama (talvez automático?)
-* Botão para visualização do código fonte - apenas visível em dispositivos móveis
+## Contribuições
 
-Caso queira contribuir, basta criar um fork do projeto e logo após abrir um Pull request 😀
+Contribuições são sempre bem-vindas! Veja `CONTRIBUTING.md` para saber como você pode ajudar.
 
-## Disclaimer
+## Licença
 
-Eu não sou o criador nem inventor desse jogo. Não tenho intenção nenhuma de lucrar, vender ou revender esse jogo. Sou
-apenas um desenvolvedor que quer manter o RiddleZinho vivo!
-
-## Site
-
-O jogo está atualmente hospedado no GitHub Pages e pode accessa-lo e começar a jogar agora mesmo através do
-link https://victor-rocha.github.io/riddlezinho
-
-## Upgrade
-
-* Relizei o clone do projeto do Victo-Rocha
-* Ajustei algumas vulnerabilidades
-* Otimizei processos internos
-* Migrei para NODEJS e Express
-
-
-Ainda em fase de ajustes para simplificar etapas de desenvolvimento.
-
-Bom jogo! 
-
+Este projeto está sob a licença [sua licença]. Veja `LICENSE.md` para mais detalhes.

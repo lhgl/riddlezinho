@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "lhgl-local",
+        "projectKey": "lhgl_riddlezinho"
+    }
+}

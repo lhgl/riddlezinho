@@ -6,9 +6,11 @@
 }
 
 /* Remove default padding */
+/* Remove list styles on ul, ol elements with a class attribute */
 ul[class],
 ol[class] {
     padding: 0;
+    list-style: none;
 }
 
 /* Remove default margin */
@@ -41,12 +43,6 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-}
-
-/* Remove list styles on ul, ol elements with a class attribute */
-ul[class],
-ol[class] {
-    list-style: none;
 }
 
 /* A elements that don't have a class get default styles */

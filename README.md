@@ -1,5 +1,10 @@
 # RiddleZinho
 
+# Quality
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lhgl_riddlezinho&metric=alert_status)](https://sonarcloud.io/dashboard?id=lhgl_riddlezinho)
+
+
 ## Reconstrução
 
 Em fevereiro de 2020, o site [RiddleZinho](http://riddlezinho.net76.net/) saiu do ar. Sem mais nem menos perdemos o
@@ -49,7 +54,6 @@ link https://victor-rocha.github.io/riddlezinho
 * Otimizei processos internos
 * Migrei para NODEJS e Express
 
-É possível acessar o jogo na plataforma https://www.geocities.ws/riddlezinho/ e jogar normalmente.
 
 Ainda em fase de ajustes para simplificar etapas de desenvolvimento.
 

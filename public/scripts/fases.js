@@ -17,17 +17,8 @@ function passarDeFase() {
     const url = window.location.href;
     const newUrl = `${url.substring(0, url.lastIndexOf("/"))}/${senhaFormatada}`;
 
-    fetch(newUrl).then(response => {
-        if (response.ok) {
-            window.location.href = newUrl;
-        } else {
-            throw new Error('Arquivo não encontrado');
-        }
-    })
-    .catch(error => {
-        console.log(error);
-        alert('Ops, ' + error.message);
-    });
+    window.location.href = newUrl;
+
 }
 
 function voltar(){

@@ -29,9 +29,9 @@ i.rz-branco {
 }
 
 #senha {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     padding: 0.1rem;
     outline: none;
     border: 1px solid #B0CFE0;

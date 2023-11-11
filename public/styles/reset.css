@@ -31,12 +31,16 @@ dd {
 
 /* Set core body defaults */
 body {
-    min-height: 100vh;
     scroll-behavior: smooth;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
     background: black;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 /* Remove list styles on ul, ol elements with a class attribute */
@@ -48,6 +52,7 @@ ol[class] {
 /* A elements that don't have a class get default styles */
 a:not([class]) {
     text-decoration-skip-ink: auto;
+    text-decoration-skip: ink;
 }
 
 /* Make images easier to work with */

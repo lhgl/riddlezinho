@@ -1,0 +1,18 @@
+<%- include('layout', { title: 'Pegue sua guitarra e execute um "rock"', body: `
+<!-- Fase 6 (seis) -->
+<h1 class="fase-titulo center">Fase 6</h1>
+<div class="center">
+    <img alt="prisao" height="854" src="/images/fases/prisao.jpg" title="prisao" width="1138">
+</div>
+<p class="frase-fase center">
+    E aí, gaúcho, que tal tomar um mate?
+</p>
+<div class="center area-senha">
+    <label for="senha"></label><input autocapitalize="off" id="senha" onkeyup=" enviarSenha();" placeholder="Senha"
+                                      type="text">
+    <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
+</div>
+
+
+
+` }) %>

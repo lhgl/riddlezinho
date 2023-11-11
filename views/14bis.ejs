@@ -1,0 +1,18 @@
+<%- include('layout', { title: '"Eu pisei e ela explodiu"', body: `
+<!-- Fase 2 (dois) -->
+<h1 class="fase-titulo center">Fase 2</h1>
+<div class="center">
+    <img alt="animal_marinho" src="/images/fases/animal_marinho.jpg" title="animal_marinho">
+</div>
+<p class="frase-fase center">
+    Roberto.
+</p>
+<div class="center area-senha">
+    <label for="senha"></label><input autocapitalize="off" id="senha" onkeyup="enviarSenha();" type="text">
+    <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
+    <button id="voltar" onclick="voltar();">Voltar </button>
+</div>
+
+
+
+` }) %>

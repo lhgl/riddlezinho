@@ -23,5 +23,8 @@
 </head>
 <body>
     <%- body %>
+    <% if (typeof includepasscode !== 'undefined' && includepasscode) { %>
+        <%- footerpasscode %>
+    <% } %>
 </body>
 </html>

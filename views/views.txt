@@ -52,7 +52,7 @@ cateto
 celula
 cep
 charlesbaudelaire
-cliquemagico.htm
+cliquemagico
 codigobinario
 coparoca
 cor

@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "eslint": "^8.53.0",
+    "nyc": "^15.1.0",
     "standard-version": "^9.5.0"
   }
 }

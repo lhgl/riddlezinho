@@ -390,19 +390,19 @@ app.get('/80000', (req, res) => {res.render('80000', { footerpasscode: footerpas
 //93
 //FIXME
 //94
-app.get('/seishelices', (req, res) => {res.render('seishelices', { footerback: footerback, includefooterback : true });});
+app.get('/seishelices', (req, res) => {res.render('seishelices', { footerpasscode: footerpasscode, includepasscode : true });});
 
 //============================= FIX =============================
 
 
-app.get('/corredorvermelho', (req, res) => {res.render('corredorvermelho', { footerback: footerback, includefooterback : true });});
-app.get('/deuteranopia', (req, res) => {res.render('deuteranopia', { footerback: footerback, includefooterback : true });});
+app.get('/corredorvermelho', (req, res) => {res.render('corredorvermelho',{ footerpasscode: footerpasscode, includepasscode : true });});
+app.get('/deuteranopia', (req, res) => {res.render('deuteranopia', { footerpasscode: footerpasscode, includepasscode : true });});
 
 //ÚLTIMA FASE NÍVEL 2
-app.get('/iniciodofim', (req, res) => {res.render('iniciodofim', { footerback: footerback, includefooterback : true });});
+app.get('/iniciodofim', (req, res) => {res.render('iniciodofim', { footerpasscode: footerpasscode, includepasscode : true });});
 
-app.get('/tangerinaagitada', (req, res) => {res.render('tangerinaagitada', { footerback: footerback, includefooterback : true });});
-app.get('/taxonomia', (req, res) => {res.render('taxonomia', { footerback: footerback, includefooterback : true });});
+app.get('/tangerinaagitada', (req, res) => {res.render('tangerinaagitada',{ footerpasscode: footerpasscode, includepasscode : true });});
+app.get('/taxonomia', (req, res) => {res.render('taxonomia', { footerpasscode: footerpasscode, includepasscode : true });});
 
 
 // Handles any requests that don't match the ones above

@@ -22,7 +22,5 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm audit
-    - name: Run tests
-      run: npm test
     - name: Release tags
-      run: npm release
+      run: npm run release

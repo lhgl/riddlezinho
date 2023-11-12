@@ -188,6 +188,11 @@ app.get('/vietna', (req, res) => {res.render('vietna', { footerback: footerback,
 app.get('/virgilio', (req, res) => {res.render('virgilio', { footerback: footerback, includefooterback : true });});
 app.get('/voldemort', (req, res) => {res.render('voldemort', { footerback: footerback, includefooterback : true });});
 app.get('/zecolmeia', (req, res) => {res.render('zecolmeia', { footerback: footerback, includefooterback : true });});
+app.get('/torredasmerces', (req, res) => {res.render('torredasmerces', { footerback: footerback, includefooterback : true });});
+app.get('/pedradaroseta', (req, res) => {res.render('pedradaroseta', { footerback: footerback, includefooterback : true });});
+app.get('/muralhadachina', (req, res) => {res.render('muralhadachina', { footerback: footerback, includefooterback : true });});
+app.get('/bombanuclear', (req, res) => {res.render('bombanuclear', { footerback: footerback, includefooterback : true });});
+app.get('/aquiapistatres', (req, res) => {res.render('aquiapistatres', { footerback: footerback, includefooterback : true });});
 
 //FASES
 app.get('/fasezero', function(req, res) {res.render('fasezero', { footerpasscode: footerpasscode, includepasscode : true });});
@@ -205,23 +210,23 @@ app.get('/incriveis', (req, res) => {res.render('incriveis', { footerpasscode: f
 app.get('/atila', (req, res) => {res.render('atila', { footerpasscode: footerpasscode, includepasscode : true });});
 //7 
 app.get('/xadrez',(req,res)=>{res.render('xadrez',{footerpasscode:footerpasscode,includepasscode:true});});
-//============================= TO DO =============================
+//============================= TO DO fix images =============================
 //8
 app.get('/io',(req,res)=>{res.render('io',{footerpasscode:footerpasscode,includepasscode:true});});
 //9
 app.get('/hipocondria',(req,res)=>{res.render('hipocondria',{footerpasscode:footerpasscode,includepasscode:true});});
-//10
-app.get('/vangogh',(req,res)=>{res.render('vangogh',{footerpasscode:footerpasscode,includepasscode:true});});
+//10 FIXME
+//app.get('/vangogh',(req,res)=>{res.render('vangogh',{footerpasscode:footerpasscode,includepasscode:true});});
 //11
 app.get('/burjdubai',(req,res)=>{res.render('burjdubai',{footerpasscode:footerpasscode,includepasscode:true});});
 //12
 app.get('/celular',(req,res)=>{res.render('celular',{footerpasscode:footerpasscode,includepasscode:true});});
-//13
-app.get('/pedraderoseta',(req,res)=>{res.render('pedraderoseta',{footerpasscode:footerpasscode,includepasscode:true});});
+//13 FIXME
+//app.get('/pedraderoseta',(req,res)=>{res.render('pedraderoseta',{footerpasscode:footerpasscode,includepasscode:true});});
 //14
 app.get('/holanda',(req,res)=>{res.render('holanda',{footerpasscode:footerpasscode,includepasscode:true});});
-//15
-app.get('/catacrese',(req,res)=>{res.render('catacrese',{footerpasscode:footerpasscode,includepasscode:true});});
+//15 FIXME
+//app.get('/catacrese',(req,res)=>{res.render('catacrese',{footerpasscode:footerpasscode,includepasscode:true});});
 //16
 app.get('/hipogrifo',(req,res)=>{res.render('hipogrifo',{footerpasscode:footerpasscode,includepasscode:true});});
 //17
@@ -231,7 +236,7 @@ app.get('/01000001',(req,res)=>{res.render('01000001',{footerpasscode:footerpass
 //19
 app.get('/carokann',(req,res)=>{res.render('carokann',{footerpasscode:footerpasscode,includepasscode:true});});
 //20
-app.get('/ed3ipo',(req,res)=>{res.render('edipo',{footerpasscode:footerpasscode,includepasscode:true});});
+app.get('/edipo',(req,res)=>{res.render('edipo',{footerpasscode:footerpasscode,includepasscode:true});});
 //21
 app.get('/caribe',(req,res)=>{res.render('caribe',{footerpasscode:footerpasscode,includepasscode:true});});
 //22
@@ -258,82 +263,147 @@ app.get('/650',(req,res)=>{res.render('650',{footerpasscode:footerpasscode,inclu
 app.get('/terceirocirculo',(req,res)=>{res.render('terceirocirculo',{footerpasscode:footerpasscode,includepasscode:true});});
 //33
 app.get('/mortedemarat',(req,res)=>{res.render('mortedemarat',{footerpasscode:footerpasscode,includepasscode:true});});
-//34 - Fim do nível 1
+//Fim do nível 1
 app.get('/05151402',(req,res)=>{res.render('05151402',{footerpasscode:footerpasscode,includepasscode:true});});
 /*
 Pass 1 para nível 2: antonio
 Pass 2 para nível 2: pollaiolo
 */
-//35
+//34
 app.get('/antoniopollaiolo',(req,res)=>{res.render('antoniopollaiolo',{footerpasscode:footerpasscode,includepasscode:true});});
-//36 = fado
+//35 = fado
 app.get('/fado',(req,res)=>{res.render('fado',{footerpasscode:footerpasscode,includepasscode:true});});
-//37 = 
+//36 
 app.get('/tomriddle',(req,res)=>{res.render('tomriddle',{footerpasscode:footerpasscode,includepasscode:true});});
-//============================= EXTRAS =============================
+//37
+app.get('/soccer', (req, res) => {res.render('soccer', {footerpasscode:footerpasscode,includepasscode:true});});
+//38
+app.get('/yijetuan', (req, res) => {res.render('yijetuan', {footerpasscode:footerpasscode,includepasscode:true});});
+//39
+app.get('/chateaubriand', (req, res) => {res.render('chateaubriand', {footerpasscode:footerpasscode,includepasscode:true});});
+//40
+app.get('/cigarro', (req, res) => {res.render('cigarro', {footerpasscode:footerpasscode,includepasscode:true});});
+//41
+app.get('/cemdolares', (req, res) => {res.render('cemdolares', {footerpasscode:footerpasscode,includepasscode:true});});
+//42
+//FIXME
+//43
+app.get('/umbigo', (req, res) => {res.render('umbigo',  {footerpasscode:footerpasscode,includepasscode:true});});
+//44
+app.get('/timesnewroman', (req, res) => {res.render('timesnewroman', {footerpasscode:footerpasscode,includepasscode:true});});
+//45
+//FIXME
+//46
+app.get('/keeptalking', (req, res) => {res.render('keeptalking',  {footerpasscode:footerpasscode,includepasscode:true});});
+//47
+app.get('/trevorjackson', (req, res) => {res.render('trevorjackson',  {footerpasscode:footerpasscode,includepasscode:true});});
+//48
+//FIXME
+//49
+app.get('/rrd', (req, res) => {res.render('rrd',  {footerpasscode:footerpasscode,includepasscode:true});});
+//50
+//FIXME
+//51
+app.get('/mastimnapolitano', (req, res) => {res.render('mastimnapolitano', {footerpasscode:footerpasscode,includepasscode:true});});
+//52
+app.get('/bombaatomica', (req, res) => {res.render('bombaatomica',  {footerpasscode:footerpasscode,includepasscode:true});});
+//53
+//FIXME
+//54
+app.get('/volkswagen', (req, res) => {res.render('volkswagen',{footerpasscode:footerpasscode,includepasscode:true});});
+//55
+app.get('/impostoderenda', (req, res) => {res.render('impostoderenda', {footerpasscode:footerpasscode,includepasscode:true});});
+//56
+app.get('/seispoemas', (req, res) => {res.render('seispoemas', {footerpasscode:footerpasscode,includepasscode:true});});
+//57
+//FIXME
+//58
+app.get('/miltonnascimento', (req, res) => {res.render('miltonnascimento', {footerpasscode:footerpasscode,includepasscode:true});});
+//59
+app.get('/pauloleminski', (req, res) => {res.render('pauloleminski', {footerpasscode:footerpasscode,includepasscode:true});});
+//60
+app.get('/yfotmydfelx', (req, res) => {res.render('yfotmydfelx', {footerpasscode:footerpasscode,includepasscode:true});});
+//61
+//FIXME
+//62
+app.get('/saomartinho', (req, res) => {res.render('saomartinho', {footerpasscode:footerpasscode,includepasscode:true});});
+//63
+//FIXME
+//64
+app.get('/fase64', (req, res) => {res.render('fase64', {footerpasscode:footerpasscode,includepasscode:true});});
+//65
+app.get('/amparo', (req, res) => {res.render('amparo', {footerpasscode:footerpasscode,includepasscode:true});});
+//66
+app.get('/chapa', (req, res) => {res.render('chapa', {footerpasscode:footerpasscode,includepasscode:true});});
+//67
+app.get('/mariademedici', (req, res) => {res.render('mariademedici', {footerpasscode:footerpasscode,includepasscode:true});});
 //68
 app.get('/corcel', (req, res) => {res.render('corcel', { footerpasscode: footerpasscode, includepasscode : true });});
+//69
+//FIXME
+//70
+app.get('/corfix', (req, res) => {res.render('corfix', { footerpasscode: footerpasscode, includepasscode : true });});
 //71
 app.get('/pneumoultramicroscopicossilicovulcanoconiotico', (req, res) => {res.render('pneumoultramicroscopicossilicovulcanoconiotico', { footerpasscode: footerpasscode, includepasscode : true });});
 //72
 app.get('/araraarara', (req, res) => {res.render('araraarara', { footerpasscode: footerpasscode, includepasscode : true });});
+//73
+//FIXME
+//74
+//FIXME
 //75
 app.get('/acronimo', (req, res) => {res.render('acronimo', { footerpasscode: footerpasscode, includepasscode : true });});
+//76
+app.get('/sonhodemagia', (req, res) => {res.render('sonhodemagia', { footerpasscode: footerpasscode, includepasscode : true });});
+//77
+//FIXME
+//78
+app.get('/tayassu', (req, res) => {res.render('tayassu', { footerpasscode: footerpasscode, includepasscode : true });});
+//79
+app.get('/hulkabilly', (req, res) => {res.render('hulkabilly', { footerpasscode: footerpasscode, includepasscode : true });});
+//80
+app.get('/defatigatis', (req, res) => {res.render('defatigatis', { footerpasscode: footerpasscode, includepasscode : true });});
+//81
+app.get('/escanhoarieis', (req, res) => {res.render('escanhoarieis', { footerpasscode: footerpasscode, includepasscode : true });});
+//82
+app.get('/fonda', (req, res) => {res.render('fonda', { footerpasscode: footerpasscode, includepasscode : true });});
+//83
+app.get('/bisposardinha', (req, res) => {res.render('bisposardinha', { footerpasscode: footerpasscode, includepasscode : true });});
 //84
 app.get('/arar', (req, res) => {res.render('arar', { footerpasscode: footerpasscode, includepasscode : true });});
+//85
+app.get('/tubarao', (req, res) => {res.render('tubarao', { footerpasscode: footerpasscode, includepasscode : true });});
+//86
+//FIXME
+//87
+//FIXME
+//88
+//FIXME
+//89
+//FIXME
+//90
+//FIXME
+//91
+//FIXME
+//92
+app.get('/80000', (req, res) => {res.render('80000', { footerpasscode: footerpasscode, includepasscode : true });});
+//93
+//FIXME
+//94
+app.get('/seishelices', (req, res) => {res.render('seishelices', { footerback: footerback, includefooterback : true });});
 
 //============================= FIX =============================
-app.get('/80000', (req, res) => {res.render('80000', { footerback: footerback, includefooterback : true });});
-app.get('/amparo', (req, res) => {res.render('amparo', { footerback: footerback, includefooterback : true });});
-app.get('/aquiapistatres', (req, res) => {res.render('aquiapistatres', { footerback: footerback, includefooterback : true });});
-app.get('/bisposardinha', (req, res) => {res.render('bisposardinha', { footerback: footerback, includefooterback : true });});
-app.get('/bombaatomica', (req, res) => {res.render('bombaatomica', { footerback: footerback, includefooterback : true });});
-app.get('/bombanuclear', (req, res) => {res.render('bombanuclear', { footerback: footerback, includefooterback : true });});
-app.get('/cemdolares', (req, res) => {res.render('cemdolares', { footerback: footerback, includefooterback : true });});
-app.get('/chapa', (req, res) => {res.render('chapa', { footerback: footerback, includefooterback : true });});
-app.get('/chateaubriand', (req, res) => {res.render('chateaubriand', { footerback: footerback, includefooterback : true });});
-app.get('/cigarro', (req, res) => {res.render('cigarro', { footerback: footerback, includefooterback : true });});
-app.get('/corfix', (req, res) => {res.render('corfix', { footerback: footerback, includefooterback : true });});
+
+
 app.get('/corredorvermelho', (req, res) => {res.render('corredorvermelho', { footerback: footerback, includefooterback : true });});
-app.get('/defatigatis', (req, res) => {res.render('defatigatis', { footerback: footerback, includefooterback : true });});
 app.get('/deuteranopia', (req, res) => {res.render('deuteranopia', { footerback: footerback, includefooterback : true });});
-app.get('/edipo', (req, res) => {res.render('edipo', { footerback: footerback, includefooterback : true });});
-app.get('/error', (req, res) => {res.render('error', { footerback: footerback, includefooterback : true });});
-app.get('/escanhoarieis', (req, res) => {res.render('escanhoarieis', { footerback: footerback, includefooterback : true });});
-app.get('/fase64', (req, res) => {res.render('fase64', { footerback: footerback, includefooterback : true });});
-app.get('/fonda', (req, res) => {res.render('fonda', { footerback: footerback, includefooterback : true });});
-app.get('/footerback', (req, res) => {res.render('footerback', { footerback: footerback, includefooterback : true });});
-app.get('/footerpasscode', (req, res) => {res.render('footerpasscode', { footerback: footerback, includefooterback : true });});
-app.get('/hulkabilly', (req, res) => {res.render('hulkabilly', { footerback: footerback, includefooterback : true });});
-app.get('/impostoderenda', (req, res) => {res.render('impostoderenda', { footerback: footerback, includefooterback : true });});
-app.get('/index', (req, res) => {res.render('index', { footerback: footerback, includefooterback : true });});
+
+//ÚLTIMA FASE NÍVEL 2
 app.get('/iniciodofim', (req, res) => {res.render('iniciodofim', { footerback: footerback, includefooterback : true });});
-app.get('/jogueriddlezinho', (req, res) => {res.render('jogueriddlezinho', { footerback: footerback, includefooterback : true });});
-app.get('/keeptalking', (req, res) => {res.render('keeptalking', { footerback: footerback, includefooterback : true });});
-app.get('/layout', (req, res) => {res.render('layout', { footerback: footerback, includefooterback : true });});
-app.get('/mariademedici', (req, res) => {res.render('mariademedici', { footerback: footerback, includefooterback : true });});
-app.get('/mastimnapolitano', (req, res) => {res.render('mastimnapolitano', { footerback: footerback, includefooterback : true });});
-app.get('/miltonnascimento', (req, res) => {res.render('miltonnascimento', { footerback: footerback, includefooterback : true });});
-app.get('/muralhadachina', (req, res) => {res.render('muralhadachina', { footerback: footerback, includefooterback : true });});
-app.get('/pauloleminski', (req, res) => {res.render('pauloleminski', { footerback: footerback, includefooterback : true });});
-app.get('/pedradaroseta', (req, res) => {res.render('pedradaroseta', { footerback: footerback, includefooterback : true });});
-app.get('/rrd', (req, res) => {res.render('rrd', { footerback: footerback, includefooterback : true });});
-app.get('/saomartinho', (req, res) => {res.render('saomartinho', { footerback: footerback, includefooterback : true });});
-app.get('/seishelices', (req, res) => {res.render('seishelices', { footerback: footerback, includefooterback : true });});
-app.get('/seispoemas', (req, res) => {res.render('seispoemas', { footerback: footerback, includefooterback : true });});
-app.get('/soccer', (req, res) => {res.render('soccer', { footerback: footerback, includefooterback : true });});
-app.get('/sonhodemagia', (req, res) => {res.render('sonhodemagia', { footerback: footerback, includefooterback : true });});
+
 app.get('/tangerinaagitada', (req, res) => {res.render('tangerinaagitada', { footerback: footerback, includefooterback : true });});
 app.get('/taxonomia', (req, res) => {res.render('taxonomia', { footerback: footerback, includefooterback : true });});
-app.get('/tayassu', (req, res) => {res.render('tayassu', { footerback: footerback, includefooterback : true });});
-app.get('/timesnewroman', (req, res) => {res.render('timesnewroman', { footerback: footerback, includefooterback : true });});
-app.get('/torredasmerces', (req, res) => {res.render('torredasmerces', { footerback: footerback, includefooterback : true });});
-app.get('/trevorjackson', (req, res) => {res.render('trevorjackson', { footerback: footerback, includefooterback : true });});
-app.get('/tubarao', (req, res) => {res.render('tubarao', { footerback: footerback, includefooterback : true });});
-app.get('/umbigo', (req, res) => {res.render('umbigo', { footerback: footerback, includefooterback : true });});
-app.get('/volkswagen', (req, res) => {res.render('volkswagen', { footerback: footerback, includefooterback : true });});
-app.get('/yfotmydfelx', (req, res) => {res.render('yfotmydfelx', { footerback: footerback, includefooterback : true });});
-app.get('/yijetuan', (req, res) => {res.render('yijetuan', { footerback: footerback, includefooterback : true });});
+
 
 // Handles any requests that don't match the ones above
 app.get('/', (req,res) =>{ res.render('index');});

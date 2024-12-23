@@ -11,7 +11,7 @@
     "release": "standard-version"
   },
   "devDependencies": {
-    "eslint": "^9.15.0",
+    "eslint": "^9.17.0",
     "nyc": "^17.1.0",
     "standard-version": "^9.5.0"
   }

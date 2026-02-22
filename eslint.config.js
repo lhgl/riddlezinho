@@ -1,51 +1,76 @@
+/**
+ * ESLint Flat Configuration for RiddleZinho
+ * ESLint 9.x Format
+ */
+
 const js = require('@eslint/js');
 
 module.exports = [
+  // Configuração base JavaScript
   js.configs.recommended,
+  
+  // Configurações personalizadas
   {
     languageOptions: {
       ecmaVersion: 'latest',
-      sourceType: 'commonjs',
+      sourceType: 'module',
       globals: {
-        // Node.js globals
+        // Node.js
+        node: 'readonly',
         process: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        exports: 'readonly',
+        Buffer: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
-        Buffer: 'readonly',
-        console: 'readonly',
+        exports: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
         setTimeout: 'readonly',
         setInterval: 'readonly',
         clearTimeout: 'readonly',
         clearInterval: 'readonly',
-        // Test globals
+        // Browser
+        window: 'readonly',
+        document: 'readonly',
+        localStorage: 'readonly',
+        fetch: 'readonly',
+        console: 'readonly',
+        alert: 'readonly',
+        // Jest
         describe: 'readonly',
         it: 'readonly',
+        test: 'readonly',
         expect: 'readonly',
         beforeEach: 'readonly',
         afterEach: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
         jest: 'readonly',
+        fail: 'readonly',
+        global: 'readonly',
+        // ESLint
+        globalThis: 'readonly'
       }
     },
+    plugins: {
+      import: require('eslint-plugin-import')
+    },
     rules: {
-      'indent': ['error', 2],
+      // Code Style
+      indent: ['error', 2],
       'linebreak-style': 'off',
-      'quotes': ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
-      'semi': ['error', 'always'],
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      quotes: ['error', 'single', { 
+        avoidEscape: true,
+        allowTemplateLiterals: true 
+      }],
+      semi: ['error', 'always'],
+      'no-console': ['warn', { allow: ['warn', 'error', 'log'] }],
+      'no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_'
+      }],
       'no-trailing-spaces': 'error',
       'eol-last': ['error', 'always'],
-      'comma-dangle': ['error', {
-        arrays: 'never',
-        objects: 'never',
-        imports: 'never',
-        exports: 'never',
-        functions: 'never'
-      }],
+      'comma-dangle': ['error', 'never'],
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
       'keyword-spacing': ['error', { before: true, after: true }],
@@ -56,24 +81,63 @@ module.exports = [
       }],
       'arrow-spacing': ['error', { before: true, after: true }],
       'prefer-const': 'error',
+      'prefer-arrow-callback': 'warn',
       'no-var': 'error',
       'eqeqeq': ['error', 'always'],
-      'curly': ['error', 'all']
+      curly: ['error', 'all'],
+      'no-throw-literal': 'error',
+      'no-else-return': 'warn',
+      'no-lonely-if': 'warn',
+      'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
+      
+      // Import
+      'import/order': ['warn', {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        'newlines-between': 'always',
+        alphabetize: { order: 'asc', caseInsensitive: true }
+      }],
+      'import/no-duplicates': 'error'
     }
   },
+  
+  // Overrides para testes - mais permissivo
   {
-    files: ['server.js'],
+    files: ['**/*.test.ts', '**/*.test.js', '**/*.spec.ts', 'tests/**/*'],
     rules: {
-      'no-console': 'off'
+      'no-console': 'off',
+      'no-unused-vars': 'off',
+      'import/order': 'off'
     }
   },
+  
+  // Overrides para server
   {
-    files: ['scripts/**/*.js'],
+    files: ['server.js', 'src/server.ts'],
     rules: {
-      'no-console': 'off'
+      'no-console': 'off',
+      'import/order': 'off'
     }
   },
+  
+  // Overrides para scripts client-side
   {
-    ignores: ['dist/**', 'coverage/**', 'node_modules/**']
+    files: ['public/scripts/*.js'],
+    rules: {
+      'no-console': 'off',
+      'no-unused-vars': 'off'
+    }
+  },
+  
+  // Ignores
+  {
+    ignores: [
+      'node_modules/',
+      'dist/',
+      'coverage/',
+      '*.min.js',
+      '*.bundle.js',
+      'eslint-report.json',
+      'audit-report.json'
+    ]
   }
 ];

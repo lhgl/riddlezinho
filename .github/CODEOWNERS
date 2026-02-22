@@ -1,0 +1,35 @@
+# GitHub CODEOWNERS
+# Defines default reviewers for pull requests
+# Documentation: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners (will be requested for all PRs)
+* @lhgl
+
+# Source code
+/src/ @lhgl
+
+# Tests
+/tests/ @lhgl
+
+# Configuration files
+*.json @lhgl
+*.yml @lhgl
+*.yaml @lhgl
+*.ts @lhgl
+*.js @lhgl
+
+# Documentation
+/docs/ @lhgl
+*.md @lhgl
+
+# GitHub Actions
+/.github/workflows/ @lhgl
+
+# Docker
+Dockerfile @lhgl
+docker-compose.yml @lhgl
+
+# Security
+*.env* @lhgl
+.eslintrc* @lhgl
+tsconfig.json @lhhl

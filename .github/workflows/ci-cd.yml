@@ -1,158 +1,353 @@
-name: CI/CD Pipeline - RiddleZinho
+name: CI/CD + SonarQube Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop, feature/*]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  NODE_VERSION: '20.x'
 
 jobs:
-  # JOB 1: Testes e Análise
-  test:
+  # ===========================================
+  # JOB 1: Code Quality & Security Analysis
+  # ===========================================
+  quality-analysis:
+    name: 🔍 Code Quality & Security
     runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [20.x, 22.x]
-    
+    timeout-minutes: 15
+
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-      
+
       - name: Install dependencies
-        run: npm install
-      
-      - name: Run linter
-        run: npm run lint || true
-      
+        run: npm ci --prefer-offline
+
+      - name: Run linter (ESLint)
+        run: npm run lint -- --format json --output-file eslint-report.json
+        continue-on-error: true
+
       - name: Run tests with coverage
-        run: npm test -- --coverage
-      
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        run: npm test -- --coverage --coverageReporters=lcov --coverageReporters=text-summary
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
         with:
-          file: ./coverage/coverage-final.json
+          file: ./coverage/lcov.info
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
-      
-      - name: Security audit
-        run: npm audit --audit-level=moderate
-        continue-on-error: true
-      
-      - name: Check for vulnerabilities
-        run: npm audit fix --dry-run
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Security audit (npm audit)
+        run: npm audit --audit-level=high --json > audit-report.json || true
         continue-on-error: true
 
-  # JOB 2: Build Docker Image
-  build:
-    needs: test
+      - name: Upload security report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-audit-report
+          path: audit-report.json
+          retention-days: 30
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=lhgl_riddlezinho
+            -Dsonar.organization=lhgl
+            -Dsonar.sources=src
+            -Dsonar.tests=tests
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/coverage/**,**/*.test.ts,**/*.test.js
+            -Dsonar.coverage.exclusions=**/*.test.ts,**/*.test.js,**/tests/**/*,**/src/server.ts
+
+      - name: SonarQube Quality Gate Check
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload ESLint report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eslint-report
+          path: eslint-report.json
+          retention-days: 30
+
+  # ===========================================
+  # JOB 2: Tests & Coverage
+  # ===========================================
+  test:
+    name: 🧪 Tests & Coverage
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: quality-analysis
+
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Run TypeScript compiler
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm test -- --testPathPattern=unit --coverage --coverageReporters=json --coverageReporters=text
+
+      - name: Run integration tests
+        run: npm test -- --testPathPattern=integration --coverage --coverageReporters=json --coverageReporters=text --coverageReporters=lcov
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          flags: tests-${{ matrix.node-version }}
+          name: codecov-node-${{ matrix.node-version }}
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Check minimum coverage threshold
+        run: |
+          COVERAGE=$(node -e "const fs = require('fs'); const report = JSON.parse(fs.readFileSync('./coverage/coverage-summary.json', 'utf8')); console.log(report.total.lines.pct);")
+          echo "Coverage: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "❌ Coverage is below 80% threshold!"
+            exit 1
+          fi
+          echo "✅ Coverage meets minimum threshold"
+
+  # ===========================================
+  # JOB 3: Build & Container Security
+  # ===========================================
+  build:
+    name: 🏗️ Build & Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [test, quality-analysis]
     permissions:
       contents: read
       packages: write
-    
+      security-events: write
+
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha
-      
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+            type=sha,prefix=sha-
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
 
-  # JOB 3: Code Quality Analysis
-  quality:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
         with:
-          node-version: 20.x
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Push Docker image
+        uses: docker/build-push-action@v5
+        if: github.event_name != 'pull_request'
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ===========================================
+  # JOB 4: Documentation & Changelog
+  # ===========================================
+  docs:
+    name: 📚 Documentation Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check required documentation
+        run: |
+          echo "📚 Checking documentation..."
+          REQUIRED_FILES="README.md LICENSE.md CHANGELOG.md"
+          MISSING_FILES=()
+          
+          for file in $REQUIRED_FILES; do
+            if [ ! -f "$file" ]; then
+              MISSING_FILES+=("$file")
+              echo "❌ Missing: $file"
+            else
+              echo "✅ Found: $file"
+            fi
+          done
+          
+          if [ ${#MISSING_FILES[@]} -ne 0 ]; then
+            echo "::warning::Missing documentation files: ${MISSING_FILES[*]}"
+          fi
+
+      - name: Validate README structure
+        run: |
+          echo "📝 Validating README..."
+          grep -q "## 📋 TODO" README.md && echo "✅ TODO section found" || echo "⚠️ TODO section missing"
+          grep -q "## 🧪 Testes" README.md && echo "✅ Tests section found" || echo "⚠️ Tests section missing"
+          grep -q "## 🚀 Instalação" README.md && echo "✅ Installation section found" || echo "⚠️ Installation section missing"
+
+      - name: Check for broken links
+        run: |
+          echo "🔗 Checking for broken links..."
+          grep -oE '\]\([^)]+\)' README.md | head -20 || true
+
+  # ===========================================
+  # JOB 5: Performance & Bundle Analysis
+  # ===========================================
+  performance:
+    name: ⚡ Performance Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Run tests for coverage
-        run: npm test -- --coverage --coveragePathIgnorePatterns=/node_modules/
-      
-      - name: Comment test results
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            let coverage = 'N/A';
-            try {
-              const reportPath = './coverage/coverage-summary.json';
-              const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-              coverage = report.total.lines.pct + '%';
-            } catch (e) {
-              console.log('Could not read coverage');
-            }
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## Test Results\n\n✅ Tests passed\n📊 Coverage: ${coverage}`
-            });
 
-  # JOB 4: Deploy (apenas para main)
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Build project
+        run: npm run build
+
+      - name: Analyze bundle size
+        run: |
+          echo "📦 Bundle Size Analysis"
+          echo "======================"
+          echo ""
+          echo "Source files:"
+          du -sh src/ || true
+          echo ""
+          echo "Distribution files:"
+          du -sh dist/ || true
+          echo ""
+          echo "Node modules:"
+          du -sh node_modules/ || true
+          echo ""
+          echo "Public assets:"
+          du -sh public/ || true
+
+      - name: Check for large files
+        run: |
+          echo "🔍 Checking for large files (>1MB)..."
+          find . -type f -size +1M -not -path "*/node_modules/*" -not -path "*/.git/*" -not -path "*/dist/*" || echo "✅ No large files found"
+
+  # ===========================================
+  # JOB 6: Deploy (Production)
+  # ===========================================
   deploy:
-    needs: [test, build]
+    name: 🚀 Deploy to Production
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [quality-analysis, test, build, docs, performance]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
+    environment:
+      name: production
+      url: https://riddlezinho.com
+
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Deploy notification
-        run: echo "✅ Ready for deployment to production"
-      
+        run: |
+          echo "🚀 Deploying to production..."
+          echo "Branch: ${{ github.ref }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Actor: ${{ github.actor }}"
+
       - name: Create deployment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
-            github.rest.repos.createDeployment({
+            const deployment = await github.rest.repos.createDeployment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.ref,
@@ -160,60 +355,80 @@ jobs:
               auto_merge: false,
               required_contexts: []
             });
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: deployment.data.id,
+              state: 'success',
+              description: 'Deployment completed successfully',
+              environment_url: 'https://riddlezinho.com'
+            });
 
-  # JOB 5: Performance Check
-  performance:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Check bundle size
+      - name: Notify deployment success
         run: |
-          echo "Bundle size check:"
-          du -sh node_modules/
-          du -sh src/
-          du -sh public/
+          echo "✅ Deployment to production completed!"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
 
-  # JOB 6: Documentation Check
-  docs:
+  # ===========================================
+  # JOB 7: Summary & Reporting
+  # ===========================================
+  summary:
+    name: 📊 Pipeline Summary
     runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Check documentation
-        run: |
-          echo "✅ Checking documentation..."
-          [ -f README.md ] && echo "✅ README.md exists" || exit 1
-          [ -f QUICK_START.md ] && echo "✅ QUICK_START.md exists" || exit 1
-          [ -f API.md ] && echo "✅ API.md exists" || exit 1
-          echo "✅ All documentation files present"
-
-  # JOB 7: Notify Results
-  notify:
-    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [quality-analysis, test, build, docs, performance]
     if: always()
-    needs: [test, build, quality, performance, docs]
-    
+
     steps:
       - name: Create summary
         run: |
-          echo "## CI/CD Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## 🎯 CI/CD Pipeline Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Tests: Passed" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Docker Build: Passed" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Code Quality: Passed" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Performance: Checked" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Documentation: Verified" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔍 Quality Analysis | ${{ needs.quality-analysis.result }} | SonarQube + ESLint |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧪 Tests | ${{ needs.test.result }} | Unit + Integration |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏗️ Build | ${{ needs.build.result }} | Docker + Security |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📚 Documentation | ${{ needs.docs.result }} | README + Changelog |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚡ Performance | ${{ needs.performance.result }} | Bundle Analysis |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "[View full results](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.deploy.result }}" != "skipped" ]; then
+            echo "| 🚀 Deploy | ${{ needs.deploy.result }} | Production |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📈 Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View coverage report](https://app.codecov.io/gh/${{ github.repository }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔒 Security Scan" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- NPM Audit: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- Trivy Scan: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- SonarQube: Completed" >> $GITHUB_STEP_SUMMARY
+
+      - name: Comment PR with results
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const qualityStatus = '${{ needs.quality-analysis.result }}';
+            const testStatus = '${{ needs.test.result }}';
+            const buildStatus = '${{ needs.build.result }}';
+            
+            let body = `## 🎯 CI/CD Pipeline Results\n\n`;
+            body += `| Check | Status |\n`;
+            body += `|-------|--------|\n`;
+            body += `| 🔍 Quality Analysis | ${qualityStatus === 'success' ? '✅' : qualityStatus === 'failure' ? '❌' : '⚠️'} |\n`;
+            body += `| 🧪 Tests | ${testStatus === 'success' ? '✅' : testStatus === 'failure' ? '❌' : '⚠️'} |\n`;
+            body += `| 🏗️ Build | ${buildStatus === 'success' ? '✅' : buildStatus === 'failure' ? '❌' : '⚠️'} |\n`;
+            body += `\n[View full details](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})\n`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

@@ -1,0 +1,65 @@
+# .gitignore para RiddleZinho
+
+# Dependências
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+*.log.*
+lerna-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Build/Distribution
+dist/
+build/
+.cache/
+
+# Runtime
+tmp/
+temp/
+.tmp/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Editor
+*.sublime-project
+*.sublime-workspace
+.vscode/settings.json
+
+# Testing
+coverage/
+.nyc_output/
+
+# Processo de desenvolvimento
+.env.development.local
+.env.test.local
+.env.production.local
+
+# PM2
+ecosystem.config.js.bak

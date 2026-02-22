@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: riddlezinho_app
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      ORACLE_HOST: oracle_db
+      ORACLE_PORT: 1521
+      ORACLE_USER: riddlezinho_user
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-password}
+      ORACLE_DB: ORCL
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+    depends_on:
+      oracle_db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - riddlezinho_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  oracle_db:
+    image: container-registry.oracle.com/database/express:latest
+    container_name: riddlezinho_oracle
+    ports:
+      - "1521:1521"
+    environment:
+      ORACLE_PWD: ${ORACLE_PASSWORD:-password}
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./database/oracle_schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    restart: unless-stopped
+    networks:
+      - riddlezinho_network
+    healthcheck:
+      test: ["CMD", "sqlplus", "-s", "sys/password as sysdba", "@?/rdbms/admin/sqlplus.sql"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  oracle_data:
+    driver: local
+
+networks:
+  riddlezinho_network:
+    driver: bridge

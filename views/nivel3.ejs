@@ -1,4 +1,5 @@
-<%- include('layout', { title: 'NÍVEL 3', body: `
+<%
+const pageContent = `
 
 <p align="center">&nbsp;</p>
 <p align="center" style="margin: 0 110"><img border="0" src="logonova2.jpg" width="539" height="136"></p>
@@ -25,4 +26,6 @@ ________________________________________________________________________________
 <p align="center"><font color="#FFFFFF" face="Arial" size="2"><a href="index">voltar à página 
 inicial</a></font></p>
 
-` }) %>
+`;
+%>
+<%- include('layout-fase', { title: 'NÍVEL 3', body: pageContent }) %>

@@ -1,58 +1,185 @@
-<%- include('layout', { title: 'Acabou</title>
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0" name="viewport"/>
+    <link href="/images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="/images/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link color="#5bbad5" href="/images/safari-pinned-tab.svg" rel="mask-icon">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="#ffffff" name="theme-color">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <link href="/styles/reset.css" rel="stylesheet">
+    <link href="/styles/fases.css" rel="stylesheet">
+    <link href="/styles/custom.css" rel="stylesheet">
+    <script async src="/scripts/fases.js"></script>
+    <title>Fase 97 - Início do Fim</title>
 </head>
+<body>
 
-<body bgcolor="#FF6600" link="#FFFF00" vlink="#FFFF00" alink="#FFFF00">
+
+<div id="user-progress-badge" class="user-progress-badge">
+  <span class="progress-label">Seu Progresso</span>
+  <span class="progress-value">--%</span>
+  <span class="score-label">Carregando...</span>
+</div>
+
+<style>
+.user-progress-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 120px;
+}
+.progress-label {
+    font-size: 11px;
+    opacity: 0.9;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.progress-value {
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+}
+.score-label {
+    margin-top: 8px;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+</style>
+
+
+<script>
+// User Progress Badge - Dynamic Data
+(function() {
+  function loadUserProgress() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      // Usuário não logado
+      const badge = document.getElementById('user-progress-badge');
+      if (badge) {
+        badge.innerHTML = `
+          <span class="progress-label">Seu Progresso</span>
+          <span class="progress-value">--%</span>
+          <span class="score-label">Não logado</span>
+        `;
+      }
+      return;
+    }
+
+    fetch('/auth/profile', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Não autorizado');
+      return res.json();
+    })
+    .then(data => {
+      const stats = data.user.stats || {};
+      const completedPhases = stats.completedPhases || 0;
+      const totalPhases = 99;
+      const progress = Math.floor((completedPhases / totalPhases) * 100);
+      const score = stats.score || 0;
+
+      const badge = document.getElementById('user-progress-badge');
+      if (badge) {
+        badge.innerHTML = `
+          <span class="progress-label">Seu Progresso</span>
+          <span class="progress-value">${progress}%</span>
+          <span class="score-label">${score} pts</span>
+        `;
+      }
+    })
+    .catch(err => {
+      console.log('Erro ao carregar progresso:', err);
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+    });
+  }
+
+  // Carregar quando DOM estiver pronto
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadUserProgress);
+  } else {
+    loadUserProgress();
+  }
+})();
+</script>
+
+
+
+<div class="phase-score-display">
+    <span class="score-label">Pontuação da Fase</span>
+    <span class="score-value">100 pts</span>
+    <span class="level-badge">Nível <span class="level-number">2</span></span>
+</div>
+
+<style>
+.phase-score-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+.score-label {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-bottom: 5px;
+}
+.score-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+.level-badge {
+    margin-top: 8px;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+</style>
 
 <p>&nbsp;</p>
-<p align="center"><font color="#FFFFFF"><span style="font-weight: 700">FIM DO 
-NÍVEL 2</span></font></p>
-<p align="center">&nbsp;</p>
-<p align="center"><b><font color="#FFFF00" face="Lucida Console" size="7">
-PARABÊNS!</font></b></p>
-<p align="center"><b><font face="Lucida Console" size="5" color="#FFFFFF">você 
-conseguiu!!!</font></b></p>
-<p align="center">&nbsp;</p>
+<p align="center"><font color="#FFFFFF"><span style="font-weight: 700">FIM DO NÍVEL 2</span></font></p>
+<p align="center"><b><font color="#FFFF00" face="Lucida Console" size="7">PARABÊNS!</font></b></p>
+<p align="center"><b><font face="Lucida Console" size="5" color="#FFFFFF">você conseguiu!!!</font></b></p>
+<p align="justify" style="margin:0 200;">
+<font color="#FFFFFF">Fantástico! Absolutamente genial!</font></p>
+<p align="justify" style="margin:0 200;">
+<b><font color="#FFFF00">Epílogo</font></b>
+<font color="#FFFFFF">: Senha 2: <b><font size="5" color="#FFFF00">demedici</font></b></font></p>
 
-<p align="justify" style="margin:0 200; ">
-<font color="#FFFFFF">Fantástico! Absolutamente genial! A prova incontestável de 
-que o impossível não existe! Agora a saga humana na terra está completa. Depois 
-de chegar à lua, escalar o Everest, construir a Muralha da China e inventar o 
-controle remoto, o homem pode enfim orgulhar-se de ter terminado o Nível 2 do 
-RiddleZinho!!!</font></p>
 
-<p align="justify" style="margin:0 200; ">
-&nbsp;</p>
-
-<p align="justify" style="margin:0 200; ">
-<font color="#FFFFFF">Parabéns!!!!!!</font></p>
-
-<p align="justify" style="margin:0 200; ">
-&nbsp;</p>
-
-<p align="justify" style="margin:0 200; ">
-&nbsp;</p>
-
-<p align="justify" style="margin:0 200; ">
-&nbsp;</p>
-
-<p align="justify" style="margin:0 200; ">
-&nbsp;</p>
-
-<p align="justify" style="margin:0 200; ">
-&nbsp;</p>
-
-<p align="justify" style="margin:0 200; ">
-&nbsp;</p>
-
-<p align="justify" style="margin:0 200; ">
-<b><font color="#FFFF00">Epílogo</font></b><font color="#FFFFFF">: de qualquer 
-forma, se você for mesmo persistente e não der valor à própria sanidade mental, então acesse o site de entrada do <b>
-<a href="http://www.riddlezinho.net76.net/riddlezinho/nivel3">Nível 3</a></b> e complete a Senha 1 com a seguinte Senha 
-2: </font><b><font size="5" color="#FFFF00">demedici</font></b>
-<font color="#FFFFFF">(lembrando que a partir de agora tudo volta ao normal, com 
-o diretório &quot;riddlezinho&quot; novamente no singular, ok?)</font></p>
-
-<p align="justify" style="margin-left: 200; margin-right: 200">
-<font color="#FFFFFF">Bom jogo por aí!!!</font></p>
-
-` }) %>
+<div class="center area-senha">
+    <label for="senha"></label><input autocapitalize="off" id="senha" onkeyup="enviarSenha();" placeholder="Senha" type="text">
+    <button id="senha-ir" onclick="passarDeFase();">Ir!</button>
+    <button id="voltar" onclick="voltar();">Voltar</button>
+</div>
+</body>
+</html>

@@ -1,4 +1,24 @@
-<%- include('layout', { title: 'RiddleZinho — um pequeno jogo tipo riddle', body: `
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0" name="viewport"/>
+    <link href="/images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="/images/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link color="#5bbad5" href="/images/safari-pinned-tab.svg" rel="mask-icon">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="#ffffff" name="theme-color">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/styles/reset.css" rel="stylesheet">
+    <link href="/styles/custom.css" rel="stylesheet">
+    <title>RiddleZinho — um pequeno jogo tipo riddle</title>
+</head>
+<body>
 <div class="center">
     <img alt="RiddleZinho - um pequeno jogo tipo riddle" src="/images/logonova.jpg">
 </div>
@@ -32,7 +52,7 @@
                     <span class="pergunta">2. O que é um riddle?</span>
                     <br/>
                     <span class="resposta">
-                Riddle ("enigma", em inglês) é um modo divertido de percorrer sites por meio de senhas que são conseguidas através de pistas presentes nos próprios sites. 
+                Riddle ("enigma", em inglês) é um modo divertido de percorrer sites por meio de senhas que são conseguidas através de pistas presentes nos próprios sites.
                 <br/>
                 As tais pistas podem estar dispostas em diversos lugares: numa imagem, num texto situado logo abaixo da imagem, num texto camuflado, no título da página ou mesmo no código-fonte do site.
                 <br/>
@@ -42,24 +62,24 @@
                     <span class="pergunta">3. Onde coloco a senha?</span>
                     <br/>
                     <span class="resposta">
-                Para acessar o próximo site <i class="texto-novo">(fase)</i>, o jogador deve substituir a palavra final do endereço virtual pela palavra-senha, pressionando em seguida a tecla "enter" para testar a validade da senha. 
+                Para acessar o próximo site <i class="texto-novo">(fase)</i>, o jogador deve substituir a palavra final do endereço virtual pela palavra-senha, pressionando em seguida a tecla "enter" para testar a validade da senha.
                 <br/>
                 <i class="texto-novo">Caso queira, também há a opção do campo de texto "senha". A senha deve ser tratada e digitada da mesma maneira como na barra de endereço citada anteriormente. Segue um exemplo. </i>
                 <br/>
                 Por exemplo: se o jogador achar que a palavra chave for "atenção", ele deve alterar a última palavra do endereço virtual de modo que fique assim: <br/><i
                             class="texto-novo">url/riddlezinho/<b>atencao</b></i>  (lembrando que não se escrevem acentos, maiúsculas, espaços ou cedilhas e que o "html" deve ser SEMPRE mantido no final do endereço virtual).
                 <br/>
-                Se a resposta estiver correta, o jogador avança para a próxima fase. 
+                Se a resposta estiver correta, o jogador avança para a próxima fase.
                 <br/>
-                Em caso contrário, surge uma página de erro, demonstrando que o endereço digitado não existe. 
+                Em caso contrário, surge uma página de erro, demonstrando que o endereço digitado não existe.
             </span>
                     <br/>
-                    <span class="pergunta">4. Tentei uma senha e caí numa página branca? O que é isso?</span>
+                    <span class="pergunta">4. Tentei uma senha e caí numa página branca? O que eu faço?</span>
                     <br/>
                     <span class="resposta">
-                As páginas brancas são uma peculiaridade do RiddleZinho. 
+                As páginas brancas são uma peculiaridade do RiddleZinho.
                 <br/>
-                Via de regra, os textos contidos nas páginas brancas funcionam como pistas adicionais para a solução de cada enigma. 
+                Via de regra, os textos contidos nas páginas brancas funcionam como pistas adicionais para a solução de cada enigma.
                 <br/>
                 Quando aparecem, essas páginas indicam o grau de proximidade ou distância que estamos da senha final, embora a eventual indicação não seja feita sempre de modo literal.
             </span>
@@ -67,17 +87,17 @@
                     <span class="pergunta">5. Tentei uma senha e pulei para uma fase bem adiante da esperada? É para ser assim mesmo?</span>
                     <br/>
                     <span class="resposta">
-                <b>Não.</b> 
+                <b>Não.</b>
                 <br/>
                 Trata-se de um raro mas conhecido bug dos riddles baseados em html, como é o caso do RiddleZinho.
                 <br/>
-                A lógica desse erro é bem simples: o jogador testa uma senha que está errada para o seu enigma, mas que coincidentemente está certa para outro, e com isso avança para uma fase situada em algum ponto futuro do jogo, saltando assim várias fases de uma só vez. 
+                A lógica desse erro é bem simples: o jogador testa uma senha que está errada para o seu enigma, mas que coincidentemente está certa para outro, e com isso avança para uma fase situada em algum ponto futuro do jogo, saltando assim várias fases de uma só vez.
                 <br/>
-                Nessas situações, o jogador deve retornar à fase de origem e continuar tentando solucionar o enigma da vez. 
+                Nessas situações, o jogador deve retornar à fase de origem e continuar tentando solucionar o enigma da vez.
                 <br/>
-                É evidente, contudo, que o jogador pode, se assim quiser, continuar jogando a partir daquela tal fase "futura", mas a experiência RZ nos diz que isso não é nem um pouco recomendável, dado que algumas fases do RiddleZinho podem se entrecruzar e necessitar de coisas de fases anteriores. 
+                É evidente, contudo, que o jogador pode, se assim quiser, continuar jogando a partir daquela tal fase "futura", mas a experiência RZ nos diz que isso não é nem um pouco recomendável, dado que algumas fases do RiddleZinho podem se entrecruzar e necessitar de coisas de fases anteriores.
                 <br/>
-                É só perguntar a qualquer veterano... 
+                É só perguntar a qualquer veterano...
             </span>
                     <br/>
                     <span class="pergunta">6. Quantas fases este riddle possui?</span>
@@ -87,27 +107,27 @@
                     <span class="pergunta">7. Qual o grau de dificuldade deste jogo?</span>
                     <br/>
                     <span class="resposta">
-                Como sempre, o grau de dificuldade de um jogo tipo riddle depende basicamente de dois fatores: o nível de ocultamento de cada enigma e a capacidade lógica e investigativa de cada jogador. 
+                Como sempre, o grau de dificuldade de um jogo tipo riddle depende basicamente de dois fatores: o nível de ocultamento de cada enigma e a capacidade lógica e investigativa de cada jogador.
                 <br/>
-                Ou seja: o que às vezes é fácil para uma pessoa, pode ser difícil para outra, dependendo da experiência de cada um. 
+                Ou seja: o que às vezes é fácil para uma pessoa, pode ser difícil para outra, dependendo da experiência de cada um.
                 <br/>
-                Mesmo assim, existem enigmas que evidentemente exigem mais associações, pesquisa e paciência que outros. 
+                Mesmo assim, existem enigmas que evidentemente exigem mais associações, pesquisa e paciência que outros.
                 <br/>
-                Em linhas gerais, a cada nível, as fases tendem a se apresentar em ordem de crescente complexidade, o que torna os últimos enigmas sempre mais difíceis que os primeiros. 
+                Em linhas gerais, a cada nível, as fases tendem a se apresentar em ordem de crescente complexidade, o que torna os últimos enigmas sempre mais difíceis que os primeiros.
             </span>
                     <br/>
                     <span class="pergunta">8. Por onde eu começo?</span>
                     <br/>
                     <span class="resposta">
-                Comece realizando associações lógicas a partir das pistas presentes no site. 
+                Comece realizando associações lógicas a partir das pistas presentes no site.
                 <br/>
-                Feitas as primeiras associações, arrisque uma palavra-chave. 
+                Feitas as primeiras associações, arrisque uma palavra-chave.
                 <br/>
-                Se não der certo, continue tentando, arriscando novos raciocínios lógicos e assim por diante. 
+                Se não der certo, continue tentando, arriscando novos raciocínios lógicos e assim por diante.
                 <br/>
-                Lembre-se, contudo, que muitas vezes as pistas presentes em cada enigma requerem um conhecimento mais especializado do que aquele que possuímos. 
+                Lembre-se, contudo, que muitas vezes as pistas presentes em cada enigma requerem um conhecimento mais especializado do que aquele que possuímos.
                 <br/>
-                Nesses casos, convém recorrer a outras fontes de consulta, como livros ou sites de buscas na Internet. 
+                Nesses casos, convém recorrer a outras fontes de consulta, como livros ou sites de buscas na Internet.
                 <br/>
                 O Google é sempre uma ótima ajuda.
             </span>
@@ -115,7 +135,7 @@
                     <span class="pergunta">9. Quantas pessoas devem jogar o RiddleZinho?</span>
                     <br/>
                     <span class="resposta">
-                Um riddle é jogado individualmente, embora seja bastante comum a troca de informações com outras pessoas no decorrer do jogo. 
+                Um riddle é jogado individualmente, embora seja bastante comum a troca de informações com outras pessoas no decorrer do jogo.
                 <br/>
                 Como se sabe, cada pessoa tem mais experiência que outra em um determinado tipo de assunto, o que torna habitual que cada jogador procure partilhar seus lances com um grupo. Porém, sem compartilhar, o jogo torna-se bem mais difícil.
             </span>
@@ -125,7 +145,7 @@
                     <span class="resposta">
                 Fique tranquilo, respire fundo, dê um tempinho, que a resposta logo vem. O jogo depende de sutileza, bom humor, pesquisa e lógica intuitiva.
                 <br/>
-                Nada de se afobar. 
+                Nada de se afobar.
                 <br/>
                 Em casos de grande dificuldade, partilhe suas dúvidas com outros jogadores.
             </span>
@@ -133,13 +153,13 @@
                     <span class="pergunta">11. Aaaaargh! O site travou! O que eu faço?</span>
                     <br/>
                     <span class="resposta">
-                Calma, isso pode ocorrer devido ao grande número de pessoas que estão jogando o RiddleZinho simultaneamente. 
+                Calma, isso pode ocorrer devido ao grande número de pessoas que estão jogando o RiddleZinho simultaneamente.
                 <br/>
-                Nessas situações, o site fica bloqueado por apenas alguns minutos. 
+                Nessas situações, o site fica bloqueado por apenas alguns minutos.
                 <br/>
-                Em pouquíssimo tempo, tudo volta ao normal. 
+                Em pouquíssimo tempo, tudo volta ao normal.
                 <br/>
-                Aproveite esse tempinho para pensar em algumas possíveis soluções para o enigma da vez. 
+                Aproveite esse tempinho para pensar em algumas possíveis soluções para o enigma da vez.
                 <br/>
                 <i class="texto-novo">Atualmente, o site não possui uma réplica ou cópia. Portanto, resta apenas esperar pacientemente. </i>
             </span>
@@ -157,4 +177,5 @@
         </div>
     </div>
 </div>
-` }) %>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0" name="viewport"/>
+    <link href="/images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="/images/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="/images/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link color="#5bbad5" href="/images/safari-pinned-tab.svg" rel="mask-icon">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="#ffffff" name="theme-color">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/styles/reset.css" rel="stylesheet">
+    <link href="/styles/custom.css" rel="stylesheet">
+    <title>Login - RiddleZinho</title>
+    <style>
+        .auth-container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: #e0e0e0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .auth-tab.active {
+            background: #007bff;
+            color: white;
+        }
+        .auth-form {
+            display: none;
+        }
+        .auth-form.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .auth-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .auth-info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="auth-container">
+    <h1 class="center">Login / Registro</h1>
+
+    <div class="auth-tabs">
+        <button class="auth-tab active" onclick="showTab('login')">Login</button>
+        <button class="auth-tab" onclick="showTab('register')">Registro</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form" class="auth-form active">
+        <h2>Login</h2>
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="login-username">Usuário:</label>
+                <input type="text" id="login-username" required placeholder="Digite seu usuário">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Senha:</label>
+                <input type="password" id="login-password" required placeholder="Digite sua senha">
+            </div>
+            <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+        <div id="login-message" class="message"></div>
+    </div>
+
+    <!-- Register Form -->
+    <div id="register-form" class="auth-form">
+        <h2>Criar Conta</h2>
+        <form onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label for="register-username">Usuário:</label>
+                <input type="text" id="register-username" required placeholder="Escolha um usuário" minlength="3">
+            </div>
+            <div class="form-group">
+                <label for="register-email">Email:</label>
+                <input type="email" id="register-email" required placeholder="seu@email.com">
+            </div>
+            <div class="form-group">
+                <label for="register-password">Senha:</label>
+                <input type="password" id="register-password" required placeholder="Mínimo 6 caracteres" minlength="6">
+            </div>
+            <div class="form-group">
+                <label for="register-confirm">Confirmar Senha:</label>
+                <input type="password" id="register-confirm" required placeholder="Repita a senha">
+            </div>
+            <button type="submit" class="btn-primary">Criar Conta</button>
+        </form>
+        <div id="register-message" class="message"></div>
+    </div>
+
+    <div class="auth-info">
+        <p><strong>Nota:</strong> O registro é opcional. Você pode jogar sem criar conta!</p>
+        <p>Com conta, você pode:</p>
+        <ul>
+            <li>Aparecer no leaderboard global</li>
+            <li>Acompanhar seu progresso</li>
+            <li>Competir com outros jogadores</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+function showTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+    document.querySelector(`[onclick="showTab('${tab}')"]`).classList.add('active');
+    document.getElementById(`${tab}-form`).classList.add('active');
+}
+
+async function handleLogin(e) {
+    e.preventDefault();
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    const messageEl = document.getElementById('login-message');
+
+    try {
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            messageEl.className = 'message success';
+            messageEl.textContent = 'Login realizado com sucesso! Redirecionando...';
+            setTimeout(() => {
+                window.location.href = '/jogar';
+            }, 1500);
+        } else {
+            messageEl.className = 'message error';
+            messageEl.textContent = data.error || 'Erro no login';
+        }
+    } catch (error) {
+        messageEl.className = 'message error';
+        messageEl.textContent = 'Erro de conexão. Tente novamente.';
+    }
+}
+
+async function handleRegister(e) {
+    e.preventDefault();
+    const username = document.getElementById('register-username').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirm = document.getElementById('register-confirm').value;
+    const messageEl = document.getElementById('register-message');
+
+    if (password !== confirm) {
+        messageEl.className = 'message error';
+        messageEl.textContent = 'As senhas não conferem';
+        return;
+    }
+
+    try {
+        const response = await fetch('/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password, passwordConfirm: password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            messageEl.className = 'message success';
+            messageEl.textContent = 'Conta criada com sucesso! Faça login para continuar.';
+            setTimeout(() => {
+                showTab('login');
+            }, 2000);
+        } else {
+            messageEl.className = 'message error';
+            messageEl.textContent = data.error || 'Erro no registro';
+        }
+    } catch (error) {
+        messageEl.className = 'message error';
+        messageEl.textContent = 'Erro de conexão. Tente novamente.';
+    }
+}
+
+// Check if user is already logged in
+window.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        // User is logged in, redirect to game
+        window.location.href = '/jogar';
+    }
+});
+</script>
+</body>
+</html>

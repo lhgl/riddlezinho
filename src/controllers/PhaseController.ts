@@ -4,6 +4,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+
 import { Phase, Phases } from '../config/phases';
 
 // Caminho base para views (projeto raiz)
@@ -30,7 +31,7 @@ export class PhaseController {
   /**
    * Renderiza uma fase específica
    */
-  renderPhase(req: any, res: any, next: () => void): void {
+  renderPhase(req: any, res: any, _next: () => void): void {
     const { phaseId } = req.params;
     const phase = this.phases[phaseId];
 
@@ -81,7 +82,7 @@ export class PhaseController {
   /**
    * Renderiza página de dica (tips)
    */
-  renderTip(req: any, res: any, next: () => void): void {
+  renderTip(req: any, res: any, _next: () => void): void {
     const { tipId } = req.params;
 
     // Verificar se arquivo EJS existe

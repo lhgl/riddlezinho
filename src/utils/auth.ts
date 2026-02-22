@@ -3,9 +3,10 @@
  * Suporta Login, Registro e Token Refresh
  */
 
-import jwt, { SignOptions, JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
+
 import { logEvent, logError, logWarn } from './logger';
 
 export interface User {
@@ -36,7 +37,6 @@ export interface JWTPayload {
 
 // Simular banco de dados em memória (em produção, usar DB real)
 export const users = new Map<string, User>();
-const tokens = new Map<string, string>();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const JWT_EXPIRE = process.env.JWT_EXPIRE || '24h';
@@ -195,7 +195,9 @@ export function authenticate(req: any, res: any, next: () => void): void {
  */
 export function getUser(userId: string): UserWithoutPassword | null {
   const user = users.get(userId);
-  if (!user) return null;
+  if (!user) {
+    return null;
+  }
 
   const { password: _, ...userWithoutPassword } = user;
   return userWithoutPassword;
@@ -209,7 +211,9 @@ export function updateUserProfile(
   updates: { preferences?: Partial<User['preferences']> }
 ): UserWithoutPassword | null {
   const user = users.get(userId);
-  if (!user) return null;
+  if (!user) {
+    return null;
+  }
 
   // Permitir atualizar preferências
   if (updates.preferences) {

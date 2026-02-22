@@ -3,6 +3,7 @@
  */
 
 import { Request, Response } from 'express';
+
 import * as auth from '../utils/auth';
 import { logEvent, logError } from '../utils/logger';
 
@@ -181,7 +182,7 @@ export class AuthController {
       }
 
       // Obter ou criar score do usuário
-      let userScore: UserScore = leaderboard.get(req.userId) || {
+      const userScore: UserScore = leaderboard.get(req.userId) || {
         userId: req.userId,
         username: auth.getUser(req.userId)?.username || 'Anonymous',
         score: 0,

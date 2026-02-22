@@ -159,7 +159,7 @@ describe('PhaseController', () => {
   describe('renderTip', () => {
     it('deve renderizar dica', () => {
       mockReq.params.tipId = 'dica1';
-      
+
       const existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true);
 
       phaseController.renderTip(mockReq, mockRes, next);
@@ -174,7 +174,7 @@ describe('PhaseController', () => {
 
     it('deve retornar 404 se arquivo de dica nao existe', () => {
       mockReq.params.tipId = 'nonexistent';
-      
+
       const existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(false);
 
       phaseController.renderTip(mockReq, mockRes, next);

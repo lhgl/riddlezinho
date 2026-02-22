@@ -34,9 +34,9 @@ describe('Security Middleware - Complete Coverage', () => {
     it('deve executar middleware com status 200', () => {
       const middleware = security.getLoggingMiddleware();
       const mockReq = { method: 'GET', path: '/test' };
-      const mockRes = { 
-        statusCode: 200, 
-        on: jest.fn((event, cb) => cb()) 
+      const mockRes = {
+        statusCode: 200,
+        on: jest.fn((event, cb) => cb())
       };
       const next = jest.fn();
 
@@ -48,9 +48,9 @@ describe('Security Middleware - Complete Coverage', () => {
     it('deve executar middleware com status 300', () => {
       const middleware = security.getLoggingMiddleware();
       const mockReq = { method: 'GET', path: '/redirect' };
-      const mockRes = { 
-        statusCode: 301, 
-        on: jest.fn((event, cb) => cb()) 
+      const mockRes = {
+        statusCode: 301,
+        on: jest.fn((event, cb) => cb())
       };
       const next = jest.fn();
 
@@ -62,9 +62,9 @@ describe('Security Middleware - Complete Coverage', () => {
     it('deve executar middleware com status 400', () => {
       const middleware = security.getLoggingMiddleware();
       const mockReq = { method: 'POST', path: '/api/error' };
-      const mockRes = { 
-        statusCode: 400, 
-        on: jest.fn((event, cb) => cb()) 
+      const mockRes = {
+        statusCode: 400,
+        on: jest.fn((event, cb) => cb())
       };
       const next = jest.fn();
 
@@ -76,9 +76,9 @@ describe('Security Middleware - Complete Coverage', () => {
     it('deve executar middleware com status 500', () => {
       const middleware = security.getLoggingMiddleware();
       const mockReq = { method: 'POST', path: '/api/error' };
-      const mockRes = { 
-        statusCode: 500, 
-        on: jest.fn((event, cb) => cb()) 
+      const mockRes = {
+        statusCode: 500,
+        on: jest.fn((event, cb) => cb())
       };
       const next = jest.fn();
 

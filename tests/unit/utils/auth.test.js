@@ -128,7 +128,7 @@ describe('Auth Utils - Complete Coverage', () => {
 
     it('deve logar warning em tentativa de login falha', async () => {
       await auth.register('wrongpasstest', 'wrong@example.com', 'password123');
-      
+
       try {
         await auth.login('wrongpasstest', 'wrongpassword');
       } catch (e) {
@@ -334,7 +334,7 @@ describe('Auth Utils - Complete Coverage', () => {
     it('deve logar warning em autenticacao falha', async () => {
       // Clear mocks para garantir que vamos verificar apenas esta chamada
       logger.logWarn.mockClear();
-      
+
       const req = {
         headers: { authorization: 'Bearer definitely-invalid-token-that-will-fail' },
         ip: '192.168.1.1'

@@ -3,8 +3,9 @@
  * Protege contra abuso de requisições
  */
 
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import rateLimit, { RateLimitRequestHandler } from 'express-rate-limit';
+
 import { logWarn } from '../utils/logger';
 
 /**

@@ -7,7 +7,7 @@ import { Request, Response, NextFunction } from 'express';
 /**
  * Handler para 404 - página não encontrada
  */
-export function notFoundHandler(req: Request, res: Response, next: NextFunction): void {
+export function notFoundHandler(req: Request, res: Response, _next: NextFunction): void {
   res.status(404).render('error', {
     footerback: res.locals.footerback || '',
     includefooterback: true,
@@ -22,7 +22,7 @@ export function errorHandler(
   err: Error & { statusCode?: number },
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void {
   console.error('Erro:', err);
 

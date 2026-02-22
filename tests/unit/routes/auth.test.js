@@ -132,9 +132,9 @@ describe('Auth Router - Complete Coverage', () => {
       const handler = router.stack[0].route.stack[1].handle;
       const req = { body: {} };
       const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-      
+
       handler(req, res, jest.fn());
-      
+
       expect(spy).toHaveBeenCalledWith(req, res);
       spy.mockRestore();
     });
@@ -146,9 +146,9 @@ describe('Auth Router - Complete Coverage', () => {
       const handler = router.stack[1].route.stack[1].handle;
       const req = { body: {} };
       const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-      
+
       handler(req, res, jest.fn());
-      
+
       expect(spy).toHaveBeenCalledWith(req, res);
       spy.mockRestore();
     });
@@ -160,9 +160,9 @@ describe('Auth Router - Complete Coverage', () => {
       const handler = router.stack[2].route.stack[1].handle;
       const req = { userId: '123' };
       const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-      
+
       handler(req, res, jest.fn());
-      
+
       expect(spy).toHaveBeenCalledWith(req, res);
       spy.mockRestore();
     });
@@ -174,9 +174,9 @@ describe('Auth Router - Complete Coverage', () => {
       const handler = router.stack[3].route.stack[1].handle;
       const req = { userId: '123', body: {} };
       const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-      
+
       handler(req, res, jest.fn());
-      
+
       expect(spy).toHaveBeenCalledWith(req, res);
       spy.mockRestore();
     });
@@ -188,9 +188,9 @@ describe('Auth Router - Complete Coverage', () => {
       const handler = router.stack[4].route.stack[1].handle;
       const req = { userId: '123', body: {} };
       const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-      
+
       handler(req, res, jest.fn());
-      
+
       expect(spy).toHaveBeenCalledWith(req, res);
       spy.mockRestore();
     });
@@ -202,9 +202,9 @@ describe('Auth Router - Complete Coverage', () => {
       const handler = router.stack[5].route.stack[0].handle;
       const req = { query: {} };
       const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-      
+
       handler(req, res, jest.fn());
-      
+
       expect(spy).toHaveBeenCalledWith(req, res);
       spy.mockRestore();
     });
@@ -216,9 +216,9 @@ describe('Auth Router - Complete Coverage', () => {
       const handler = router.stack[6].route.stack[1].handle;
       const req = { userId: '123' };
       const res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-      
+
       handler(req, res, jest.fn());
-      
+
       expect(spy).toHaveBeenCalledWith(req, res);
       spy.mockRestore();
     });

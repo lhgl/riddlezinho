@@ -15,7 +15,7 @@ describe('Game Phases - Complete Validation', () => {
     it('should validate phase connections (response = next phase)', () => {
       // Validar que resposta da fase X é o ID da fase X+1
       const phases = Object.values(phaseDatabase);
-      
+
       phases.forEach((phase, index) => {
         if (phase.answer) {
           // Próxima fase deve ser o ID da resposta
@@ -32,7 +32,7 @@ describe('Game Phases - Complete Validation', () => {
 
     it('should have valid difficulty levels', () => {
       const validDifficulties = ['easy', 'medium', 'hard'];
-      
+
       Object.values(phaseDatabase).forEach(phase => {
         if (phase.difficulty) {
           expect(validDifficulties).toContain(phase.difficulty);
@@ -44,7 +44,7 @@ describe('Game Phases - Complete Validation', () => {
   describe('Phase Images Validation', () => {
     it('should track missing images', () => {
       const phasesWithoutImages = [];
-      
+
       Object.entries(phaseDatabase).forEach(([id, phase]) => {
         if (!phase.image) {
           phasesWithoutImages.push(id);
@@ -96,7 +96,7 @@ describe('Performance Tests', () => {
       const start = Date.now();
       const response = await request.get('/health');
       const duration = Date.now() - start;
-      
+
       expect(response.statusCode).toBe(200);
       expect(duration).toBeLessThan(100);
     });
@@ -105,7 +105,7 @@ describe('Performance Tests', () => {
       const start = Date.now();
       const response = await request.get('/auth/leaderboard');
       const duration = Date.now() - start;
-      
+
       expect(response.statusCode).toBe(200);
       expect(duration).toBeLessThan(500);
     });
@@ -117,7 +117,7 @@ describe('Performance Tests', () => {
         password: 'password123'
       });
       const duration = Date.now() - start;
-      
+
       expect(duration).toBeLessThan(1000);
     });
   });
@@ -127,7 +127,7 @@ describe('Performance Tests', () => {
       const promises = Array(10).fill(null).map(() =>
         request.get('/health')
       );
-      
+
       const results = await Promise.all(promises);
       results.forEach(result => {
         expect(result.statusCode).toBe(200);
@@ -138,7 +138,7 @@ describe('Performance Tests', () => {
       const promises = Array(50).fill(null).map(() =>
         request.get('/auth/leaderboard')
       );
-      
+
       const results = await Promise.all(promises);
       const successful = results.filter(r => r.statusCode === 200);
       expect(successful.length).toBeGreaterThan(40);
@@ -206,7 +206,7 @@ describe('E2E Game Flow', () => {
 
       expect(response.statusCode).toBe(200);
       const profile = response.body.user;
-      
+
       // Level = completedPhases / 10
       const expectedLevel = Math.floor(profile.stats?.completedPhases / 10);
       expect(profile.stats?.level).toBe(expectedLevel);
@@ -310,7 +310,7 @@ describe('Advanced Security Tests', () => {
 
     it('should reject expired JWT', async () => {
       const expiredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEyMzQ1Njc4OTB9.abc';
-      
+
       const response = await request.get('/auth/profile')
         .set('Authorization', `Bearer ${expiredToken}`);
 
@@ -389,7 +389,7 @@ describe('Error Handling', () => {
 describe('Data Consistency', () => {
   it('should not duplicate phase completions', async () => {
     const token = 'valid-token';
-    
+
     // Completar mesma fase 2x
     const response1 = await request.post('/auth/complete-phase')
       .set('Authorization', `Bearer ${token}`)
@@ -414,7 +414,7 @@ describe('Data Consistency', () => {
 
   it('should maintain data integrity in concurrent updates', async () => {
     const token = 'valid-token';
-    
+
     const updates = Array(10).fill(null).map((_, i) =>
       request.post('/auth/complete-phase')
         .set('Authorization', `Bearer ${token}`)
@@ -427,7 +427,7 @@ describe('Data Consistency', () => {
 
     const results = await Promise.all(updates);
     const successful = results.filter(r => r.statusCode === 200 || r.statusCode === 201);
-    
+
     expect(successful.length).toBeGreaterThan(5);
   });
 });

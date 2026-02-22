@@ -3,13 +3,14 @@
  */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import PhaseController from '../controllers/PhaseController';
+
 import { Phases } from '../config/phases';
+import PhaseController from '../controllers/PhaseController';
 
 /**
  * Factory para criar router de fases
  */
-export function createPhasesRouter(controller: PhaseController, phases: Phases): Router {
+export function createPhasesRouter(controller: PhaseController, _phases: Phases): Router {
   const router = Router();
 
   // Rota genérica para qualquer fase

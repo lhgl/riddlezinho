@@ -80,7 +80,7 @@ describe('AuthController', () => {
 
   describe('login', () => {
     const testUsername = `login_test_${Date.now()}`;
-    
+
     beforeEach(async () => {
       // Registrar usuário antes de testar login (apenas uma vez)
       const auth = require('../../../src/utils/auth');

@@ -40,7 +40,7 @@ afterAll(async () => {
   jest.clearAllMocks();
   jest.clearAllTimers();
   jest.restoreAllMocks();
-  
+
   // Aguardar promises pendentes e timers
   await new Promise(resolve => {
     const timer = setTimeout(() => {

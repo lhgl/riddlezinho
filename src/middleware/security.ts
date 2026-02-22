@@ -2,8 +2,8 @@
  * Middleware para segurança e otimizações
  */
 
-import { Request, Response, NextFunction } from 'express';
 import compression from 'compression';
+import { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 
 /**

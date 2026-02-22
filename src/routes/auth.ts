@@ -3,9 +3,10 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { loginLimiter, apiLimiter } from '../middleware/rateLimit';
-import { authenticate } from '../utils/auth';
+
 import AuthController from '../controllers/AuthController';
+import { loginLimiter } from '../middleware/rateLimit';
+import { authenticate } from '../utils/auth';
 
 export function createAuthRouter(): Router {
   const router = Router();

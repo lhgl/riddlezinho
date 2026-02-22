@@ -25,7 +25,7 @@ describe('Auth API', () => {
     it('deve rejeitar usuario duplicado', async () => {
       const username = `duplicate_${Date.now()}`;
       await auth.register(username, `${username}@example.com`, 'password123');
-      
+
       try {
         await auth.register(username, `${username}@example.com`, 'password123');
         fail('Should have thrown error');
@@ -48,7 +48,7 @@ describe('Auth API', () => {
     it('deve rejeitar login com senha invalida', async () => {
       const username = `login_${Date.now()}`;
       await auth.register(username, `${username}@example.com`, 'password123');
-      
+
       try {
         await auth.login(username, 'wrongpassword');
         fail('Should have thrown error');
@@ -72,7 +72,7 @@ describe('Auth API', () => {
       const username = `token_${Date.now()}`;
       await auth.register(username, `${username}@example.com`, 'password123');
       const { token } = await auth.login(username, 'password123');
-      
+
       const decoded = auth.verifyToken(token);
       expect(decoded).toBeDefined();
       expect(decoded.username).toBe(username);
@@ -93,7 +93,7 @@ describe('Auth API', () => {
       const username = `getuser_${Date.now()}`;
       const registered = await auth.register(username, `${username}@example.com`, 'password123');
       const user = auth.getUser(registered.id);
-      
+
       expect(user).toBeDefined();
       expect(user.username).toBe(username);
       expect(user.password).toBeUndefined();
@@ -107,11 +107,11 @@ describe('Auth API', () => {
     it('deve atualizar perfil do usuario', async () => {
       const username = `update_${Date.now()}`;
       const registered = await auth.register(username, `${username}@example.com`, 'password123');
-      
+
       const updated = auth.updateUserProfile(registered.id, {
         preferences: { language: 'en-US', notifications: false }
       });
-      
+
       expect(updated).toBeDefined();
       expect(updated.preferences.language).toBe('en-US');
     });
@@ -122,7 +122,7 @@ describe('Auth API', () => {
       const username = `middleware_${Date.now()}`;
       await auth.register(username, `${username}@example.com`, 'password123');
       const { token } = await auth.login(username, 'password123');
-      
+
       const req = {
         headers: { authorization: `Bearer ${token}` },
         ip: '127.0.0.1'
@@ -132,9 +132,9 @@ describe('Auth API', () => {
         json: jest.fn()
       };
       const next = jest.fn();
-      
+
       auth.authenticate(req, res, next);
-      
+
       expect(next).toHaveBeenCalled();
       expect(req.userId).toBeDefined();
     });
@@ -146,9 +146,9 @@ describe('Auth API', () => {
         json: jest.fn()
       };
       const next = jest.fn();
-      
+
       auth.authenticate(req, res, next);
-      
+
       expect(res.status).toHaveBeenCalledWith(401);
       expect(next).not.toHaveBeenCalled();
     });
@@ -163,9 +163,9 @@ describe('Auth API', () => {
         json: jest.fn()
       };
       const next = jest.fn();
-      
+
       auth.authenticate(req, res, next);
-      
+
       expect(res.status).toHaveBeenCalledWith(401);
     });
   });

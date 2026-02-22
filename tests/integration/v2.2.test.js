@@ -42,10 +42,10 @@ describe('Auth Integration', () => {
   it('deve fazer login apos registro', async () => {
     const username = `logintest_${Date.now()}`;
     const email = `${username}@example.com`;
-    
+
     await auth.register(username, email, 'password123');
     const result = await auth.login(username, 'password123');
-    
+
     expect(result).toBeDefined();
     expect(result.token).toBeDefined();
     expect(result.user.username).toBe(username);

@@ -4,11 +4,14 @@
  */
 
 const js = require('@eslint/js');
+const tsParser = require('@typescript-eslint/parser');
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
+const importPlugin = require('eslint-plugin-import');
 
 module.exports = [
   // Configuração base JavaScript
   js.configs.recommended,
-  
+
   // Configurações personalizadas
   {
     languageOptions: {
@@ -52,19 +55,19 @@ module.exports = [
       }
     },
     plugins: {
-      import: require('eslint-plugin-import')
+      import: importPlugin
     },
     rules: {
       // Code Style
       indent: ['error', 2],
       'linebreak-style': 'off',
-      quotes: ['error', 'single', { 
+      quotes: ['error', 'single', {
         avoidEscape: true,
-        allowTemplateLiterals: true 
+        allowTemplateLiterals: true
       }],
       semi: ['error', 'always'],
       'no-console': ['warn', { allow: ['warn', 'error', 'log'] }],
-      'no-unused-vars': ['error', { 
+      'no-unused-vars': ['error', {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_'
       }],
@@ -89,7 +92,7 @@ module.exports = [
       'no-else-return': 'warn',
       'no-lonely-if': 'warn',
       'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
-      
+
       // Import
       'import/order': ['warn', {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
@@ -99,17 +102,48 @@ module.exports = [
       'import/no-duplicates': 'error'
     }
   },
-  
+
+  // Configuração para TypeScript (excluindo testes)
+  {
+    files: ['src/**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json'
+      }
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin
+    },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_'
+      }]
+    }
+  },
+
   // Overrides para testes - mais permissivo
   {
     files: ['**/*.test.ts', '**/*.test.js', '**/*.spec.ts', 'tests/**/*'],
+    languageOptions: {
+      globals: {
+        request: 'readonly',
+        token: 'readonly'
+      }
+    },
     rules: {
       'no-console': 'off',
       'no-unused-vars': 'off',
       'import/order': 'off'
     }
   },
-  
+
   // Overrides para server
   {
     files: ['server.js', 'src/server.ts'],
@@ -118,7 +152,7 @@ module.exports = [
       'import/order': 'off'
     }
   },
-  
+
   // Overrides para scripts client-side
   {
     files: ['public/scripts/*.js'],
@@ -127,7 +161,7 @@ module.exports = [
       'no-unused-vars': 'off'
     }
   },
-  
+
   // Ignores
   {
     ignores: [

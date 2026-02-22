@@ -1,68 +1,45 @@
 # SonarQube Ignore File
-# Files and directories to exclude from analysis
+# Files matching these patterns will be excluded from SonarCloud analysis
 
-# Dependencies
-node_modules/
-
-# Build outputs
-dist/
-build/
-out/
-
-# Test files
+# Test files (excluded from most analysis)
 **/*.test.ts
 **/*.test.js
 **/*.spec.ts
 **/*.spec.js
-tests/
-__tests__/
-**/__mocks__/
+tests/**/*
 
-# Coverage reports
-coverage/
-.nyc_output/
+# Build outputs
+dist/**/*
+build/**/*
+coverage/**/*
 
-# IDE and editor files
-.idea/
-.vscode/
-*.iml
-*.ipr
-*.iws
+# Dependencies
+node_modules/**/*
 
-# OS files
-.DS_Store
-Thumbs.db
+# Minified files
+**/*.min.js
+**/*.bundle.js
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Generated files
+**/*.generated.ts
+**/*.generated.js
 
-# Environment files
-.env
-.env.local
-.env.*.local
+# Large integration test files (high duplication)
+tests/integration/v2.2-tests.js
+tests/integration/v2.2.test.js
 
-# Reports
-eslint-report.json
-audit-report.json
-*.report.json
+# Configuration files
+*.config.js
+*.config.ts
+.eslintrc.*
+.prettierrc*
+babel.config.*
+jest.config.*
 
 # Documentation
-docs/
 *.md
-!README.md
+docs/**/*
 
-# Docker
-docker-compose.yml
-Dockerfile
-.docker/
-
-# GitHub Actions
-.github/
-
-# Other
-*.min.js
-*.bundle.js
-public/scripts/*.js
+# Environment files
+.env*
+!.env.example

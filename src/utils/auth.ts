@@ -38,7 +38,7 @@ export interface JWTPayload {
 // Simular banco de dados em memória (em produção, usar DB real)
 export const users = new Map<string, User>();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
 const JWT_EXPIRE = process.env.JWT_EXPIRE || '24h';
 
 /**

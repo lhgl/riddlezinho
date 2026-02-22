@@ -123,9 +123,9 @@ app.use(errorHandler);
 
 // ============ INICIAR SERVIDOR ============
 const server = app.listen(port, () => {
-  console.log(`🎮 RiddleZinho Server rodando em http://localhost:${port}`);
-  console.log(`📝 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔒 Segurança: Helmet + Compression ativados`);
+  console.info(`🎮 RiddleZinho Server rodando em http://localhost:${port}`);
+  console.info(`📝 Ambiente: ${process.env.NODE_ENV || 'development'}`);
+  console.info(`🔒 Segurança: Helmet + Compression ativados`);
 });
 
 // Tratamento de erros não capturados
@@ -140,9 +140,9 @@ process.on('uncaughtException', (error: Error) => {
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM recebido. Encerrando gracefully...');
+  console.info('SIGTERM recebido. Encerrando gracefully...');
   server.close(() => {
-    console.log('Servidor encerrado');
+    console.info('Servidor encerrado');
     process.exit(0);
   });
 });

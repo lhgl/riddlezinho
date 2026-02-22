@@ -50,11 +50,7 @@ export function getLoggingMiddleware(): (req: Request, res: Response, next: Next
     res.on('finish', () => {
       const duration = Date.now() - start;
       const status = res.statusCode;
-      const color = status >= 400 ? '\x1b[31m' : status >= 300 ? '\x1b[33m' : '\x1b[32m';
-      const reset = '\x1b[0m';
-      console.log(
-        `${color}${req.method} ${req.path} ${status}${reset} - ${duration}ms`
-      );
+      // Logging via pino-http no logger.ts
     });
     next();
   };

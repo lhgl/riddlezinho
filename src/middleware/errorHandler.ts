@@ -4,6 +4,8 @@
 
 import { Request, Response, NextFunction } from 'express';
 
+import { logError } from '../utils/logger';
+
 /**
  * Handler para 404 - página não encontrada
  */
@@ -24,7 +26,7 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ): void {
-  console.error('Erro:', err);
+  logError('error_handler', err);
 
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Erro interno do servidor';

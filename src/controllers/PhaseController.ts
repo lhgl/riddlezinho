@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { Phase, Phases } from '../config/phases';
+import { logError } from '../utils/logger';
 
 // Caminho base para views (projeto raiz)
 // __dirname em dist/controllers aponta para dist/controllers
@@ -35,12 +36,8 @@ export class PhaseController {
     const { phaseId } = req.params;
     const phase = this.phases[phaseId];
 
-    console.log(`[PhaseController] Tentando renderizar: ${phaseId}`);
-    console.log(`[PhaseController] VIEWS_DIR: ${VIEWS_DIR}`);
-    console.log(`[PhaseController] Phase encontrada:`, phase ? 'sim' : 'não');
-
     if (!phase) {
-      console.error(`[PhaseController] Fase não encontrada: ${phaseId}`);
+      logError('phase_not_found', new Error(`Fase não encontrada: ${phaseId}`));
       return res.status(404).render('error', {
         footerback: this.footerback
       });
@@ -48,11 +45,9 @@ export class PhaseController {
 
     // Verificar se arquivo EJS existe
     const viewPath = path.join(VIEWS_DIR, `${phaseId}.ejs`);
-    console.log(`[PhaseController] viewPath: ${viewPath}`);
-    console.log(`[PhaseController] viewPath existe: ${fs.existsSync(viewPath)}`);
 
     if (!fs.existsSync(viewPath)) {
-      console.error(`[PhaseController] Arquivo não existe: ${viewPath}`);
+      logError('phase_view_not_found', new Error(`Arquivo não encontrado: ${viewPath}`));
       return res.status(404).render('error', {
         footerback: this.footerback
       });
@@ -88,7 +83,7 @@ export class PhaseController {
     // Verificar se arquivo EJS existe
     const viewPath = path.join(VIEWS_DIR, `${tipId}.ejs`);
     if (!fs.existsSync(viewPath)) {
-      console.error(`[PhaseController] Arquivo não existe: ${viewPath}`);
+      logError('tip_view_not_found', new Error(`Arquivo não encontrado: ${viewPath}`));
       return res.status(404).render('error', {
         footerback: this.footerback,
         includefooterback: true

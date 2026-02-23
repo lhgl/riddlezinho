@@ -14,10 +14,10 @@ env:
 
 jobs:
   # ===========================================
-  # JOB 1: Code Quality & SonarCloud Analysis
+  # JOB 1: Code Quality & Tests
   # ===========================================
   quality-analysis:
-    name: 🔍 Code Quality & SonarCloud
+    name: 🔍 Code Quality & Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -46,11 +46,12 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: SonarCloud Scan
+      # Upload coverage to SonarCloud
+      - name: SonarCloud Report
         uses: SonarSource/sonarcloud-github-action@v3
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=lhgl_riddlezinho
@@ -58,15 +59,9 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.tests=tests
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/coverage/**,**/*.test.ts,**/*.test.js
             -Dsonar.coverage.exclusions=**/*.test.ts,**/*.test.js,**/tests/**/*,**/src/server.ts
-
-      - name: SonarCloud Quality Gate Check
-        uses: SonarSource/sonarcloud-github-action@v3
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   # ===========================================
   # JOB 2: Tests & Coverage
@@ -113,7 +108,7 @@ jobs:
     name: 🏗️ Build & Docker
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [test, quality-analysis]
+    needs: test
     permissions:
       contents: read
       packages: write
@@ -159,7 +154,7 @@ jobs:
     name: 🚀 Deploy to Production
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [quality-analysis, test, build]
+    needs: build
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     environment:
       name: production

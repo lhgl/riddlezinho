@@ -12,7 +12,7 @@
     "test:watch": "jest --watch",
     "test:unit": "jest --testPathPattern=unit --coverage",
     "test:integration": "jest --testPathPattern=integration --coverage",
-    "test:ci": "jest --coverage --coverageReporters=json --coverageReporters=lcov --coverageReporters=text-summary --ci",
+    "test:ci": "jest --coverage --coverageReporters=lcov --coverageReporters=text-summary --ci --forceExit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:report": "eslint . --format json --output-file eslint-report.json",

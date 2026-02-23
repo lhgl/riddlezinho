@@ -184,14 +184,14 @@ describe('Security Middleware', () => {
       loggingMiddleware(mockReq, mockRes, next);
 
       const finishCallback = mockRes.on.mock.calls[0][1];
-      
+
       // Avancar o tempo para 100ms
       DateSpy.mockReturnValue(1100);
       finishCallback();
 
       // Duracao deve ser calculada internamente (100ms)
       expect(mockRes.on).toHaveBeenCalledWith('finish', expect.any(Function));
-      
+
       DateSpy.mockRestore();
     });
   });

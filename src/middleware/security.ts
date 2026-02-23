@@ -46,10 +46,7 @@ export function getSecurityMiddleware(): Array<(req: Request, res: Response, nex
  */
 export function getLoggingMiddleware(): (req: Request, res: Response, next: NextFunction) => void {
   return (req: Request, res: Response, next: NextFunction) => {
-    const start = Date.now();
     res.on('finish', () => {
-      const duration = Date.now() - start;
-      const status = res.statusCode;
       // Logging via pino-http no logger.ts
     });
     next();

@@ -20,7 +20,7 @@ temp
 .tmp
 tests
 *.test.js
-.eslintrc.json
+eslint.config.js
 jest.config.json
 *.md
 .gitattributes

@@ -5,12 +5,15 @@ WORKDIR /app
 # Copiar arquivos de dependência
 COPY package*.json ./
 
-# Instalar dependências
-RUN npm ci --only=production && \
+# Instalar dependências (inclui devDependencies para build)
+RUN npm ci && \
     npm cache clean --force
 
-# Copiar código
+# Copiar código fonte
 COPY . .
+
+# Compilar TypeScript
+RUN npm run build
 
 # Criar usuario sem privilégio de root
 RUN addgroup -g 1001 -S nodejs && \
@@ -19,9 +22,9 @@ RUN addgroup -g 1001 -S nodejs && \
 
 USER nodejs
 
-# Health check
+# Health check usando wget (disponível no Alpine)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:5000/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+  CMD wget --no-verbose --tries=1 --spider http://localhost:5000/health || exit 1
 
 EXPOSE 5000
 

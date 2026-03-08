@@ -21,7 +21,7 @@ services:
     networks:
       - riddlezinho_network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -41,7 +41,7 @@ services:
     networks:
       - riddlezinho_network
     healthcheck:
-      test: ["CMD", "sqlplus", "-s", "sys/password as sysdba", "@?/rdbms/admin/sqlplus.sql"]
+      test: ["CMD-SHELL", "sqlplus -s sys/password as sysdba @?/rdbms/admin/sqlplus.sql || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

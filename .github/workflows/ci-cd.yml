@@ -64,41 +64,13 @@ jobs:
             -Dsonar.coverage.exclusions=**/*.test.ts,**/*.test.js,**/tests/**/*,**/src/server.ts
 
   # ===========================================
-  # JOB 2: Tests (Legacy - kept for compatibility)
-  # ===========================================
-  test:
-    name: 🧪 Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: quality-analysis
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci --prefer-offline
-
-      - name: Run tests with coverage
-        run: npm run test:ci
-
-      - name: Build project
-        run: npm run build
-
-  # ===========================================
-  # JOB 3: Build & Docker Image
+  # JOB 2: Build & Docker Image
   # ===========================================
   build:
     name: 🏗️ Build & Docker
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: test
+    needs: quality-analysis
     permissions:
       contents: read
       packages: write
@@ -138,7 +110,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   # ===========================================
-  # JOB 4: Deploy (Production)
+  # JOB 3: Deploy (Production)
   # ===========================================
   deploy:
     name: 🚀 Deploy to Production

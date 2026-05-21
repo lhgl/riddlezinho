@@ -18,10 +18,16 @@
     <link href="/styles/reset.css" rel="stylesheet">
     <link href="/styles/fases.css" rel="stylesheet">
     <link href="/styles/custom.css" rel="stylesheet">
+    <script src="/scripts/theme.js"></script>
     <script async src="/scripts/fases.js"></script>
+    <script defer src="/scripts/toast.js"></script>
+    <script defer src="/scripts/loading.js"></script>
     <title><%= title %></title>
 </head>
 <body>
+    <button id="theme-toggle" aria-label="Alternar tema" title="Alternar modo escuro">🌙</button>
+    <div id="toast-container" aria-live="polite"></div>
+    <div id="loading-overlay" aria-hidden="true"><div class="loading-spinner"></div></div>
     <%- body %>
     <% if (typeof includepasscode !== 'undefined' && includepasscode) { %>
         <%- footerpasscode %>

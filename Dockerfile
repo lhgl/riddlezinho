@@ -1,33 +1,39 @@
-FROM node:20-alpine
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copiar arquivos de dependência
 COPY package*.json ./
+COPY prisma ./prisma/
 
-# Instalar dependências (inclui devDependencies para build)
-RUN npm ci && \
-    npm cache clean --force
+RUN npm ci
 
-# Copiar código fonte
 COPY . .
 
-# Compilar TypeScript
-RUN npm run build
+RUN npx prisma generate && npm run build
 
-# Criar usuario sem privilégio de root
+# ---- runner stage ----
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package*.json ./
+COPY views ./views
+COPY public ./public
+
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001 && \
     chown -R nodejs:nodejs /app
 
 USER nodejs
 
-# Health check usando wget (disponível no Alpine)
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:5000/health || exit 1
-
 EXPOSE 5000
 
 ENV NODE_ENV=production
 
-CMD ["npm", "start"]
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:5000/health || exit 1
+
+CMD ["sh", "-c", "[ -n \"$DATABASE_URL\" ] && npx prisma migrate deploy; node dist/server.js"]

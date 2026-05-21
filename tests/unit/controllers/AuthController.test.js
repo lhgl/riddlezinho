@@ -457,14 +457,14 @@ describe('Auth Utils', () => {
     it('deve retornar usuário sem senha', async () => {
       const user = await auth.register('getuser', 'get@example.com', 'password123');
 
-      const retrieved = auth.getUser(user.id);
+      const retrieved = await auth.getUser(user.id);
 
       expect(retrieved).toHaveProperty('username', 'getuser');
       expect(retrieved).not.toHaveProperty('password');
     });
 
-    it('deve retornar null para usuário inexistente', () => {
-      const result = auth.getUser('nonexistent-id');
+    it('deve retornar null para usuário inexistente', async () => {
+      const result = await auth.getUser('nonexistent-id');
 
       expect(result).toBeNull();
     });
@@ -474,7 +474,7 @@ describe('Auth Utils', () => {
     it('deve atualizar preferências do usuário', async () => {
       const user = await auth.register('updateuser', 'update@example.com', 'password123');
 
-      const updated = auth.updateUserProfile(user.id, {
+      const updated = await auth.updateUserProfile(user.id, {
         preferences: {
           language: 'en-US',
           notifications: false

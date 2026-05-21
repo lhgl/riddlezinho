@@ -92,15 +92,15 @@ describe('Auth API', () => {
     it('deve obter usuario por ID', async () => {
       const username = `getuser_${Date.now()}`;
       const registered = await auth.register(username, `${username}@example.com`, 'password123');
-      const user = auth.getUser(registered.id);
+      const user = await auth.getUser(registered.id);
 
       expect(user).toBeDefined();
       expect(user.username).toBe(username);
       expect(user.password).toBeUndefined();
     });
 
-    it('deve retornar null para usuario inexistente', () => {
-      const user = auth.getUser('non-existent-id');
+    it('deve retornar null para usuario inexistente', async () => {
+      const user = await auth.getUser('non-existent-id');
       expect(user).toBeNull();
     });
 
@@ -108,7 +108,7 @@ describe('Auth API', () => {
       const username = `update_${Date.now()}`;
       const registered = await auth.register(username, `${username}@example.com`, 'password123');
 
-      const updated = auth.updateUserProfile(registered.id, {
+      const updated = await auth.updateUserProfile(registered.id, {
         preferences: { language: 'en-US', notifications: false }
       });
 

@@ -10,29 +10,29 @@ import { IUserRepository } from './interfaces';
 export class InMemoryUserRepository implements IUserRepository {
   private readonly store = new Map<string, User>();
 
-  findById(id: string): User | undefined {
+  async findById(id: string): Promise<User | undefined> {
     return this.store.get(id);
   }
 
-  findByUsername(username: string): User | undefined {
+  async findByUsername(username: string): Promise<User | undefined> {
     return Array.from(this.store.values()).find(u => u.username === username);
   }
 
-  findByEmail(email: string): User | undefined {
+  async findByEmail(email: string): Promise<User | undefined> {
     return Array.from(this.store.values()).find(u => u.email === email);
   }
 
-  findByUsernameOrEmail(username: string, email: string): User | undefined {
+  async findByUsernameOrEmail(username: string, email: string): Promise<User | undefined> {
     return Array.from(this.store.values()).find(
       u => u.username === username || u.email === email
     );
   }
 
-  save(user: User): void {
+  async save(user: User): Promise<void> {
     this.store.set(user.id, user);
   }
 
-  update(id: string, updates: Partial<User>): User | undefined {
+  async update(id: string, updates: Partial<User>): Promise<User | undefined> {
     const user = this.store.get(id);
     if (!user) {
       return undefined;

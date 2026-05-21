@@ -5,6 +5,58 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [3.2.0] - 2026-05-21
+
+### ✨ Adicionado — v3.2.0 Features
+
+- **AchievementService**: sistema de 5 conquistas/badges progressivas (Iniciante → LENDA)
+- **DailyChallengeService**: desafio do dia determinístico (mesma fase para todos no mesmo dia)
+- **InMemoryAchievementRepository**: repositório para conquistas in-memory
+- **AchievementController**: handlers HTTP para `/achievements` e `/achievements/me`
+- **`GET /achievements`**: lista todas as conquistas com status earned/locked por usuário
+- **`GET /achievements/me`**: conquistas do usuário autenticado
+- **`GET /achievements/daily`**: fase do dia com contador regressivo
+- **Integração completa**: `completePhase` retorna `newAchievements` na resposta
+- **Views**: `achievements.ejs` e `daily.ejs` com design responsivo
+- 11 novos testes (AchievementService + DailyChallengeService)
+- **Total**: 410 testes passando
+
+## [3.1.0] - 2026-05-21
+
+### ✨ Adicionado — v3.1.0 UX/UI
+
+- **Dark mode**: toggle ☀️/🌙 com persistência via `localStorage` e respeito a `prefers-color-scheme`
+- **Toast notifications**: sistema de feedback visual animado (success/error/info/warning)
+- **Loading spinner**: overlay com spinner CSS-only ao submeter formulários com `data-loading`
+- **Mobile responsive**: media queries 768px — tabelas viram cards, menus empilhados, forms 100%
+- **CSS Variables**: `--bg`, `--text`, `--surface`, `--border`, `--primary` para theming consistente
+- **Achievement badge grid**: layout CSS Grid responsivo para exibição de conquistas
+
+## [3.0.0] - 2026-05-21
+
+### ✨ Adicionado — v3.0.0 Production Foundation
+
+- **Prisma ORM v5.22.0**: schema com models `User`, `UserScore`, `Achievement`, `UserAchievement`
+- **PrismaUserRepository** e **PrismaLeaderboardRepository**: implementações PostgreSQL 16
+- **RepositoryFactory**: seleção automática InMemory (sem `DATABASE_URL`) ou Prisma (com `DATABASE_URL`) — zero impacto em testes
+- **Interfaces assíncronas**: `IUserRepository` e `ILeaderboardRepository` com `Promise<T>` em todos os métodos
+- **docker-compose.yml**: reescrito com PostgreSQL 16-alpine (removido Oracle)
+- **docker-compose.dev.yml**: ambiente de desenvolvimento com porta 5432 exposta
+- **Dockerfile multi-stage**: builder (npm ci + prisma generate + tsc) + runner (somente produção)
+- **render.yaml**: deploy one-click no Render.com com PostgreSQL free tier
+- **docs/DEPLOY.md**: guia completo de produção — Render.com, Railway, Docker Swarm, Nginx LB, escalonamento horizontal
+- **Graceful shutdown**: `SIGTERM`/`SIGINT` com `RepositoryFactory.disconnect()`
+- **`/health`** atualizado: campo `db` indica `postgres` ou `memory`
+
+### 🔧 Modificado
+
+- `src/utils/auth.ts`: `users` Map → `userRepo` via `RepositoryFactory`; todas as funções async
+- `src/services/AuthService.ts`: todas as chamadas ao repo com `await`
+- `src/services/LeaderboardService.ts`: todas as chamadas ao repo com `await`
+- `src/controllers/AuthController.ts`: injeção de `ILeaderboardRepository` via constructor
+- **package.json**: versão `3.2.0`; deps `@prisma/client@^5.22.0` + `prisma@^5.22.0`
+- Todos os arquivos de teste atualizados para `async/await` compatível com repos assíncronos
+
 ## [2.2.0] - 2026-02-22
 
 ### ✨ Adicionado

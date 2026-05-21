@@ -8,15 +8,15 @@ import { ILeaderboardRepository, UserScore } from './interfaces';
 export class InMemoryLeaderboardRepository implements ILeaderboardRepository {
   private readonly store = new Map<string, UserScore>();
 
-  findByUserId(userId: string): UserScore | undefined {
+  async findByUserId(userId: string): Promise<UserScore | undefined> {
     return this.store.get(userId);
   }
 
-  save(score: UserScore): void {
+  async save(score: UserScore): Promise<void> {
     this.store.set(score.userId, score);
   }
 
-  findAll(): UserScore[] {
+  async findAll(): Promise<UserScore[]> {
     return Array.from(this.store.values());
   }
 

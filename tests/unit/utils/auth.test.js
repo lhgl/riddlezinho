@@ -34,7 +34,7 @@ describe('Auth Utils - Complete Coverage', () => {
     logger.logError.mockClear();
     logger.logWarn.mockClear();
     // Limpar usuarios entre testes
-    auth.users.clear();
+    auth.userRepo.clear();
   });
 
   describe('register', () => {
@@ -67,8 +67,8 @@ describe('Auth Utils - Complete Coverage', () => {
     it('deve fazer hash da senha', async () => {
       const user = await auth.register('hashtest', 'hash@example.com', 'password123');
 
-      // Buscar usuario no mapa interno para verificar hash
-      const storedUser = auth.users.get(user.id);
+      // Buscar usuario no repositório para verificar hash
+      const storedUser = await auth.userRepo.findById(user.id);
       expect(storedUser.password).not.toBe('password123');
       expect(storedUser.password.length).toBeGreaterThan(50);
     });
@@ -171,32 +171,25 @@ describe('Auth Utils - Complete Coverage', () => {
     });
 
     it('deve logar erro no login', async () => {
-      // Mock para lancar erro
-      const originalFind = Array.from;
-      Array.from = jest.fn().mockImplementation(() => {
-        throw new Error('Find error');
-      });
+      // Simular erro no repositório
+      jest.spyOn(auth.userRepo, 'findByUsername').mockRejectedValueOnce(new Error('DB error'));
 
       await expect(
         auth.login('anyuser', 'anypassword')
-      ).rejects.toThrow('Find error');
+      ).rejects.toThrow('DB error');
 
       expect(logger.logError).toHaveBeenCalledWith('user_login_failed', expect.any(Error), {
         username: 'anyuser'
       });
-
-      Array.from = originalFind;
     });
 
     it('deve atualizar lastLogin no login', async () => {
       await auth.register('lastloginuser', 'lastlogin@example.com', 'password123');
-      const before = Date.now();
 
-      await auth.login('lastloginuser', 'password123');
+      const result = await auth.login('lastloginuser', 'password123');
 
-      const user = auth.getUser(auth.users.get(Array.from(auth.users.keys())[0]).id);
       // lastLogin deve ter sido atualizado
-      expect(user.lastLogin).toBeDefined();
+      expect(result.user.lastLogin).toBeDefined();
     });
 
     it('deve gerar token JWT valido', async () => {
@@ -398,29 +391,29 @@ describe('Auth Utils - Complete Coverage', () => {
   describe('getUser', () => {
     it('deve retornar usuario existente', async () => {
       const user = await auth.register('getuser', 'get@example.com', 'password123');
-      const retrieved = auth.getUser(user.id);
+      const retrieved = await auth.getUser(user.id);
 
       expect(retrieved).toBeDefined();
       expect(retrieved.username).toBe('getuser');
       expect(retrieved.email).toBe('get@example.com');
     });
 
-    it('deve retornar null para usuario inexistente', () => {
-      const result = auth.getUser('non-existent-id');
+    it('deve retornar null para usuario inexistente', async () => {
+      const result = await auth.getUser('non-existent-id');
 
       expect(result).toBeNull();
     });
 
     it('deve retornar usuario sem senha', async () => {
       const user = await auth.register('nopassget', 'nopassget@example.com', 'password123');
-      const retrieved = auth.getUser(user.id);
+      const retrieved = await auth.getUser(user.id);
 
       expect(retrieved.password).toBeUndefined();
     });
 
     it('deve retornar usuario com preferencias', async () => {
       const user = await auth.register('prefget', 'prefget@example.com', 'password123');
-      const retrieved = auth.getUser(user.id);
+      const retrieved = await auth.getUser(user.id);
 
       expect(retrieved.preferences).toEqual({
         language: 'pt-BR',
@@ -433,7 +426,7 @@ describe('Auth Utils - Complete Coverage', () => {
     it('deve atualizar preferencias do usuario', async () => {
       const user = await auth.register('updateuser', 'update@example.com', 'password123');
 
-      const updated = auth.updateUserProfile(user.id, {
+      const updated = await auth.updateUserProfile(user.id, {
         preferences: {
           language: 'en-US',
           notifications: false
@@ -445,8 +438,8 @@ describe('Auth Utils - Complete Coverage', () => {
       expect(updated.preferences.notifications).toBe(false);
     });
 
-    it('deve retornar null para usuario inexistente', () => {
-      const result = auth.updateUserProfile('non-existent-id', {
+    it('deve retornar null para usuario inexistente', async () => {
+      const result = await auth.updateUserProfile('non-existent-id', {
         preferences: { language: 'pt-BR' }
       });
 
@@ -456,7 +449,7 @@ describe('Auth Utils - Complete Coverage', () => {
     it('deve logar atualizacao de perfil', async () => {
       const user = await auth.register('logupdate', 'logupdate@example.com', 'password123');
 
-      auth.updateUserProfile(user.id, {
+      await auth.updateUserProfile(user.id, {
         preferences: { language: 'fr-FR' }
       });
 
@@ -469,7 +462,7 @@ describe('Auth Utils - Complete Coverage', () => {
     it('deve atualizar apenas preferencias fornecidas', async () => {
       const user = await auth.register('partialupdate', 'partial@example.com', 'password123');
 
-      const updated = auth.updateUserProfile(user.id, {
+      const updated = await auth.updateUserProfile(user.id, {
         preferences: {
           language: 'es-ES'
           // notifications nao fornecido
@@ -482,7 +475,7 @@ describe('Auth Utils - Complete Coverage', () => {
 
     it('deve retornar usuario sem senha', async () => {
       const user = await auth.register('noupdatepass', 'noupdate@example.com', 'password123');
-      const updated = auth.updateUserProfile(user.id, {
+      const updated = await auth.updateUserProfile(user.id, {
         preferences: { language: 'de-DE' }
       });
 
@@ -492,7 +485,7 @@ describe('Auth Utils - Complete Coverage', () => {
     it('deve lidar com atualizacao vazia', async () => {
       const user = await auth.register('emptyupdate', 'empty@example.com', 'password123');
 
-      const updated = auth.updateUserProfile(user.id, {});
+      const updated = await auth.updateUserProfile(user.id, {});
 
       expect(updated).toBeDefined();
       expect(updated.preferences.language).toBe('pt-BR'); // Mantido padrao

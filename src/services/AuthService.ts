@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   async register(username: string, email: string, password: string): Promise<UserWithoutPassword> {
-    if (this.userRepo.findByUsernameOrEmail(username, email)) {
+    if (await this.userRepo.findByUsernameOrEmail(username, email)) {
       throw new ConflictError('Usuário ou email já existe');
     }
 
@@ -43,7 +43,7 @@ export class AuthService {
       preferences: { language: 'pt-BR', notifications: true }
     };
 
-    this.userRepo.save(user);
+    await this.userRepo.save(user);
     logEvent('user_registered', { userId: user.id, username, email });
 
     const { password: _, ...userWithoutPassword } = user;
@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   async login(username: string, password: string): Promise<LoginResult> {
-    const user = this.userRepo.findByUsername(username);
+    const user = await this.userRepo.findByUsername(username);
     if (!user) {
       throw new AuthenticationError('Usuário ou senha inválidos');
     }
@@ -67,7 +67,7 @@ export class AuthService {
       expiresIn: this.jwtExpire
     } as SignOptions);
 
-    this.userRepo.update(user.id, { lastLogin: new Date() });
+    await this.userRepo.update(user.id, { lastLogin: new Date() });
     logEvent('user_login', { userId: user.id, username, timestamp: new Date().toISOString() });
 
     const { password: _, ...userWithoutPassword } = user;
@@ -85,8 +85,8 @@ export class AuthService {
     }
   }
 
-  getUser(userId: string): UserWithoutPassword | null {
-    const user = this.userRepo.findById(userId);
+  async getUser(userId: string): Promise<UserWithoutPassword | null> {
+    const user = await this.userRepo.findById(userId);
     if (!user) {
       return null;
     }
@@ -94,16 +94,16 @@ export class AuthService {
     return userWithoutPassword;
   }
 
-  updateUserProfile(
+  async updateUserProfile(
     userId: string,
     updates: { preferences?: Partial<User['preferences']> }
-  ): UserWithoutPassword | null {
-    const user = this.userRepo.findById(userId);
+  ): Promise<UserWithoutPassword | null> {
+    const user = await this.userRepo.findById(userId);
     if (!user) {
       return null;
     }
 
-    const updated = this.userRepo.update(userId, {
+    const updated = await this.userRepo.update(userId, {
       preferences: updates.preferences
         ? { ...user.preferences, ...updates.preferences }
         : user.preferences

@@ -36,7 +36,7 @@ describe('Integration Tests - Complete User Flow', () => {
 
   beforeEach(() => {
     // Limpar dados de autenticação
-    auth.users.clear();
+    auth.userRepo.clear();
     jest.clearAllMocks();
   });
 
@@ -103,15 +103,15 @@ describe('Integration Tests - Complete User Flow', () => {
       const password = 'password123';
 
       const registered = await auth.register(username, email, password);
-      const user = auth.getUser(registered.id);
+      const user = await auth.getUser(registered.id);
 
       expect(user).toBeDefined();
       expect(user.username).toBe(username);
       expect(user.password).toBeUndefined();
     });
 
-    it('deve retornar null para usuario inexistente', () => {
-      const user = auth.getUser('non-existent-id');
+    it('deve retornar null para usuario inexistente', async () => {
+      const user = await auth.getUser('non-existent-id');
       expect(user).toBeNull();
     });
 
@@ -121,7 +121,7 @@ describe('Integration Tests - Complete User Flow', () => {
       const password = 'password123';
 
       const registered = await auth.register(username, email, password);
-      const updated = auth.updateUserProfile(registered.id, {
+      const updated = await auth.updateUserProfile(registered.id, {
         preferences: { language: 'en-US', notifications: false }
       });
 

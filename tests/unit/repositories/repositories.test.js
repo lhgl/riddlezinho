@@ -33,65 +33,65 @@ describe('InMemoryUserRepository', () => {
   });
 
   describe('save e findById', () => {
-    it('deve salvar e recuperar usuário por id', () => {
+    it('deve salvar e recuperar usuário por id', async () => {
       const user = buildUser();
-      repo.save(user);
-      expect(repo.findById('user-1')).toEqual(user);
+      await repo.save(user);
+      expect(await repo.findById('user-1')).toEqual(user);
     });
 
-    it('deve retornar undefined para id desconhecido', () => {
-      expect(repo.findById('inexistente')).toBeUndefined();
+    it('deve retornar undefined para id desconhecido', async () => {
+      expect(await repo.findById('inexistente')).toBeUndefined();
     });
   });
 
   describe('findByUsername', () => {
-    it('deve encontrar usuário por username', () => {
-      repo.save(buildUser());
-      expect(repo.findByUsername('testuser')).toBeDefined();
+    it('deve encontrar usuário por username', async () => {
+      await repo.save(buildUser());
+      expect(await repo.findByUsername('testuser')).toBeDefined();
     });
 
-    it('deve retornar undefined para username inexistente', () => {
-      expect(repo.findByUsername('nobody')).toBeUndefined();
+    it('deve retornar undefined para username inexistente', async () => {
+      expect(await repo.findByUsername('nobody')).toBeUndefined();
     });
   });
 
   describe('findByEmail', () => {
-    it('deve encontrar usuário por email', () => {
-      repo.save(buildUser());
-      expect(repo.findByEmail('test@example.com')).toBeDefined();
+    it('deve encontrar usuário por email', async () => {
+      await repo.save(buildUser());
+      expect(await repo.findByEmail('test@example.com')).toBeDefined();
     });
 
-    it('deve retornar undefined para email inexistente', () => {
-      expect(repo.findByEmail('none@none.com')).toBeUndefined();
+    it('deve retornar undefined para email inexistente', async () => {
+      expect(await repo.findByEmail('none@none.com')).toBeUndefined();
     });
   });
 
   describe('findByUsernameOrEmail', () => {
-    it('deve encontrar por username', () => {
-      repo.save(buildUser());
-      expect(repo.findByUsernameOrEmail('testuser', 'other@mail.com')).toBeDefined();
+    it('deve encontrar por username', async () => {
+      await repo.save(buildUser());
+      expect(await repo.findByUsernameOrEmail('testuser', 'other@mail.com')).toBeDefined();
     });
 
-    it('deve encontrar por email', () => {
-      repo.save(buildUser());
-      expect(repo.findByUsernameOrEmail('other', 'test@example.com')).toBeDefined();
+    it('deve encontrar por email', async () => {
+      await repo.save(buildUser());
+      expect(await repo.findByUsernameOrEmail('other', 'test@example.com')).toBeDefined();
     });
 
-    it('deve retornar undefined quando nenhum coincide', () => {
-      repo.save(buildUser());
-      expect(repo.findByUsernameOrEmail('other', 'other@mail.com')).toBeUndefined();
+    it('deve retornar undefined quando nenhum coincide', async () => {
+      await repo.save(buildUser());
+      expect(await repo.findByUsernameOrEmail('other', 'other@mail.com')).toBeUndefined();
     });
   });
 
   describe('update', () => {
-    it('deve atualizar campos do usuário', () => {
-      repo.save(buildUser());
-      const updated = repo.update('user-1', { lastLogin: new Date('2024-01-01') });
+    it('deve atualizar campos do usuário', async () => {
+      await repo.save(buildUser());
+      const updated = await repo.update('user-1', { lastLogin: new Date('2024-01-01') });
       expect(updated.lastLogin).toEqual(new Date('2024-01-01'));
     });
 
-    it('deve retornar undefined para id inexistente', () => {
-      expect(repo.update('inexistente', { lastLogin: new Date() })).toBeUndefined();
+    it('deve retornar undefined para id inexistente', async () => {
+      expect(await repo.update('inexistente', { lastLogin: new Date() })).toBeUndefined();
     });
   });
 });
@@ -116,26 +116,26 @@ describe('InMemoryLeaderboardRepository', () => {
   });
 
   describe('save e findByUserId', () => {
-    it('deve salvar e recuperar score por userId', () => {
+    it('deve salvar e recuperar score por userId', async () => {
       const score = buildScore();
-      repo.save(score);
-      expect(repo.findByUserId('user-1')).toEqual(score);
+      await repo.save(score);
+      expect(await repo.findByUserId('user-1')).toEqual(score);
     });
 
-    it('deve retornar undefined para userId desconhecido', () => {
-      expect(repo.findByUserId('inexistente')).toBeUndefined();
+    it('deve retornar undefined para userId desconhecido', async () => {
+      expect(await repo.findByUserId('inexistente')).toBeUndefined();
     });
   });
 
   describe('findAll', () => {
-    it('deve retornar lista vazia quando nenhum score existe', () => {
-      expect(repo.findAll()).toEqual([]);
+    it('deve retornar lista vazia quando nenhum score existe', async () => {
+      expect(await repo.findAll()).toEqual([]);
     });
 
-    it('deve retornar todos os scores salvos', () => {
-      repo.save(buildScore({ userId: 'u1', username: 'user1' }));
-      repo.save(buildScore({ userId: 'u2', username: 'user2' }));
-      expect(repo.findAll()).toHaveLength(2);
+    it('deve retornar todos os scores salvos', async () => {
+      await repo.save(buildScore({ userId: 'u1', username: 'user1' }));
+      await repo.save(buildScore({ userId: 'u2', username: 'user2' }));
+      expect(await repo.findAll()).toHaveLength(2);
     });
   });
 });

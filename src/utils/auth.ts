@@ -8,6 +8,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
+import { RepositoryFactory } from '../repositories/RepositoryFactory';
 import { logEvent, logError, logWarn } from './logger';
 
 export interface User {
@@ -36,8 +37,8 @@ export interface JWTPayload {
   email: string;
 }
 
-// Simular banco de dados em memória (em produção, usar DB real)
-export const users = new Map<string, User>();
+// Repository singleton — InMemory when no DATABASE_URL, PostgreSQL otherwise
+export const userRepo = RepositoryFactory.createUserRepository();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key-change-in-production';
 const JWT_EXPIRE = process.env.JWT_EXPIRE || '24h';
@@ -51,9 +52,7 @@ export async function register(
   password: string
 ): Promise<UserWithoutPassword> {
   try {
-    const existingUser = Array.from(users.values()).find(
-      u => u.username === username || u.email === email
-    );
+    const existingUser = await userRepo.findByUsernameOrEmail(username, email);
 
     if (existingUser) {
       throw new Error('Usuário ou email já existe');
@@ -74,7 +73,7 @@ export async function register(
       }
     };
 
-    users.set(userId, user);
+    await userRepo.save(user);
     logEvent('user_registered', { userId, username, email });
 
     const { password: _, ...userWithoutPassword } = user;
@@ -90,7 +89,7 @@ export async function register(
  */
 export async function login(username: string, password: string): Promise<LoginResult> {
   try {
-    const user = Array.from(users.values()).find(u => u.username === username);
+    const user = await userRepo.findByUsername(username);
 
     if (!user) {
       throw new Error('Usuário ou senha inválidos');
@@ -109,11 +108,11 @@ export async function login(username: string, password: string): Promise<LoginRe
       { expiresIn: JWT_EXPIRE } as SignOptions
     );
 
-    user.lastLogin = new Date();
+    await userRepo.update(user.id, { lastLogin: new Date() });
     logEvent('user_login', { userId: user.id, username, timestamp: new Date().toISOString() });
 
     const { password: _, ...userWithoutPassword } = user;
-    return { user: userWithoutPassword, token };
+    return { user: { ...userWithoutPassword, lastLogin: new Date() }, token };
   } catch (error) {
     logError('user_login_failed', error as Error, { username });
     throw error;
@@ -164,8 +163,8 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 /**
  * Obter usuário por ID
  */
-export function getUser(userId: string): UserWithoutPassword | null {
-  const user = users.get(userId);
+export async function getUser(userId: string): Promise<UserWithoutPassword | null> {
+  const user = await userRepo.findById(userId);
   if (!user) {
     return null;
   }
@@ -176,21 +175,27 @@ export function getUser(userId: string): UserWithoutPassword | null {
 /**
  * Atualizar perfil do usuário
  */
-export function updateUserProfile(
+export async function updateUserProfile(
   userId: string,
   updates: { preferences?: Partial<User['preferences']> }
-): UserWithoutPassword | null {
-  const user = users.get(userId);
+): Promise<UserWithoutPassword | null> {
+  const user = await userRepo.findById(userId);
   if (!user) {
     return null;
   }
 
-  if (updates.preferences) {
-    user.preferences = { ...user.preferences, ...updates.preferences };
+  const updatedUser = await userRepo.update(userId, {
+    preferences: updates.preferences
+      ? { ...user.preferences, ...updates.preferences }
+      : user.preferences
+  });
+
+  if (!updatedUser) {
+    return null;
   }
 
   logEvent('user_profile_updated', { userId, updates: Object.keys(updates) });
 
-  const { password: _, ...userWithoutPassword } = user;
+  const { password: _, ...userWithoutPassword } = updatedUser;
   return userWithoutPassword;
 }

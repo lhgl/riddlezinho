@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String            @id @default(uuid())
+  username      String            @unique
+  email         String            @unique
+  password      String
+  createdAt     DateTime          @default(now()) @map("created_at")
+  lastLogin     DateTime?         @map("last_login")
+  language      String            @default("pt-BR")
+  notifications Boolean           @default(true)
+  userScore     UserScore?
+  achievements  UserAchievement[]
+
+  @@map("users")
+}
+
+model UserScore {
+  userId              String   @id @map("user_id")
+  username            String
+  score               Int      @default(0)
+  completedPhases     Int      @default(0) @map("completed_phases")
+  level               Int      @default(0)
+  timeSpent           Int      @default(0) @map("time_spent")
+  lastUpdate          DateTime @default(now()) @map("last_update")
+  completedPhasesList String[] @map("completed_phases_list")
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_scores")
+}
+
+model Achievement {
+  id          String            @id @default(uuid())
+  key         String            @unique
+  name        String
+  description String
+  icon        String
+  threshold   Int
+  users       UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  userId        String      @map("user_id")
+  achievementId String      @map("achievement_id")
+  earnedAt      DateTime    @default(now()) @map("earned_at")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+
+  @@id([userId, achievementId])
+  @@map("user_achievements")
+}

@@ -14,20 +14,21 @@ jest.mock('../../../src/utils/logger', () => ({
 const { AuthService } = require('../../../src/services/AuthService');
 
 const buildMockRepo = (store = new Map()) => ({
-  findById: jest.fn(id => store.get(id)),
-  findByUsername: jest.fn(username => Array.from(store.values()).find(u => u.username === username)),
-  findByEmail: jest.fn(email => Array.from(store.values()).find(u => u.email === email)),
-  findByUsernameOrEmail: jest.fn((username, email) =>
+  findById: jest.fn(async id => store.get(id)),
+  findByUsername: jest.fn(async username => Array.from(store.values()).find(u => u.username === username)),
+  findByEmail: jest.fn(async email => Array.from(store.values()).find(u => u.email === email)),
+  findByUsernameOrEmail: jest.fn(async (username, email) =>
     Array.from(store.values()).find(u => u.username === username || u.email === email)
   ),
-  save: jest.fn(user => store.set(user.id, user)),
-  update: jest.fn((id, updates) => {
+  save: jest.fn(async user => store.set(user.id, user)),
+  update: jest.fn(async (id, updates) => {
     const user = store.get(id);
     if (!user) { return undefined; }
     const updated = { ...user, ...updates };
     store.set(id, updated);
     return updated;
-  })
+  }),
+  clear: jest.fn(() => store.clear())
 });
 
 describe('AuthService', () => {
@@ -52,7 +53,7 @@ describe('AuthService', () => {
     });
 
     it('deve lançar ConflictError para usuário duplicado', async () => {
-      mockRepo.findByUsernameOrEmail.mockReturnValue({ id: 'existing', username: 'newuser' });
+      mockRepo.findByUsernameOrEmail.mockResolvedValue({ id: 'existing', username: 'newuser' });
       await expect(service.register('newuser', 'other@mail.com', 'pass'))
         .rejects.toThrow('Usuário ou email já existe');
     });
@@ -70,7 +71,6 @@ describe('AuthService', () => {
     });
 
     it('deve fazer login com sucesso e retornar token', async () => {
-      // Registra usuário primeiro
       await service.register('loginuser', 'login@example.com', 'correctpass');
 
       const result = await service.login('loginuser', 'correctpass');
@@ -100,13 +100,13 @@ describe('AuthService', () => {
   });
 
   describe('getUser', () => {
-    it('deve retornar null para userId inexistente', () => {
-      expect(service.getUser('inexistente')).toBeNull();
+    it('deve retornar null para userId inexistente', async () => {
+      expect(await service.getUser('inexistente')).toBeNull();
     });
 
     it('deve retornar usuário sem senha', async () => {
       const registered = await service.register('getuser', 'get@example.com', 'pass123');
-      const found = service.getUser(registered.id);
+      const found = await service.getUser(registered.id);
       expect(found).toBeDefined();
       expect(found.username).toBe('getuser');
       expect(found.password).toBeUndefined();
@@ -114,13 +114,13 @@ describe('AuthService', () => {
   });
 
   describe('updateUserProfile', () => {
-    it('deve retornar null para userId inexistente', () => {
-      expect(service.updateUserProfile('inexistente', {})).toBeNull();
+    it('deve retornar null para userId inexistente', async () => {
+      expect(await service.updateUserProfile('inexistente', {})).toBeNull();
     });
 
     it('deve atualizar preferências do usuário', async () => {
       const registered = await service.register('prefuser', 'pref@example.com', 'pass123');
-      const updated = service.updateUserProfile(registered.id, {
+      const updated = await service.updateUserProfile(registered.id, {
         preferences: { notifications: false }
       });
       expect(updated).toBeDefined();

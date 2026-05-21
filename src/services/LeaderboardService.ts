@@ -24,9 +24,9 @@ export interface LeaderboardWithUserRank {
 export class LeaderboardService {
   constructor(private readonly repo: ILeaderboardRepository) {}
 
-  initUser(userId: string, username: string): void {
-    if (!this.repo.findByUserId(userId)) {
-      this.repo.save({
+  async initUser(userId: string, username: string): Promise<void> {
+    if (!(await this.repo.findByUserId(userId))) {
+      await this.repo.save({
         userId,
         username,
         score: 0,
@@ -39,14 +39,14 @@ export class LeaderboardService {
     }
   }
 
-  completePhase(
+  async completePhase(
     userId: string,
     username: string,
     phaseId: string,
     score: number,
     timeSpent: number
-  ): UserScore {
-    const existing = this.repo.findByUserId(userId);
+  ): Promise<UserScore> {
+    const existing = await this.repo.findByUserId(userId);
     const userScore: UserScore = existing ?? {
       userId,
       username,
@@ -67,7 +67,7 @@ export class LeaderboardService {
 
     userScore.timeSpent += timeSpent;
     userScore.lastUpdate = new Date();
-    this.repo.save(userScore);
+    await this.repo.save(userScore);
 
     logEvent('phase_completed', {
       userId,
@@ -80,8 +80,9 @@ export class LeaderboardService {
     return userScore;
   }
 
-  getLeaderboard(page: number, limit: number): LeaderboardPage {
-    const sorted = this.repo.findAll().sort((a, b) => b.score - a.score);
+  async getLeaderboard(page: number, limit: number): Promise<LeaderboardPage> {
+    const all = await this.repo.findAll();
+    const sorted = all.sort((a, b) => b.score - a.score);
     const total = sorted.length;
     const start = (page - 1) * limit;
     const items = sorted.slice(start, start + limit);
@@ -92,19 +93,20 @@ export class LeaderboardService {
     };
   }
 
-  getLeaderboardWithUserRank(userId: string): LeaderboardWithUserRank {
-    const sorted = this.repo.findAll().sort((a, b) => b.score - a.score);
+  async getLeaderboardWithUserRank(userId: string): Promise<LeaderboardWithUserRank> {
+    const all = await this.repo.findAll();
+    const sorted = all.sort((a, b) => b.score - a.score);
     const top10 = sorted.slice(0, 10).map((item, i) => ({ ...item, rank: i + 1 }));
     const rankIndex = sorted.findIndex(item => item.userId === userId);
 
     return {
       leaderboard: top10,
       userRank: rankIndex >= 0 ? rankIndex + 1 : null,
-      userStats: this.repo.findByUserId(userId) ?? null
+      userStats: (await this.repo.findByUserId(userId)) ?? null
     };
   }
 
-  getUserStats(userId: string): UserScore | null {
-    return this.repo.findByUserId(userId) ?? null;
+  async getUserStats(userId: string): Promise<UserScore | null> {
+    return (await this.repo.findByUserId(userId)) ?? null;
   }
 }

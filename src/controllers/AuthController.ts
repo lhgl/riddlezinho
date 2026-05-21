@@ -5,19 +5,25 @@
 
 import { Request, Response } from 'express';
 
-import { InMemoryLeaderboardRepository } from '../repositories/InMemoryLeaderboardRepository';
+import { ILeaderboardRepository } from '../repositories/interfaces';
 import { LeaderboardService } from '../services/LeaderboardService';
+import { AchievementService } from '../services/AchievementService';
 import * as auth from '../utils/auth';
 import { logEvent, logError } from '../utils/logger';
 
 // Re-exportar para compatibilidade com testes existentes
 export type { UserScore } from '../repositories/interfaces';
 
-// Instâncias singleton
-const leaderboardRepository = new InMemoryLeaderboardRepository();
-const leaderboardService = new LeaderboardService(leaderboardRepository);
-
 export class AuthController {
+  private readonly leaderboardService: LeaderboardService;
+  readonly achievementService: AchievementService;
+
+  constructor(leaderboardRepo: ILeaderboardRepository, achievementService?: AchievementService) {
+    this.leaderboardService = new LeaderboardService(leaderboardRepo);
+    const { RepositoryFactory } = require('../repositories/RepositoryFactory');
+    this.achievementService = achievementService ?? new AchievementService(RepositoryFactory.createAchievementRepository());
+  }
+
   async register(req: Request, res: Response): Promise<void> {
     try {
       const { username, email, password, passwordConfirm } = req.body;
@@ -38,7 +44,7 @@ export class AuthController {
       }
 
       const user = await auth.register(username, email, password);
-      leaderboardService.initUser(user.id, user.username);
+      await this.leaderboardService.initUser(user.id, user.username);
 
       logEvent('user_registration_success', { userId: user.id, username });
 
@@ -68,16 +74,16 @@ export class AuthController {
     }
   }
 
-  getProfile(req: Request, res: Response): void {
+  async getProfile(req: Request, res: Response): Promise<void> {
     try {
-      const user = auth.getUser(req.userId!);
+      const user = await auth.getUser(req.userId!);
 
       if (!user) {
         res.status(404).json({ error: 'Usuário não encontrado' });
         return;
       }
 
-      const userScore = leaderboardService.getUserStats(req.userId!);
+      const userScore = await this.leaderboardService.getUserStats(req.userId!);
 
       res.json({ user: { ...user, stats: userScore || {} } });
     } catch (error) {
@@ -86,10 +92,10 @@ export class AuthController {
     }
   }
 
-  updateProfile(req: Request, res: Response): void {
+  async updateProfile(req: Request, res: Response): Promise<void> {
     try {
       const { preferences } = req.body;
-      const user = auth.updateUserProfile(req.userId!, { preferences });
+      const user = await auth.updateUserProfile(req.userId!, { preferences });
 
       if (!user) {
         res.status(404).json({ error: 'Usuário não encontrado' });
@@ -104,7 +110,7 @@ export class AuthController {
     }
   }
 
-  completePhase(req: Request, res: Response): void {
+  async completePhase(req: Request, res: Response): Promise<void> {
     try {
       const { phaseId, timeSpent, score } = req.body;
 
@@ -113,22 +119,25 @@ export class AuthController {
         return;
       }
 
-      const user = auth.getUser(req.userId!);
+      const user = await auth.getUser(req.userId!);
       const username = user?.username || 'Anonymous';
-      const stats = leaderboardService.completePhase(req.userId!, username, phaseId, score, timeSpent);
+      const stats = await this.leaderboardService.completePhase(
+        req.userId!, username, phaseId, score, timeSpent
+      );
+      const newAchievements = this.achievementService.checkAndGrant(req.userId!, stats.completedPhases);
 
-      res.json({ message: 'Fase concluída com sucesso', stats });
+      res.json({ message: 'Fase concluída com sucesso', stats, newAchievements });
     } catch (error) {
       logError('complete_phase_failed', error as Error, { userId: req.userId });
       res.status(500).json({ error: 'Erro ao registrar conclusão' });
     }
   }
 
-  getLeaderboard(req: Request, res: Response): void {
+  async getLeaderboard(req: Request, res: Response): Promise<void> {
     try {
       const limit = parseInt(req.query.limit as string) || 100;
       const page = parseInt(req.query.page as string) || 1;
-      const result = leaderboardService.getLeaderboard(page, limit);
+      const result = await this.leaderboardService.getLeaderboard(page, limit);
       res.json(result);
     } catch (error) {
       logError('get_leaderboard_failed', error as Error);
@@ -136,9 +145,9 @@ export class AuthController {
     }
   }
 
-  getLeaderboardWithUserRank(req: Request, res: Response): void {
+  async getLeaderboardWithUserRank(req: Request, res: Response): Promise<void> {
     try {
-      const result = leaderboardService.getLeaderboardWithUserRank(req.userId!);
+      const result = await this.leaderboardService.getLeaderboardWithUserRank(req.userId!);
       res.json(result);
     } catch (error) {
       logError('get_leaderboard_user_rank_failed', error as Error);
@@ -147,6 +156,9 @@ export class AuthController {
   }
 }
 
-const authController = new AuthController();
+// AuthController needs a leaderboard repo — server.ts will inject it via factory
+// For backward compat with tests that import the default export directly:
+import { RepositoryFactory } from '../repositories/RepositoryFactory';
+const authController = new AuthController(RepositoryFactory.createLeaderboardRepository());
 export default authController;
 export { AuthController as AuthControllerClass };

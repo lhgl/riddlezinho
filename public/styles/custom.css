@@ -65,3 +65,238 @@ span.resposta {
 i.texto-novo {
     color: teal;
 }
+
+/* ===== CSS Variables (Light / Dark) ===== */
+:root {
+    --bg: #ffffff;
+    --text: #212529;
+    --surface: #f8f9fa;
+    --border: #dee2e6;
+    --primary: #0073e6;
+    --transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark {
+    --bg: #1a1a2e;
+    --text: #e0e0e0;
+    --surface: #16213e;
+    --border: #444466;
+    --primary: #4da6ff;
+}
+
+html.dark body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: var(--transition);
+}
+
+html.dark .card,
+html.dark .modal-content,
+html.dark .table {
+    background-color: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+html.dark ul li a {
+    color: var(--primary);
+}
+
+/* ===== Theme Toggle Button ===== */
+#theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: 1px solid var(--border, #dee2e6);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s;
+}
+
+/* ===== Toast Notifications ===== */
+#toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 10000;
+}
+
+.toast {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.375rem;
+    color: #fff;
+    font-size: 0.9rem;
+    max-width: 320px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.toast--visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.toast--success { background-color: #198754; }
+.toast--error   { background-color: #dc3545; }
+.toast--info    { background-color: #0d6efd; }
+.toast--warning { background-color: #ffc107; color: #212529; }
+
+/* ===== Loading Overlay ===== */
+#loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 9998;
+    align-items: center;
+    justify-content: center;
+}
+
+#loading-overlay.loading--visible {
+    display: flex;
+}
+
+.loading-spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+    ul.menu-principal {
+        margin: 1rem 0 0 0.5rem;
+    }
+
+    ul.menu-principal li {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    ul.menu-secundario li a {
+        font-size: 2rem;
+    }
+
+    .flex {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+
+    table thead { display: none; }
+
+    table tr {
+        display: block;
+        margin-bottom: 0.75rem;
+        border: 1px solid var(--border, #dee2e6);
+        border-radius: 0.375rem;
+        padding: 0.5rem;
+    }
+
+    table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.25rem 0.5rem;
+        border: none;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 0.5rem;
+    }
+
+    form input,
+    form select,
+    form textarea {
+        width: 100%;
+    }
+
+    #theme-toggle {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+}
+
+/* ===== Achievement Badges ===== */
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.achievement-badge {
+    text-align: center;
+    padding: 1rem;
+    border: 2px solid var(--border, #dee2e6);
+    border-radius: 0.5rem;
+    background: var(--surface, #f8f9fa);
+    transition: border-color 0.2s, opacity 0.2s;
+}
+
+.achievement-badge.earned {
+    border-color: gold;
+    background: linear-gradient(135deg, #fffdf0, #fff8d0);
+}
+
+html.dark .achievement-badge.earned {
+    background: linear-gradient(135deg, #2a2a00, #3a3a00);
+}
+
+.achievement-badge.locked {
+    opacity: 0.45;
+    filter: grayscale(0.8);
+}
+
+.achievement-badge .badge-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-badge .badge-name {
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.achievement-badge .badge-desc {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+html.dark .achievement-badge .badge-desc {
+    color: #aaa;
+}
+
+/* ===== Daily Challenge Countdown ===== */
+.daily-countdown {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary, #0073e6);
+    letter-spacing: 0.05em;
+}

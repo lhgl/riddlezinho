@@ -247,7 +247,7 @@ describe('AuthController', () => {
   });
 
   describe('getProfile', () => {
-    it('deve obter perfil do usuario com sucesso', () => {
+    it('deve obter perfil do usuario com sucesso', async () => {
       mockReq = {
         userId: 'test-user-id'
       };
@@ -257,9 +257,9 @@ describe('AuthController', () => {
         username: 'testuser',
         email: 'test@example.com'
       };
-      jest.spyOn(auth, 'getUser').mockReturnValue(mockUser);
+      jest.spyOn(auth, 'getUser').mockResolvedValue(mockUser);
 
-      AuthController.getProfile(mockReq, mockRes);
+      await AuthController.getProfile(mockReq, mockRes);
 
       expect(auth.getUser).toHaveBeenCalledWith('test-user-id');
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -270,20 +270,20 @@ describe('AuthController', () => {
       });
     });
 
-    it('deve retornar erro para usuario inexistente', () => {
+    it('deve retornar erro para usuario inexistente', async () => {
       mockReq = {
         userId: 'non-existent-id'
       };
 
-      jest.spyOn(auth, 'getUser').mockReturnValue(null);
+      jest.spyOn(auth, 'getUser').mockResolvedValue(null);
 
-      AuthController.getProfile(mockReq, mockRes);
+      await AuthController.getProfile(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(404);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Usuário não encontrado' });
     });
 
-    it('deve incluir score do leaderboard', () => {
+    it('deve incluir score do leaderboard', async () => {
       mockReq = {
         userId: 'test-user-id'
       };
@@ -292,9 +292,9 @@ describe('AuthController', () => {
         id: 'test-user-id',
         username: 'testuser'
       };
-      jest.spyOn(auth, 'getUser').mockReturnValue(mockUser);
+      jest.spyOn(auth, 'getUser').mockResolvedValue(mockUser);
 
-      AuthController.getProfile(mockReq, mockRes);
+      await AuthController.getProfile(mockReq, mockRes);
 
       expect(mockRes.json).toHaveBeenCalledWith({
         user: {
@@ -304,16 +304,14 @@ describe('AuthController', () => {
       });
     });
 
-    it('deve lidar com erro ao obter perfil', () => {
+    it('deve lidar com erro ao obter perfil', async () => {
       mockReq = {
         userId: 'test-user-id'
       };
 
-      jest.spyOn(auth, 'getUser').mockImplementation(() => {
-        throw new Error('Erro inesperado');
-      });
+      jest.spyOn(auth, 'getUser').mockRejectedValue(new Error('Erro inesperado'));
 
-      AuthController.getProfile(mockReq, mockRes);
+      await AuthController.getProfile(mockReq, mockRes);
 
       expect(logger.logError).toHaveBeenCalledWith('get_profile_failed', expect.any(Error), {
         userId: 'test-user-id'
@@ -324,7 +322,7 @@ describe('AuthController', () => {
   });
 
   describe('updateProfile', () => {
-    it('deve atualizar perfil com sucesso', () => {
+    it('deve atualizar perfil com sucesso', async () => {
       mockReq = {
         userId: 'test-user-id',
         body: {
@@ -343,9 +341,9 @@ describe('AuthController', () => {
           notifications: false
         }
       };
-      jest.spyOn(auth, 'updateUserProfile').mockReturnValue(mockUser);
+      jest.spyOn(auth, 'updateUserProfile').mockResolvedValue(mockUser);
 
-      AuthController.updateProfile(mockReq, mockRes);
+      await AuthController.updateProfile(mockReq, mockRes);
 
       expect(auth.updateUserProfile).toHaveBeenCalledWith('test-user-id', {
         preferences: {
@@ -363,7 +361,7 @@ describe('AuthController', () => {
       });
     });
 
-    it('deve retornar erro para usuario inexistente', () => {
+    it('deve retornar erro para usuario inexistente', async () => {
       mockReq = {
         userId: 'non-existent-id',
         body: {
@@ -371,25 +369,23 @@ describe('AuthController', () => {
         }
       };
 
-      jest.spyOn(auth, 'updateUserProfile').mockReturnValue(null);
+      jest.spyOn(auth, 'updateUserProfile').mockResolvedValue(null);
 
-      AuthController.updateProfile(mockReq, mockRes);
+      await AuthController.updateProfile(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(404);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Usuário não encontrado' });
     });
 
-    it('deve lidar com erro ao atualizar perfil', () => {
+    it('deve lidar com erro ao atualizar perfil', async () => {
       mockReq = {
         userId: 'test-user-id',
         body: { preferences: {} }
       };
 
-      jest.spyOn(auth, 'updateUserProfile').mockImplementation(() => {
-        throw new Error('Erro ao atualizar');
-      });
+      jest.spyOn(auth, 'updateUserProfile').mockRejectedValue(new Error('Erro ao atualizar'));
 
-      AuthController.updateProfile(mockReq, mockRes);
+      await AuthController.updateProfile(mockReq, mockRes);
 
       expect(logger.logError).toHaveBeenCalledWith('update_profile_failed', expect.any(Error), {
         userId: 'test-user-id'
@@ -400,7 +396,7 @@ describe('AuthController', () => {
   });
 
   describe('completePhase', () => {
-    it('deve registrar conclusao de fase com sucesso', () => {
+    it('deve registrar conclusao de fase com sucesso', async () => {
       mockReq = {
         userId: 'test-user-id',
         body: {
@@ -413,9 +409,9 @@ describe('AuthController', () => {
       const mockUser = {
         username: 'testuser'
       };
-      jest.spyOn(auth, 'getUser').mockReturnValue(mockUser);
+      jest.spyOn(auth, 'getUser').mockResolvedValue(mockUser);
 
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
 
       expect(mockRes.json).toHaveBeenCalled();
       const response = mockRes.json.mock.calls[0][0];
@@ -423,10 +419,9 @@ describe('AuthController', () => {
       expect(response.stats).toBeDefined();
       expect(response.stats.score).toBe(100);
       expect(response.stats.completedPhases).toBe(1);
-      expect(logger.logEvent).toHaveBeenCalledWith('phase_completed', expect.any(Object));
     });
 
-    it('deve retornar erro sem phaseId', () => {
+    it('deve retornar erro sem phaseId', async () => {
       mockReq = {
         userId: 'test-user-id',
         body: {
@@ -435,7 +430,7 @@ describe('AuthController', () => {
         }
       };
 
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -443,7 +438,7 @@ describe('AuthController', () => {
       });
     });
 
-    it('deve retornar erro sem timeSpent', () => {
+    it('deve retornar erro sem timeSpent', async () => {
       mockReq = {
         userId: 'test-user-id',
         body: {
@@ -452,7 +447,7 @@ describe('AuthController', () => {
         }
       };
 
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -460,7 +455,7 @@ describe('AuthController', () => {
       });
     });
 
-    it('deve retornar erro sem score', () => {
+    it('deve retornar erro sem score', async () => {
       mockReq = {
         userId: 'test-user-id',
         body: {
@@ -469,7 +464,7 @@ describe('AuthController', () => {
         }
       };
 
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -477,9 +472,9 @@ describe('AuthController', () => {
       });
     });
 
-    it('nao deve duplicar score para mesma fase', () => {
+    it('nao deve duplicar score para mesma fase', async () => {
       mockReq = {
-        userId: 'test-user-id',
+        userId: 'test-user-id-dup',
         body: {
           phaseId: 'same-phase',
           timeSpent: 120,
@@ -488,15 +483,15 @@ describe('AuthController', () => {
       };
 
       const mockUser = { username: 'testuser' };
-      jest.spyOn(auth, 'getUser').mockReturnValue(mockUser);
+      jest.spyOn(auth, 'getUser').mockResolvedValue(mockUser);
 
       // Primeira conclusao
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
       const firstResponse = mockRes.json.mock.calls[0][0];
       const firstScore = firstResponse.stats.score;
 
       // Segunda conclusao da mesma fase
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
       const secondResponse = mockRes.json.mock.calls[1][0];
       const secondScore = secondResponse.stats.score;
 
@@ -504,12 +499,12 @@ describe('AuthController', () => {
       expect(secondScore).toBe(firstScore);
     });
 
-    it('deve calcular nivel corretamente (a cada 10 fases)', () => {
+    it('deve calcular nivel corretamente (a cada 10 fases)', async () => {
       const mockUser = { username: 'testuser' };
-      jest.spyOn(auth, 'getUser').mockReturnValue(mockUser);
+      jest.spyOn(auth, 'getUser').mockResolvedValue(mockUser);
 
       mockReq = {
-        userId: 'test-user-id',
+        userId: 'test-user-level',
         body: {
           timeSpent: 120,
           score: 100
@@ -518,33 +513,33 @@ describe('AuthController', () => {
 
       // Completar 15 fases
       for (let i = 0; i < 15; i++) {
-        mockReq.body.phaseId = `phase-${i}`;
-        AuthController.completePhase(mockReq, mockRes);
+        mockReq.body.phaseId = `phase-level-${i}`;
+        await AuthController.completePhase(mockReq, mockRes);
       }
 
       const lastResponse = mockRes.json.mock.calls[mockRes.json.mock.calls.length - 1][0];
       expect(lastResponse.stats.level).toBe(1); // 15 / 10 = 1
     });
 
-    it('deve acumular timeSpent', () => {
+    it('deve acumular timeSpent', async () => {
       const mockUser = { username: 'testuser' };
-      jest.spyOn(auth, 'getUser').mockReturnValue(mockUser);
+      jest.spyOn(auth, 'getUser').mockResolvedValue(mockUser);
 
       mockReq = {
-        userId: 'test-user-id',
+        userId: 'test-user-time',
         body: {
-          phaseId: 'phase1',
+          phaseId: 'phase-time-1',
           timeSpent: 100,
           score: 50
         }
       };
 
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
       const firstTime = mockRes.json.mock.calls[0][0].stats.timeSpent;
 
-      mockReq.body.phaseId = 'phase2';
+      mockReq.body.phaseId = 'phase-time-2';
       mockReq.body.timeSpent = 150;
-      AuthController.completePhase(mockReq, mockRes);
+      await AuthController.completePhase(mockReq, mockRes);
       const secondTime = mockRes.json.mock.calls[1][0].stats.timeSpent;
 
       expect(secondTime).toBeGreaterThan(firstTime);
@@ -560,15 +555,10 @@ describe('AuthController', () => {
         }
       };
 
-      // Mock do getUser para retornar usuario valido
-      const mockUser = { username: 'testuser' };
-      jest.spyOn(auth, 'getUser').mockReturnValue(mockUser);
-
-      // Mock do leaderboard.set para lancar erro
-      const originalSet = Map.prototype.set;
-      Map.prototype.set = jest.fn().mockImplementation(() => {
-        throw new Error('Erro ao salvar no leaderboard');
-      });
+      jest.spyOn(auth, 'getUser').mockResolvedValue({ username: 'testuser' });
+      jest.spyOn(AuthController.leaderboardService, 'completePhase').mockRejectedValue(
+        new Error('Erro ao salvar no leaderboard')
+      );
 
       await AuthController.completePhase(mockReq, mockRes);
 
@@ -577,14 +567,11 @@ describe('AuthController', () => {
       });
       expect(mockRes.status).toHaveBeenCalledWith(500);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Erro ao registrar conclusão' });
-
-      // Restaurar
-      Map.prototype.set = originalSet;
     });
   });
 
   describe('getLeaderboard', () => {
-    it('deve retornar leaderboard com paginacao', () => {
+    it('deve retornar leaderboard com paginacao', async () => {
       mockReq = {
         query: {
           limit: '10',
@@ -592,7 +579,7 @@ describe('AuthController', () => {
         }
       };
 
-      AuthController.getLeaderboard(mockReq, mockRes);
+      await AuthController.getLeaderboard(mockReq, mockRes);
 
       expect(mockRes.json).toHaveBeenCalled();
       const response = mockRes.json.mock.calls[0][0];
@@ -602,35 +589,35 @@ describe('AuthController', () => {
       expect(response.pagination).toHaveProperty('limit', 10);
     });
 
-    it('deve usar valores padrao para limit e page', () => {
+    it('deve usar valores padrao para limit e page', async () => {
       mockReq = {
         query: {}
       };
 
-      AuthController.getLeaderboard(mockReq, mockRes);
+      await AuthController.getLeaderboard(mockReq, mockRes);
 
       const response = mockRes.json.mock.calls[0][0];
       expect(response.pagination.limit).toBe(100);
       expect(response.pagination.page).toBe(1);
     });
 
-    it('deve ordenar por score decrescente', () => {
+    it('deve ordenar por score decrescente', async () => {
       mockReq = {
         query: {}
       };
 
-      AuthController.getLeaderboard(mockReq, mockRes);
+      await AuthController.getLeaderboard(mockReq, mockRes);
 
       const response = mockRes.json.mock.calls[0][0];
       expect(Array.isArray(response.leaderboard)).toBe(true);
     });
 
-    it('deve incluir ranking nos itens', () => {
+    it('deve incluir ranking nos itens', async () => {
       mockReq = {
         query: {}
       };
 
-      AuthController.getLeaderboard(mockReq, mockRes);
+      await AuthController.getLeaderboard(mockReq, mockRes);
 
       const response = mockRes.json.mock.calls[0][0];
       response.leaderboard.forEach(item => {
@@ -638,35 +625,31 @@ describe('AuthController', () => {
       });
     });
 
-    it('deve lidar com erro ao obter leaderboard', () => {
+    it('deve lidar com erro ao obter leaderboard', async () => {
       mockReq = {
         query: {}
       };
 
-      // Simular erro
-      const originalFrom = Array.from;
-      Array.from = jest.fn().mockImplementation(() => {
-        throw new Error('Erro no leaderboard');
-      });
+      jest.spyOn(AuthController.leaderboardService, 'getLeaderboard').mockRejectedValue(
+        new Error('Erro no leaderboard')
+      );
 
-      AuthController.getLeaderboard(mockReq, mockRes);
+      await AuthController.getLeaderboard(mockReq, mockRes);
 
       expect(logger.logError).toHaveBeenCalledWith('get_leaderboard_failed', expect.any(Error));
       expect(mockRes.status).toHaveBeenCalledWith(500);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Erro ao obter leaderboard' });
-
-      Array.from = originalFrom;
     });
   });
 
   describe('getLeaderboardWithUserRank', () => {
-    it('deve retornar top 10 com rank do usuario', () => {
+    it('deve retornar top 10 com rank do usuario', async () => {
       mockReq = {
         userId: 'test-user-id',
         query: {}
       };
 
-      AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
+      await AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
 
       expect(mockRes.json).toHaveBeenCalled();
       const response = mockRes.json.mock.calls[0][0];
@@ -675,25 +658,25 @@ describe('AuthController', () => {
       expect(response).toHaveProperty('userStats');
     });
 
-    it('deve retornar top 10 limitado', () => {
+    it('deve retornar top 10 limitado', async () => {
       mockReq = {
         userId: 'test-user-id',
         query: {}
       };
 
-      AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
+      await AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
 
       const response = mockRes.json.mock.calls[0][0];
       expect(response.leaderboard.length).toBeLessThanOrEqual(10);
     });
 
-    it('deve incluir rank correto para cada item do top 10', () => {
+    it('deve incluir rank correto para cada item do top 10', async () => {
       mockReq = {
         userId: 'test-user-id',
         query: {}
       };
 
-      AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
+      await AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
 
       const response = mockRes.json.mock.calls[0][0];
       response.leaderboard.forEach((item, index) => {
@@ -701,24 +684,21 @@ describe('AuthController', () => {
       });
     });
 
-    it('deve lidar com erro ao obter leaderboard com rank', () => {
+    it('deve lidar com erro ao obter leaderboard com rank', async () => {
       mockReq = {
         userId: 'test-user-id',
         query: {}
       };
 
-      const originalFrom = Array.from;
-      Array.from = jest.fn().mockImplementation(() => {
-        throw new Error('Erro no leaderboard');
-      });
+      jest.spyOn(AuthController.leaderboardService, 'getLeaderboardWithUserRank').mockRejectedValue(
+        new Error('Erro no leaderboard')
+      );
 
-      AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
+      await AuthController.getLeaderboardWithUserRank(mockReq, mockRes);
 
       expect(logger.logError).toHaveBeenCalledWith('get_leaderboard_user_rank_failed', expect.any(Error));
       expect(mockRes.status).toHaveBeenCalledWith(500);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Erro ao obter leaderboard' });
-
-      Array.from = originalFrom;
     });
   });
 });

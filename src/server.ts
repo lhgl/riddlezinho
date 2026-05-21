@@ -32,6 +32,7 @@ import { httpLogger, addRequestMetadata } from './utils/logger';
 
 // Importar routers adicionais
 import createAuthRouter from './routes/auth';
+import createAchievementsRouter from './routes/achievements';
 
 // Inicializar aplicação
 const app: Application = express();
@@ -107,12 +108,16 @@ app.use('/dica', createTipsRouter(phaseController));
 // ============ ROTAS DE AUTENTICAÇÃO E LEADERBOARD ============
 app.use('/auth', apiLimiter, createAuthRouter());
 
+// ============ ROTAS DE CONQUISTAS E DESAFIO DO DIA ============
+app.use('/achievements', createAchievementsRouter());
+
 // ============ HEALTH CHECK ============
 app.get('/health', (req: Request, res: Response) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    db: process.env.DATABASE_URL ? 'postgres' : 'memory'
   });
 });
 
@@ -138,12 +143,17 @@ process.on('uncaughtException', (error: Error) => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.info('SIGTERM recebido. Encerrando gracefully...');
-  server.close(() => {
+const gracefulShutdown = (signal: string) => {
+  console.info(`${signal} recebido. Encerrando gracefully...`);
+  server.close(async () => {
+    const { RepositoryFactory } = await import('./repositories/RepositoryFactory');
+    await RepositoryFactory.disconnect();
     console.info('Servidor encerrado');
     process.exit(0);
   });
-});
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 export default app;

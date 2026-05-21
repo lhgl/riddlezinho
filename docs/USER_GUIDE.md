@@ -1,4 +1,4 @@
-# 📖 User Guide - RiddleZinho v2.2.0
+# 📖 User Guide - RiddleZinho v3.2.0
 
 ## 🎮 Como Jogar
 
@@ -103,4 +103,4 @@ Veja [TESTING_GUIDE.md](TESTING_GUIDE.md) para troubleshooting
 
 ---
 
-**Versão**: 2.2.0 | **Data**: Fevereiro 22, 2026
+**Versão**: 3.2.0 | **Atualizado**: Maio 2026

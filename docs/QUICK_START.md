@@ -1,4 +1,4 @@
-# 🚀 Quick Start - RiddleZinho v2.5.0
+# 🚀 Quick Start - RiddleZinho v3.2.0
 
 ## 5 Minutos para Começar
 
@@ -97,13 +97,13 @@ npm run lint
 ### Build
 
 ```bash
-docker build -t riddlezinho:2.5.0 .
+docker build -t riddlezinho:3.2.0 .
 ```
 
 ### Run
 
 ```bash
-docker run -p 5000:5000 riddlezinho:2.5.0
+docker run -p 5000:5000 riddlezinho:3.2.0
 ```
 
 ### Docker Compose
@@ -201,4 +201,4 @@ npm test
 
 ---
 
-**Versão**: 2.5.0 | **TypeScript** | **Node.js 20.x**
+**Versão**: 3.2.0 | **TypeScript** | **Node.js 20.x**

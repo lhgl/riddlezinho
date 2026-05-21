@@ -1,4 +1,4 @@
-# 🔒 Security - RiddleZinho v2.2.0
+# 🔒 Security - RiddleZinho v3.2.0
 
 ## Implemented Security Measures
 
@@ -26,7 +26,7 @@ API:        50 requests / 1 minute per IP
 - Required field validation
 - Email format validation
 - Password length minimum (6 chars)
-- Prepared statements (Oracle)
+- Prepared statements (PostgreSQL/Prisma)
 - SQL injection protection
 
 ### 5. Data Protection
@@ -73,4 +73,4 @@ npm audit fix --force
 
 ---
 
-**Version**: 2.2.0 | **Audited**: Feb 22, 2026
+**Version**: 3.2.0 | **Atualizado**: Maio 2026

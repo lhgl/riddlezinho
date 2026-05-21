@@ -1,74 +1,70 @@
-# 🚀 Roadmap v2.2.0 - RiddleZinho
+# 🚀 Roadmap - RiddleZinho
 
-**Target**: Março 2026 | **Duration**: 6 weeks
+## Versões Concluídas
 
-## Goals
+### v2.5.0 ✅ — TypeScript + Design Patterns
+**Concluída**: Fevereiro 2026
 
-### 1. Validate All 99 Phases
-- Map all responses (each = next phase)
-- Collect missing images (85/99 needed)
-- Improve hints and descriptions
-- Document complete chain
-
-**Status**: 35% complete (35/99)
-
-### 2. Expand Tests to 98%+
-- Current: 95%+ coverage
-- Target: 98%+ coverage
-- Add E2E tests
-- Performance benchmarks
-- Advanced security tests
-
-### 3. Achievements System
-- Badges for milestones
-- Level-based rewards
-- Special achievements
-- Profile display
-- Leaderboard integration
-
-**Badges**:
-- Iniciante (1 fase)
-- Aprendiz (10 fases)
-- Veterano (25 fases)
-- Mestre (50 fases)
-- LENDA (99 fases)
-
-### 4. Statistics Dashboard
-- User progress charts
-- Category breakdown
-- Time analytics
-- Badge display
-- Ranking trends
-
-### 5. UI/UX Improvements
-- Dark mode
-- Mobile responsive
-- Better animations
-- Improved accessibility
-- Interactive hints
+- Migração completa para TypeScript
+- Controllers, Services, Repositories com tipagem forte
+- 327 testes passando, cobertura 83%+
+- User Progress Badge funcional
+- ESLint strict mode
 
 ---
 
-## Timeline
+### v3.0.0 ✅ — Production Foundation
+**Concluída**: Maio 2026
 
-| Week | Tasks |
-|------|-------|
-| 1-2 | Validate 50 phases, improve hints |
-| 2-3 | Expand tests to 98%, add E2E |
-| 3-4 | Implement achievements system |
-| 4-5 | Dashboard development |
-| 5-6 | UI improvements, testing, release |
-
----
-
-## Success Metrics
-
-- 100% phases validated
-- 98%+ test coverage
-- All achievements working
-- Dashboard functional
-- Mobile responsive
+- PostgreSQL 16 + Prisma ORM (substitui Oracle)
+- RepositoryFactory: `DATABASE_URL` → Prisma | sem URL → InMemory
+- docker-compose.yml reescrito (PostgreSQL 16-alpine)
+- Dockerfile multi-stage (builder + runner)
+- render.yaml — deploy one-click no Render.com
+- DI em server.ts via factory
+- docs/DEPLOY.md — guia completo de produção
+- Graceful shutdown + health check com `db: postgres | memory`
 
 ---
 
-**Version**: 2.2.0 | **Status**: Planned
+### v3.1.0 ✅ — UX/UI
+**Concluída**: Maio 2026
+
+- Dark mode com persistência em localStorage
+- Toast notifications (slide-in animado)
+- Loading spinner overlay
+- Mobile responsive (breakpoint 768px)
+
+---
+
+### v3.2.0 ✅ — Features: Achievements + Daily Challenge
+**Concluída**: Maio 2026
+
+- AchievementService: 5 badges (Iniciante/Aprendiz/Veterano/Mestre/LENDA)
+- DailyChallengeService: fase do dia determinística
+- Rotas `/achievements`, `/achievements/me`, `/achievements/daily`
+- `newAchievements` retornado em `POST /auth/complete-phase`
+- Views: achievements.ejs, daily.ejs
+- 410+ testes passando
+
+---
+
+## Próximas Versões
+
+### v3.3.0 — Advanced (Planejado)
+
+- [ ] WebSockets para leaderboard em tempo real
+- [ ] Redis para rate limiting distribuído (escala horizontal)
+- [ ] PWA (Service Worker, offline mode)
+- [ ] Testes E2E (Playwright)
+
+### v4.0.0 — SPA + API Pública (Futuro)
+
+- [ ] Frontend SPA separado (React/Vue)
+- [ ] API pública RESTful + OpenAPI/Swagger
+- [ ] Multi-idioma (i18n)
+- [ ] Webhooks para integrações
+
+---
+
+**Versão atual**: 3.2.0 | **Atualizado**: Maio 2026

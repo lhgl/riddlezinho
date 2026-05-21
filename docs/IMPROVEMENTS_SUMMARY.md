@@ -231,6 +231,6 @@ Para dúvidas sobre a configuração:
 
 ---
 
-**Versão:** 2.5.0  
+**Versão:** 3.2.0
 **Data:** Fevereiro 2026  
 **Autor:** lhgl

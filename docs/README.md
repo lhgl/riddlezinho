@@ -1,4 +1,4 @@
-# 📚 Documentação - RiddleZinho v2.2.0
+# 📚 Documentação - RiddleZinho v3.2.0
 
 Bem-vindo à documentação do RiddleZinho!
 
@@ -17,24 +17,20 @@ Bem-vindo à documentação do RiddleZinho!
 ### Para Desenvolvedores
 - [FEATURES.md](FEATURES.md) - Features técnicas
 - [API.md](API.md) - Endpoints HTTP
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Arquitetura e design patterns
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Como contribuir
 
 ### Para DevOps
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Deploy em produção
+- [DEPLOY.md](DEPLOY.md) - Deploy em produção (PostgreSQL, Docker, Render.com)
 - [SECURITY.md](SECURITY.md) - Segurança
-- [ORACLE_SETUP.md](ORACLE_SETUP.md) - Setup Oracle Database
 
 ### Para Testes
 - [TESTING_GUIDE.md](TESTING_GUIDE.md) - Guia completo de testes
 
-### Para Próximas Versões
-- [ROADMAP_V2.2.md](ROADMAP_V2.2.md) - Planejamento v2.2
-- [PHASES_VALIDATION.md](PHASES_VALIDATION.md) - Validação de fases
-
-### Referência
-- [CHANGELOG.md](CHANGELOG.md) - Histórico de versões
-- [COMMIT_GUIDE.md](COMMIT_GUIDE.md) - Como fazer commit
+### Histórico
+- [CHANGELOG.md](../CHANGELOG.md) - Histórico de versões
+- [ROADMAP.md](ROADMAP.md) - Roadmap de versões
 
 ---
 
-**Última atualização**: Fevereiro 22, 2026 | **Versão**: 2.2.0
+**Última atualização**: Maio 2026 | **Versão**: 3.2.0

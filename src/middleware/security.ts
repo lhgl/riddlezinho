@@ -18,7 +18,18 @@ export function getSecurityMiddleware(): Array<(req: Request, res: Response, nex
     }),
     // Headers de segurança
     helmet({
-      contentSecurityPolicy: false, // Ajustável conforme necessidade
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:'],
+          fontSrc: ["'self'"],
+          connectSrc: ["'self'"],
+          frameSrc: ["'none'"],
+          objectSrc: ["'none'"]
+        }
+      },
       xssFilter: true,
       noSniff: true,
       frameguard: { action: 'deny' },

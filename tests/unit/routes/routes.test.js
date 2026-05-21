@@ -119,18 +119,10 @@ describe('Phases Router', () => {
     expect(router.stack.length).toBe(3);
   });
 
-  it('deve chamar renderPhase na rota /:phaseId', () => {
-    const mockReq = { params: { phaseId: 'fase1' }, path: '/fase1', method: 'GET' };
-    const mockRes = { json: jest.fn() };
-    const handler = router.stack[0].route.stack[0].handle;
-    handler(mockReq, mockRes, jest.fn());
-    expect(mockPhaseController.renderPhase).toHaveBeenCalled();
-  });
-
   it('deve chamar getPhasesList na rota /api/list', () => {
     const mockReq = { path: '/api/list', method: 'GET' };
     const mockRes = { json: jest.fn() };
-    const handler = router.stack[1].route.stack[0].handle;
+    const handler = router.stack[0].route.stack[0].handle;
     handler(mockReq, mockRes, jest.fn());
     expect(mockPhaseController.getPhasesList).toHaveBeenCalled();
   });
@@ -139,9 +131,17 @@ describe('Phases Router', () => {
     const mockReq = { params: { phaseId: 'fase1' }, path: '/api/phase/fase1', method: 'GET' };
     const mockRes = { json: jest.fn() };
     const next = jest.fn();
-    const handler = router.stack[2].route.stack[0].handle;
+    const handler = router.stack[1].route.stack[0].handle;
     handler(mockReq, mockRes, next);
     expect(mockPhaseController.getPhaseData).toHaveBeenCalled();
+  });
+
+  it('deve chamar renderPhase na rota /:phaseId', () => {
+    const mockReq = { params: { phaseId: 'fase1' }, path: '/fase1', method: 'GET' };
+    const mockRes = { json: jest.fn() };
+    const handler = router.stack[2].route.stack[0].handle;
+    handler(mockReq, mockRes, jest.fn());
+    expect(mockPhaseController.renderPhase).toHaveBeenCalled();
   });
 });
 

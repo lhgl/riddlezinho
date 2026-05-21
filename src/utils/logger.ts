@@ -3,6 +3,7 @@
  * Logs em JSON com UID único por sessão de usuário
  */
 
+import { Request, Response, NextFunction } from 'express';
 import pino, { Logger } from 'pino';
 import pinoHttp, { HttpLogger } from 'pino-http';
 import { v4 as uuidv4 } from 'uuid';
@@ -76,7 +77,7 @@ const httpLogger: HttpLogger = pinoHttp({
 /**
  * Middleware para adicionar requestId e userId à requisição
  */
-export function addRequestMetadata(req: any, res: any, next: () => void): void {
+export function addRequestMetadata(req: Request, res: Response, next: NextFunction): void {
   // Gerar requestId único para rastreamento
   req.requestId = req.get('x-request-id') || uuidv4();
 
@@ -101,7 +102,7 @@ export function addRequestMetadata(req: any, res: any, next: () => void): void {
  * Log estruturado personalizado
  * Exemplo: logger.info({ event: 'user_login', userId: 'user123' })
  */
-export function logEvent(eventName: string, data: Record<string, any> = {}): void {
+export function logEvent(eventName: string, data: Record<string, unknown> = {}): void {
   logger.info({
     event: eventName,
     timestamp: new Date().toISOString(),
@@ -112,7 +113,7 @@ export function logEvent(eventName: string, data: Record<string, any> = {}): voi
 /**
  * Log de erro
  */
-export function logError(eventName: string, error: Error, data: Record<string, any> = {}): void {
+export function logError(eventName: string, error: Error, data: Record<string, unknown> = {}): void {
   logger.error({
     event: eventName,
     error: {
@@ -128,7 +129,7 @@ export function logError(eventName: string, error: Error, data: Record<string, a
 /**
  * Log de warning
  */
-export function logWarn(eventName: string, data: Record<string, any> = {}): void {
+export function logWarn(eventName: string, data: Record<string, unknown> = {}): void {
   logger.warn({
     event: eventName,
     timestamp: new Date().toISOString(),

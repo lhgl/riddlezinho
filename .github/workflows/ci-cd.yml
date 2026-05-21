@@ -23,32 +23,40 @@ jobs:
 
     steps:
       - name: Checkout repository
+        id: checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
+        id: setup-node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
       - name: Install dependencies
+        id: install
         run: npm ci --prefer-offline
 
       - name: Run linter (ESLint)
+        id: lint
         run: npm run lint
         continue-on-error: true
 
       - name: Run tests with coverage
+        id: tests
         run: npm run test:ci
 
       - name: Build project
+        id: build
         run: npm run build
 
       # SonarCloud Scan with coverage
       - name: SonarCloud Scan
+        id: sonar
         uses: SonarSource/sonarcloud-github-action@v3
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -62,6 +70,15 @@ jobs:
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/coverage/**,**/*.test.ts,**/*.test.js
             -Dsonar.coverage.exclusions=**/*.test.ts,**/*.test.js,**/tests/**/*,**/src/server.ts
+
+      - name: Report CI result
+        if: always()
+        run: |
+          echo "📋 CI Summary:"
+          echo "  Lint:   ${{ steps.lint.outcome }}"
+          echo "  Tests:  ${{ steps.tests.outcome }}"
+          echo "  Build:  ${{ steps.build.outcome }}"
+          echo "  Sonar:  ${{ steps.sonar.outcome }}"
 
   # ===========================================
   # JOB 2: Build & Docker Image

@@ -25,7 +25,7 @@ import createPhasesRouter from './routes/phases';
 import createTipsRouter from './routes/tips';
 
 // Importar middleware
-import { getSecurityMiddleware, getLoggingMiddleware } from './middleware/security';
+import { getSecurityMiddleware } from './middleware/security';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler';
 import { generalLimiter, apiLimiter } from './middleware/rateLimit';
 import { httpLogger, addRequestMetadata } from './utils/logger';
@@ -55,7 +55,6 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // ============ MIDDLEWARES DE LOGGING E RASTREAMENTO ============
 app.use(httpLogger);
 app.use(addRequestMetadata);
-app.use(getLoggingMiddleware());
 
 // ============ MIDDLEWARES DE SEGURANÇA ============
 app.use(...getSecurityMiddleware());

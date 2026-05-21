@@ -4,6 +4,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 
+import { AppError } from '../errors/AppError';
 import { logError } from '../utils/logger';
 
 /**
@@ -18,17 +19,18 @@ export function notFoundHandler(req: Request, res: Response, _next: NextFunction
 }
 
 /**
- * Handler para erros geral
+ * Handler para erros global
+ * Distingue AppError (operacionais) de erros inesperados
  */
 export function errorHandler(
-  err: Error & { statusCode?: number },
+  err: AppError | (Error & { statusCode?: number }),
   req: Request,
   res: Response,
   _next: NextFunction
 ): void {
   logError('error_handler', err);
 
-  const statusCode = err.statusCode || 500;
+  const statusCode = (err as AppError).statusCode || 500;
   const message = err.message || 'Erro interno do servidor';
 
   res.status(statusCode).render('error', {

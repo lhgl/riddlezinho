@@ -9,22 +9,23 @@ import PhaseController from '../controllers/PhaseController';
 
 /**
  * Factory para criar router de fases
+ * Nota: API routes devem ser registradas ANTES da rota dinâmica /:phaseId
  */
 export function createPhasesRouter(controller: PhaseController, _phases: Phases): Router {
   const router = Router();
 
-  // Rota genérica para qualquer fase
-  router.get('/:phaseId', (req: Request, res: Response, next: NextFunction) => {
-    controller.renderPhase(req, res, next);
-  });
-
-  // API endpoints
+  // API endpoints — registrar antes de /:phaseId para evitar shadowing
   router.get('/api/list', (req: Request, res: Response) => {
     controller.getPhasesList(req, res);
   });
 
   router.get('/api/phase/:phaseId', (req: Request, res: Response) => {
     controller.getPhaseData(req, res);
+  });
+
+  // Rota genérica para qualquer fase (deve ser a última)
+  router.get('/:phaseId', (req: Request, res: Response, next: NextFunction) => {
+    controller.renderPhase(req, res, next);
   });
 
   return router;

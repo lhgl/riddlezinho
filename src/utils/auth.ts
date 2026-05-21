@@ -4,6 +4,7 @@
  */
 
 import bcrypt from 'bcryptjs';
+import { Request, Response, NextFunction } from 'express';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -50,7 +51,6 @@ export async function register(
   password: string
 ): Promise<UserWithoutPassword> {
   try {
-    // Verificar se usuário já existe
     const existingUser = Array.from(users.values()).find(
       u => u.username === username || u.email === email
     );
@@ -59,10 +59,7 @@ export async function register(
       throw new Error('Usuário ou email já existe');
     }
 
-    // Hash da senha
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Criar usuário
     const userId = uuidv4();
     const user: User = {
       id: userId,
@@ -78,14 +75,8 @@ export async function register(
     };
 
     users.set(userId, user);
+    logEvent('user_registered', { userId, username, email });
 
-    logEvent('user_registered', {
-      userId,
-      username,
-      email
-    });
-
-    // Não retornar senha
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
   } catch (error) {
@@ -99,49 +90,30 @@ export async function register(
  */
 export async function login(username: string, password: string): Promise<LoginResult> {
   try {
-    // Encontrar usuário
     const user = Array.from(users.values()).find(u => u.username === username);
 
     if (!user) {
       throw new Error('Usuário ou senha inválidos');
     }
 
-    // Verificar senha
     const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
-      logWarn('failed_login_attempt', {
-        username,
-        reason: 'invalid_password'
-      });
+      logWarn('failed_login_attempt', { username, reason: 'invalid_password' });
       throw new Error('Usuário ou senha inválidos');
     }
 
-    // Gerar token
     const token = jwt.sign(
-      {
-        userId: user.id,
-        username: user.username,
-        email: user.email
-      } as JWTPayload,
+      { userId: user.id, username: user.username, email: user.email } as JWTPayload,
       JWT_SECRET,
       { expiresIn: JWT_EXPIRE } as SignOptions
     );
 
-    // Atualizar último login
     user.lastLogin = new Date();
-
-    logEvent('user_login', {
-      userId: user.id,
-      username,
-      timestamp: new Date().toISOString()
-    });
+    logEvent('user_login', { userId: user.id, username, timestamp: new Date().toISOString() });
 
     const { password: _, ...userWithoutPassword } = user;
-    return {
-      user: userWithoutPassword,
-      token
-    };
+    return { user: userWithoutPassword, token };
   } catch (error) {
     logError('user_login_failed', error as Error, { username });
     throw error;
@@ -164,22 +136,21 @@ export function verifyToken(token: string): JWTPayload {
 }
 
 /**
- * Middleware de autenticação
+ * Middleware de autenticação — extrai token Bearer e popula req.userId/req.user
  */
-export function authenticate(req: any, res: any, next: () => void): void {
+export function authenticate(req: Request, res: Response, next: NextFunction): void {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Token não fornecido' });
+    return;
+  }
+
   try {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Token não fornecido' });
-    }
-
     const token = authHeader.substring(7);
     const decoded = verifyToken(token);
-
     req.userId = decoded.userId;
     req.user = decoded;
-
     next();
   } catch (error) {
     logWarn('authentication_failed', {
@@ -198,7 +169,6 @@ export function getUser(userId: string): UserWithoutPassword | null {
   if (!user) {
     return null;
   }
-
   const { password: _, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
@@ -215,15 +185,11 @@ export function updateUserProfile(
     return null;
   }
 
-  // Permitir atualizar preferências
   if (updates.preferences) {
     user.preferences = { ...user.preferences, ...updates.preferences };
   }
 
-  logEvent('user_profile_updated', {
-    userId,
-    updates: Object.keys(updates)
-  });
+  logEvent('user_profile_updated', { userId, updates: Object.keys(updates) });
 
   const { password: _, ...userWithoutPassword } = user;
   return userWithoutPassword;

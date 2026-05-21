@@ -26,7 +26,7 @@ export const generalLimiter: RateLimitRequestHandler = rateLimit({
     logWarn('rate_limit_exceeded', {
       ip: req.ip as string,
       path: req.path,
-      userId: (req as any).userId,
+      userId: req.userId,
       timestamp: new Date().toISOString()
     });
     res.status(429).json({
@@ -71,7 +71,7 @@ export const apiLimiter: RateLimitRequestHandler = rateLimit({
     logWarn('api_rate_limit_exceeded', {
       ip: req.ip as string,
       path: req.path,
-      userId: (req as any).userId,
+      userId: req.userId,
       timestamp: new Date().toISOString()
     });
     res.status(429).json({

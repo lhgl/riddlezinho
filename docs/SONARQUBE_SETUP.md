@@ -263,9 +263,9 @@ Antes de criar um PR, verifique:
 
 ## 📊 Histórico de Mudanças
 
-### v2.5.0 (Atual)
+### v3.2.0 (Atual)
 
-- ✅ SonarQube integration
+- ✅ SonarQube integration (`sonar.projectVersion=3.2.0`)
 - ✅ GitHub Actions pipeline completo
 - ✅ ESLint para TypeScript
 - ✅ Security scanning com Trivy

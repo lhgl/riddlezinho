@@ -1,4 +1,4 @@
-# 🏗️ Arquitetura - RiddleZinho v2.5.0
+# 🏗️ Arquitetura - RiddleZinho v3.2.0
 
 ## Visão Geral
 
@@ -18,7 +18,9 @@ Backend:
 ├─ Express.js 4.21.0
 ├─ JWT (autenticação)
 ├─ bcryptjs (hash de senhas)
-└─ Pino (logging)
+├─ Pino (logging)
+├─ Prisma 5.x ORM (PostgreSQL 16)
+└─ RepositoryFactory (InMemory ↔ Prisma)
 
 Testes:
 ├─ Jest 29.x
@@ -37,21 +39,37 @@ riddlezinho/
 │   │   ├── config.ts        # Configurações de ambiente
 │   │   └── phases.ts        # Configuração das 99 fases
 │   ├── controllers/
-│   │   ├── AuthController.ts # Autenticação e leaderboard
-│   │   └── PhaseController.ts # Renderização de fases
+│   │   ├── AuthController.ts       # Autenticação e leaderboard
+│   │   ├── AchievementController.ts # Conquistas e daily challenge
+│   │   └── PhaseController.ts      # Renderização de fases
 │   ├── middleware/
 │   │   ├── errorHandler.ts  # Tratamento de erros
 │   │   ├── rateLimit.ts     # Rate limiting
 │   │   └── security.ts      # Headers de segurança
+│   ├── repositories/
+│   │   ├── interfaces.ts              # IUserRepository, ILeaderboardRepository
+│   │   ├── InMemoryUserRepository.ts
+│   │   ├── InMemoryLeaderboardRepository.ts
+│   │   ├── InMemoryAchievementRepository.ts
+│   │   ├── PrismaUserRepository.ts
+│   │   ├── PrismaLeaderboardRepository.ts
+│   │   └── RepositoryFactory.ts       # DATABASE_URL ? Prisma : InMemory
 │   ├── routes/
 │   │   ├── auth.ts          # Rotas de autenticação
+│   │   ├── achievements.ts  # Rotas de conquistas
 │   │   ├── home.ts          # Rotas principais
 │   │   ├── phases.ts        # Rotas de fases
 │   │   └── tips.ts          # Rotas de dicas
+│   ├── services/
+│   │   ├── LeaderboardService.ts    # Lógica de leaderboard e scores
+│   │   ├── AchievementService.ts   # Lógica de conquistas/badges
+│   │   └── DailyChallengeService.ts # Fase do dia determinística
 │   ├── utils/
 │   │   ├── auth.ts          # Funções de autenticação
 │   │   └── logger.ts        # Logger estruturado
 │   └── server.ts            # Servidor principal
+├── prisma/
+│   └── schema.prisma        # Modelos PostgreSQL (User, UserScore, Achievement)
 ├── tests/                    # Testes (JavaScript)
 │   ├── unit/
 │   │   ├── config/
@@ -130,9 +148,17 @@ Gerencia autenticação e leaderboard.
 - `POST /auth/login` - Login
 - `GET /auth/profile` - Obter perfil
 - `PUT /auth/profile` - Atualizar perfil
-- `POST /auth/complete-phase` - Completar fase
+- `POST /auth/complete-phase` - Completar fase (retorna `newAchievements`)
 - `GET /auth/leaderboard` - Leaderboard global
 - `GET /auth/leaderboard/me` - Leaderboard com rank do usuário
+
+#### AchievementController.ts
+Gerencia conquistas/badges e daily challenge.
+
+**Endpoints:**
+- `GET /achievements` - Lista todas as conquistas com status do usuário
+- `GET /achievements/me` - Conquistas do usuário autenticado
+- `GET /achievements/daily` - Renderiza a fase do dia
 
 #### PhaseController.ts
 Renderiza fases do jogo.
@@ -211,15 +237,15 @@ GET /fase/api/phase/:id  → getPhaseData()
 ### 6. Utils (utils/)
 
 #### auth.ts
-Funções de autenticação.
+Funções de autenticação. Usa `userRepo` do `RepositoryFactory`.
 
 ```typescript
 register(username, email, password): Promise<User>
 login(username, password): Promise<LoginResult>
 verifyToken(token): JWTPayload
 authenticate(req, res, next): void
-getUser(userId): User | null
-updateUserProfile(userId, updates): User | null
+getUser(userId): Promise<User | null>
+updateUserProfile(userId, updates): Promise<User | null>
 ```
 
 #### logger.ts
@@ -283,30 +309,36 @@ addRequestMetadata: Middleware
 
 ## Armazenamento de Dados
 
-### Em Memória (Desenvolvimento)
+### RepositoryFactory (v3.0.0+)
 
 ```typescript
-// Usuários
-users: Map<string, User>
-
-// Leaderboard
-leaderboard: Map<string, UserScore>
-
-// Tokens
-tokens: Map<string, string>
+// Seleção automática de backend:
+RepositoryFactory.createUserRepository()
+// → DATABASE_URL definida: PrismaUserRepository (PostgreSQL)
+// → DATABASE_URL ausente: InMemoryUserRepository (Map<string, User>)
 ```
 
-### Produção (Futuro)
+Testes **nunca** definem `DATABASE_URL` → sempre usam InMemory → zero impacto na suite de testes.
+
+### PostgreSQL 16 (Produção)
+
+Modelos Prisma (`prisma/schema.prisma`):
 
 ```
-PostgreSQL:
-├─ users
-├─ phases
-└─ scores
+users             ← User (id, username, email, password, createdAt, lastLogin, language, notifications)
+user_scores       ← UserScore (userId, score, completedPhases, level, timeSpent, completedPhasesList)
+achievements      ← Achievement (id, key, name, description, icon, threshold)
+user_achievements ← UserAchievement (userId, achievementId, earnedAt)
+```
 
-Redis:
-├─ sessions
-└─ cache
+Migrations automáticas via `npx prisma migrate deploy` no startup (Docker/Render.com).
+
+### In-Memory (Dev/Testes)
+
+```typescript
+InMemoryUserRepository        // Map<string, User>
+InMemoryLeaderboardRepository // Map<string, UserScore>
+InMemoryAchievementRepository // Map<string, Set<string>> (userId → achievementKeys)
 ```
 
 ---
@@ -373,13 +405,13 @@ tests/
 ### Cobertura
 
 ```
-Test Suites: 17 passed
-Tests:       323 passed
+Test Suites: 20+ passed
+Tests:       410+ passed
 
-Statements   : 95%+
-Branches     : 85%+
-Functions    : 95%+
-Lines        : 95%+
+Statements   : 83%+
+Branches     : 80%+
+Functions    : 90%+
+Lines        : 83%+
 ```
 
 ---
@@ -409,11 +441,14 @@ npm start
 ### Docker
 
 ```bash
-# Build
-docker build -t riddlezinho:2.5.0 .
+# Build (multi-stage: builder + runner)
+docker build -t riddlezinho:3.2.0 .
 
-# Run
-docker run -p 5000:5000 riddlezinho:2.5.0
+# Run (sem PostgreSQL — in-memory)
+docker run -p 5000:5000 riddlezinho:3.2.0
+
+# Run com PostgreSQL (docker compose)
+docker compose up -d
 ```
 
 ---
@@ -495,4 +530,4 @@ interface UserScore {
 
 ## Version
 
-**v2.5.0** | **TypeScript 5.6** | **Node.js 20.x**
+**v3.2.0** | **TypeScript 5.6** | **Node.js 20.x** | **PostgreSQL 16 + Prisma**

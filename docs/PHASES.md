@@ -1,4 +1,4 @@
-# 📚 Phases Validation - RiddleZinho v2.2.0
+# 📚 Phases Validation - RiddleZinho v3.2.0
 
 ## Overview
 
@@ -88,6 +88,6 @@ Fase 1 (14bis)
 
 ---
 
-**Next Step**: Validate phases in v2.2.0
+**Next Step**: Validate phases in v3.2.0
 
-**Version**: 2.2.0 | **Updated**: Feb 22, 2026
+**Version**: 3.2.0 | **Updated**: Maio 2026

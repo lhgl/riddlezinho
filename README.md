@@ -4,29 +4,34 @@
 [![TypeScript](https://img.shields.io/badge/typescript-5.6-blue)](https://www.typescriptlang.org/)
 [![Express.js](https://img.shields.io/badge/express-4.21.0-blue)](https://expressjs.com/)
 [![Test Coverage](https://img.shields.io/badge/coverage-83%25-yellow)](#-testes)
-[![Tests](https://img.shields.io/badge/tests-327%20passed-brightgreen)](#-testes)
+[![Tests](https://img.shields.io/badge/tests-410%2B%20passed-brightgreen)](#-testes)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 
-**Status**: ✅ Production Ready (v2.5.0) | **Docs**: [docs/](docs/)
+**Status**: ✅ Production Ready (v3.2.0) | **Docs**: [docs/](docs/)
 
 ---
 
-## 🎯 Destaques da v2.5.0
+## 🎯 Destaques da v3.2.0
 
-✨ **Progresso do Usuário Funcional**
-- Badge de progresso atualiza automaticamente
-- Score e % completado em tempo real
-- Histórico de fases completadas
+🗄️ **PostgreSQL + Prisma ORM**
+- PostgreSQL 16 em produção via `DATABASE_URL`
+- In-memory automático em dev/testes (zero configuração)
+- Deploy one-click no Render.com via `render.yaml`
 
-🔒 **Rate Limit Ajustado**
-- 500 requisições por 15 minutos (geral)
-- 10 tentativas de login por 15 minutos
-- 200 requisições por minuto (API)
+🎨 **UX/UI Moderno**
+- Dark mode com persistência em localStorage
+- Toast notifications animadas
+- Loading spinner em formulários
+- Layout responsivo para mobile
+
+🏆 **Achievements + Daily Challenge**
+- 5 badges por marcos: Iniciante → LENDA
+- Fase do dia determinística para todos os jogadores
+- Conquistas retornadas ao completar fase
 
 🧪 **Testes Robustos**
-- 327 testes passando
-- 100% de cobertura em controllers, middleware e routes
-- Testes unitários e de integração
+- 410+ testes passando
+- Testes unitários, integração e extended
 
 ---
 
@@ -132,21 +137,34 @@ riddlezinho/
 │   │   ├── config.ts        # Configurações de ambiente
 │   │   └── phases.ts        # Configuração das 99 fases
 │   ├── controllers/
-│   │   ├── AuthController.ts # Autenticação e leaderboard
-│   │   └── PhaseController.ts # Renderização de fases
+│   │   ├── AuthController.ts       # Autenticação e leaderboard
+│   │   ├── AchievementController.ts # Conquistas e daily challenge
+│   │   └── PhaseController.ts      # Renderização de fases
 │   ├── middleware/
 │   │   ├── errorHandler.ts  # Tratamento de erros
 │   │   ├── rateLimit.ts     # Rate limiting
 │   │   └── security.ts      # Headers de segurança
+│   ├── repositories/        # Padrão Repository
+│   │   ├── interfaces.ts    # IUserRepository, ILeaderboardRepository
+│   │   ├── InMemory*.ts     # Implementações em memória (dev/testes)
+│   │   ├── Prisma*.ts       # Implementações PostgreSQL (produção)
+│   │   └── RepositoryFactory.ts
 │   ├── routes/
 │   │   ├── auth.ts          # Rotas de autenticação
+│   │   ├── achievements.ts  # Rotas de conquistas
 │   │   ├── home.ts          # Rotas principais
 │   │   ├── phases.ts        # Rotas de fases
 │   │   └── tips.ts          # Rotas de dicas
+│   ├── services/
+│   │   ├── LeaderboardService.ts
+│   │   ├── AchievementService.ts
+│   │   └── DailyChallengeService.ts
 │   ├── utils/
 │   │   ├── auth.ts          # Funções de autenticação
 │   │   └── logger.ts        # Logger estruturado
 │   └── server.ts            # Servidor principal
+├── prisma/
+│   └── schema.prisma        # Modelos PostgreSQL
 ├── tests/                    # Testes (JavaScript)
 │   ├── unit/
 │   └── integration/
@@ -262,8 +280,10 @@ Com conta você pode:
 | [docs/API.md](docs/API.md) | Endpoints HTTP |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arquitetura TypeScript |
 | [docs/USER_GUIDE.md](docs/USER_GUIDE.md) | Como jogar |
+| [docs/DEPLOY.md](docs/DEPLOY.md) | Deploy em produção (Docker, Render.com) |
 | [docs/SECURITY.md](docs/SECURITY.md) | Segurança |
 | [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | Contribuir |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Roadmap de versões |
 
 ---
 
@@ -285,116 +305,80 @@ npm run test:watch
 ### Cobertura Atual
 
 ```
-Test Suites: 18 passed, 18 total
-Tests:       327 passed, 327 total
+Test Suites: 20+ passed
+Tests:       410+ passed
 
 Por módulo:
-├─ controllers/       : 100% ✅
+├─ controllers/       : 95%+ ✅
 ├─ middleware/        : 100% ✅
 ├─ routes/            : 100% ✅
+├─ services/          : 90%+ ✅
+├─ repositories/      : 90%+ ✅
 ├─ config/            : 100% ✅
-├─ utils/auth.ts      :  98% ⚠️ (linha 160 pendente)
 └─ Overall            :  83%
-
-Meta: 100% de cobertura
 ```
 
 ### Testes por Categoria
 
 | Categoria | Arquivos | Testes | Status |
 |-----------|----------|--------|--------|
-| Unit | 12 | 280+ | ✅ |
-| Integration | 4 | 47+ | ✅ |
-| Extended | 2 | 50+ | ✅ |
+| Unit | 14+ | 330+ | ✅ |
+| Integration | 4 | 50+ | ✅ |
+| Extended | 2 | 30+ | ✅ |
 
 ---
 
 ## 📊 Versões
 
-### v2.5.0 (Atual) ✅
+### v3.2.0 (Atual) ✅
 
-**Lançado**: Fevereiro 2026
+**Lançado**: Maio 2026
 
-✅ **TypeScript Migration Completa**
-- Todo código fonte em TypeScript
-- Tipos definidos para todas as entidades
-- Compilação para dist/
+✅ **PostgreSQL + Prisma ORM** (v3.0.0)
+- PostgreSQL 16 em produção, in-memory em dev/testes
+- RepositoryFactory com zero impacto nos testes
+- Deploy no Render.com via render.yaml
+- Dockerfile multi-stage
 
-✅ **User Progress Badge**
-- Badge de progresso em todas as fases
-- Mostra % completado e score
-- Atualização automática ao completar fases
-- Funciona para usuários logados e anônimos
+✅ **UX/UI Moderno** (v3.1.0)
+- Dark mode com toggle e persistência
+- Toast notifications animadas
+- Loading spinner em formulários
+- Layout responsivo mobile
 
-✅ **Funcionalidades**
-- 99+ fases com padrão consistente
-- Leaderboard funcional
-- Login/Registro com JWT
-- Rate limiting ajustado (500 req/15min)
-- Logging estruturado com Pino
-
-✅ **Qualidade**
-- 327 testes passando
-- Cobertura 83%+ (95%+ nos módulos principais)
-- ESLint + TypeScript strict mode
+✅ **Achievements + Daily Challenge** (v3.2.0)
+- 5 badges por marcos de fases completadas
+- Fase do dia determinística
+- 410+ testes passando
 
 ---
 
-## 📋 TODO - Próximos Passos
+## 📋 Próximas Versões
 
-### Roadmap Visual
+### Roadmap
 
 ```
-v2.5.0 ✅ ────── v2.6.0 🔄 ────── v2.7.0 📋 ────── v2.8.0 📋
-   │                │                 │                │
-   │                │                 │                │
- TypeScript     UX/UI            Social         Infra
- 100%           Feedback         Compartilha    DB Real
- Testes 83%     Loading          Conquistas     Redis
- Progresso      Dark Mode        Perfil         Deploy
-                Mobile           Histórico      Docker
+v3.2.0 ✅ ────── v3.3.0 📋 ────── v4.0.0 📋
+   │                 │                │
+PostgreSQL        WebSockets       SPA Frontend
+Dark Mode         Redis            API Pública
+Achievements      PWA              OpenAPI
+Daily Challenge   E2E Tests        i18n
 ```
 
-### v2.6.0 - Melhorias de UX/UI
+### v3.3.0 - Advanced
 
-- [ ] Corrigir linha 160 do auth.ts (cobertura 100%)
-- [ ] Adicionar feedback visual ao submeter resposta
-- [ ] Loading spinner durante navegação
-- [ ] Toast notifications para erros/sucesso
-- [ ] Dark mode toggle
-- [ ] Responsividade mobile melhorada
-
-### v2.7.0 - Funcionalidades Sociais
-
-- [ ] Compartilhamento de conquistas (Twitter, Discord)
-- [ ] Gerar imagem com score/card de progresso
-- [ ] Sistema de conquistas/medalhas
-- [ ] Perfil público de usuário
-- [ ] Histórico de fases completadas
-
-### v2.8.0 - Infraestrutura
-
-- [ ] Banco de dados real (PostgreSQL/MySQL)
-- [ ] Redis para cache e sessões
-- [ ] Deploy automatizado (GitHub Actions)
-- [ ] Variáveis de ambiente para produção
-- [ ] Docker compose para desenvolvimento
-
-### v2.9.0 - Técnico
-
-- [ ] Testes E2E (Playwright/Cypress)
 - [ ] WebSockets para leaderboard em tempo real
+- [ ] Redis para rate limiting distribuído
 - [ ] PWA (Service Worker, offline mode)
-- [ ] Analytics de uso (opcional, respeitando privacidade)
-- [ ] Documentação OpenAPI/Swagger
+- [ ] Testes E2E (Playwright)
 
-### v3.0.0 - Expansão
+### v4.0.0 - SPA + API Pública
 
-- [ ] Criar modo "Daily Challenge" (fase do dia)
-- [ ] Sistema de dicas premium (sem quebrar o jogo)
+- [ ] Frontend SPA separado (React/Vue)
+- [ ] API pública RESTful + OpenAPI/Swagger
 - [ ] Multi-idioma (i18n)
-- [ ] API pública para desenvolvedores
-- [ ] Webhook para integrações
+- [ ] Webhooks para integrações
 
 ---
 
@@ -418,16 +402,11 @@ npm test
 npm run dev
 ```
 
-### Coverage 100%
-
-Para ajudar a atingir 100% de cobertura:
+### Coverage
 
 ```bash
 # Ver linhas não cobertas
 npm test -- --coverage
-
-# Arquivo pendente: src/utils/auth.ts (linha 160)
-# Teste necessário: verifyToken com erro não-TokenExpiredError
 ```
 
 ---

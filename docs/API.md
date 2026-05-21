@@ -1,4 +1,4 @@
-# 📡 API Reference - RiddleZinho v2.5.0
+# 📡 API Reference - RiddleZinho v3.2.0
 
 ## Base URL
 
@@ -175,9 +175,19 @@ Content-Type: application/json
     "level": 0,
     "timeSpent": 480,
     "completedPhasesList": ["coracao", "14bis", "bobesponja", "jesus"]
-  }
+  },
+  "newAchievements": [
+    {
+      "key": "aprendiz",
+      "name": "Aprendiz",
+      "icon": "📚",
+      "description": "Completou 10 fases"
+    }
+  ]
 }
 ```
+
+`newAchievements` é um array vazio `[]` quando nenhuma nova conquista foi desbloqueada.
 
 ---
 
@@ -381,10 +391,108 @@ GET /health
 ```json
 {
   "status": "ok",
-  "timestamp": "2026-02-22T10:30:00.000Z",
-  "uptime": 12345.67
+  "timestamp": "2026-05-21T10:30:00.000Z",
+  "uptime": 12345.67,
+  "db": "postgres"
 }
 ```
+
+`db` é `"postgres"` quando `DATABASE_URL` está configurada (Prisma), ou `"memory"` em desenvolvimento/testes.
+
+---
+
+## 🏆 Achievements
+
+### Get All Achievements
+
+```http
+GET /achievements
+Authorization: Bearer {token}  (opcional)
+```
+
+**Response (200):**
+
+```json
+[
+  {
+    "key": "iniciante",
+    "name": "Iniciante",
+    "icon": "🌱",
+    "description": "Completou a primeira fase",
+    "threshold": 1,
+    "earned": true
+  },
+  {
+    "key": "aprendiz",
+    "name": "Aprendiz",
+    "icon": "📚",
+    "description": "Completou 10 fases",
+    "threshold": 10,
+    "earned": false
+  },
+  {
+    "key": "veterano",
+    "name": "Veterano",
+    "icon": "⚔️",
+    "description": "Completou 25 fases",
+    "threshold": 25,
+    "earned": false
+  },
+  {
+    "key": "mestre",
+    "name": "Mestre",
+    "icon": "👑",
+    "description": "Completou 50 fases",
+    "threshold": 50,
+    "earned": false
+  },
+  {
+    "key": "lenda",
+    "name": "LENDA",
+    "icon": "🏆",
+    "description": "Completou todas as 99 fases",
+    "threshold": 99,
+    "earned": false
+  }
+]
+```
+
+---
+
+### Get My Achievements
+
+```http
+GET /achievements/me
+Authorization: Bearer {token}
+```
+
+**Response (200):**
+
+```json
+[
+  {
+    "key": "iniciante",
+    "name": "Iniciante",
+    "icon": "🌱",
+    "description": "Completou a primeira fase",
+    "threshold": 1
+  }
+]
+```
+
+**Response (401):** Token não fornecido ou inválido.
+
+---
+
+### Get Daily Challenge
+
+```http
+GET /achievements/daily
+```
+
+**Response (200):** HTML renderizado (EJS template `daily.ejs`) com a fase do dia e countdown até meia-noite.
+
+A fase é determinística: `dayOfYear % totalPhases` — a mesma fase para todos os jogadores no mesmo dia.
 
 ---
 
@@ -476,4 +584,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ---
 
-**Versão**: 2.5.0 | **TypeScript** | **Atualizado**: Fevereiro 2026
+**Versão**: 3.2.0 | **TypeScript** | **Atualizado**: Maio 2026

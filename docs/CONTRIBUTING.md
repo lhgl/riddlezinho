@@ -1,4 +1,4 @@
-# 🤝 Contributing - RiddleZinho v2.5.0
+# 🤝 Contributing - RiddleZinho v3.2.0
 
 ## Como Contribuir
 
@@ -138,7 +138,7 @@ refactor: refatora middleware de segurança
 **Ambiente:**
 - OS: [ex: Windows 10]
 - Node: [ex: 20.x]
-- Versão: [ex: 2.5.0]
+- Versão: [ex: 3.2.0]
 
 **Logs**
 <!-- Se aplicável -->
@@ -286,4 +286,4 @@ Ao contribuir, você concorda que sua contribuição será licenciada sob a lice
 
 ---
 
-**Versão**: 2.5.0 | **TypeScript** | **Obrigado por contribuir!**
+**Versão**: 3.2.0 | **TypeScript** | **Obrigado por contribuir!**

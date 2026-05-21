@@ -1,4 +1,4 @@
-# 🧪 Testing Guide - RiddleZinho v2.2.0
+# 🧪 Testing Guide - RiddleZinho v3.2.0
 
 ## Quick Test (5 min)
 
@@ -55,27 +55,33 @@ curl -X POST http://localhost:5000/auth/login \
 curl http://localhost:5000/auth/leaderboard
 ```
 
-### Test 5: Security (10 min)
-
-Rate limiting (6ª tentativa deve dar 429):
+### Test 5: Achievements (5 min)
 ```bash
-for i in {1..6}; do
+curl http://localhost:5000/achievements
+curl http://localhost:5000/achievements/daily
+```
+
+### Test 6: Security (10 min)
+
+Rate limiting (11ª tentativa deve dar 429):
+```bash
+for i in {1..11}; do
   curl -X POST http://localhost:5000/auth/login \
     -H "Content-Type: application/json" \
     -d '{"username":"user","password":"pass"}'
 done
 ```
 
-### Test 6: Automated Tests (5 min)
+### Test 7: Automated Tests (5 min)
 ```bash
-npm test              # Should pass 85+
-npm test -- --coverage # Should show 95%+
+npm test              # Should pass 410+
+npm test -- --coverage # Should show 83%+
 ```
 
-### Test 7: Docker (10 min)
+### Test 8: Docker (10 min)
 ```bash
-docker build -t riddlezinho:2.1.1 .
-docker run -p 5000:5000 riddlezinho:2.1.1
+docker build -t riddlezinho:3.2.0 .
+docker run -p 5000:5000 riddlezinho:3.2.0
 curl http://localhost:5000/health
 ```
 
@@ -86,10 +92,11 @@ curl http://localhost:5000/health
 | Error | Solution |
 |-------|----------|
 | Port 5000 in use | `PORT=3000 npm start` |
-| oracledb not found | `npm install oracledb` |
 | Tests fail | `npm test -- --verbose` |
-| Oracle connection failed | Use local mode (skip DB) |
+| TypeScript errors | `npx tsc --noEmit` |
+| Prisma not found | `npm install` (included as dep) |
+| DATABASE_URL not set | In-memory mode used automatically — no action needed for tests/dev |
 
 ---
 
-**Version**: 2.2.0 | **Status**: Ready for Testing
+**Version**: 3.2.0 | **Status**: Ready for Testing

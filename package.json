@@ -33,7 +33,7 @@
     "express": "^4.21.0",
     "express-jwt": "^8.4.1",
     "express-rate-limit": "^7.4.0",
-    "helmet": "^7.1.0",
+    "helmet": "^8.2.0",
     "jsonwebtoken": "^9.0.2",
     "pino": "^9.4.0",
     "pino-http": "^10.3.0",

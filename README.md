@@ -284,6 +284,7 @@ Com conta você pode:
 | [docs/SECURITY.md](docs/SECURITY.md) | Segurança |
 | [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | Contribuir |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | Roadmap de versões |
+| [docs/CONTENT_GAPS.md](docs/CONTENT_GAPS.md) | Lacunas de conteúdo a preencher (imagens e enigmas) |
 
 ---
 

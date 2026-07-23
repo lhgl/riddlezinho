@@ -156,6 +156,52 @@ describe('PhaseController', () => {
     });
   });
 
+  describe('renderLevelIntro', () => {
+    it('deve renderizar nivel2 quando level=2 e view existe', () => {
+      mockReq.params.level = '2';
+      const existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+
+      phaseController.renderLevelIntro(mockReq, mockRes, next);
+
+      expect(mockRes.render).toHaveBeenCalledWith('nivel2');
+      existsSyncSpy.mockRestore();
+    });
+
+    it('deve renderizar nivel3 quando level=3 e view existe', () => {
+      mockReq.params.level = '3';
+      const existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+
+      phaseController.renderLevelIntro(mockReq, mockRes, next);
+
+      expect(mockRes.render).toHaveBeenCalledWith('nivel3');
+      existsSyncSpy.mockRestore();
+    });
+
+    it('deve retornar 404 para nivel invalido', () => {
+      mockReq.params.level = '9';
+
+      phaseController.renderLevelIntro(mockReq, mockRes, next);
+
+      expect(mockRes.status).toHaveBeenCalledWith(404);
+      expect(mockRes.render).toHaveBeenCalledWith('error', {
+        footerback: mockFooterBack
+      });
+    });
+
+    it('deve retornar 404 se a view do nivel nao existe', () => {
+      mockReq.params.level = '2';
+      const existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(false);
+
+      phaseController.renderLevelIntro(mockReq, mockRes, next);
+
+      expect(mockRes.status).toHaveBeenCalledWith(404);
+      expect(mockRes.render).toHaveBeenCalledWith('error', {
+        footerback: mockFooterBack
+      });
+      existsSyncSpy.mockRestore();
+    });
+  });
+
   describe('renderTip', () => {
     it('deve renderizar dica', () => {
       mockReq.params.tipId = 'dica1';

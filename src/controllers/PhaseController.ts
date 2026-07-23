@@ -73,6 +73,30 @@ export class PhaseController {
   }
 
   /**
+   * Renderiza a página de introdução de um nível (ex.: nivel2, nivel3)
+   */
+  renderLevelIntro(req: Request, res: Response, _next: NextFunction): void {
+    const level = String(req.params.level);
+
+    // Aceita apenas níveis conhecidos para evitar acesso a views arbitrárias
+    if (!/^[23]$/.test(level)) {
+      res.status(404).render('error', { footerback: this.footerback });
+      return;
+    }
+
+    const view = `nivel${level}`;
+    const viewPath = path.join(VIEWS_DIR, `${view}.ejs`);
+
+    if (!fs.existsSync(viewPath)) {
+      logError('level_view_not_found', new Error(`Arquivo não encontrado: ${viewPath}`));
+      res.status(404).render('error', { footerback: this.footerback });
+      return;
+    }
+
+    res.render(view);
+  }
+
+  /**
    * Renderiza página de dica (tips)
    */
   renderTip(req: Request, res: Response, _next: NextFunction): void {

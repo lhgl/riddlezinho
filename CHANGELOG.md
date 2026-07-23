@@ -5,6 +5,41 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [3.2.1] - 2026-07-23
+
+### 🐛 Corrigido — Revisão de pré-publicação
+
+- **18 views de fase corrompidas** (`fase45`, `fase48`, `fase50`, `fase53`, `fase57`,
+  `fase61`, `fase63`, `fase69`, `fase73`, `fase74`, `fase77`, `fase86`–`fase91`, `fase93`):
+  o bloco `<script>` estava truncado com template literal não fechado, engolindo o campo
+  de senha. Substituídas por uma página "em construção" limpa e válida, orientada por
+  dados (`phase.number`, `phase.level`), com o footer de senha funcional.
+- **Fase 13 (`pedraderoseta`) sem view**: a view existente era `pedradaroseta.ejs` (pista
+  de grafia errada). Criada `views/pedraderoseta.ejs` para a fase real.
+- **Navegação de Nível 2/3 quebrada**: os links `/fase/nivel2` e `/fase/nivel3` retornavam
+  404. Adicionada rota `/fase/nivel:level` (com `renderLevelIntro`) que serve as páginas de
+  introdução de nível.
+- **Páginas de introdução de nível** (`nivel2.ejs`, `nivel3.ejs`): corrigido caminho de
+  imagem (`logonova2.jpg` → `/images/logonova2.jpg`) e link `href="index"` → `href="/"`.
+- **Tecla Enter no campo de senha**: `enviarSenha()` não recebia o evento no handler inline;
+  agora usa `window.event` como fallback e um listener `keydown` dedicado é vinculado ao
+  `#senha`.
+- **Config da Fase 36 (`fado`)**: imagem apontava para arquivo inexistente
+  `dois_ordens.jpeg` → corrigido para `duas_ordens.jpeg`.
+- **Fase 33 (`mortedemarat`)**: `<img src="duas_ordens.JPG">` (arquivo inexistente com essa
+  grafia) → corrigido para `/images/fases/duas_ordens.jpeg` (arquivo existente).
+
+### ✨ Adicionado
+
+- **Degradação graciosa de imagens**: `public/scripts/fases.js` agora oculta automaticamente
+  qualquer `<img>` que falhe ao carregar, eliminando o ícone de "imagem quebrada" nas fases
+  cujas imagens-pista originais ainda não foram restauradas.
+- **`docs/CONTENT_GAPS.md`**: inventário preciso do conteúdo a preencher (61 imagens-pista
+  ausentes por fase + 18 fases sem enigma) para completar a experiência original.
+- Estilos compartilhados (`.user-progress-badge`, `.phase-score-display`, `.fase-construcao`)
+  centralizados em `public/styles/fases.css`, antes duplicados inline em cada fase.
+- 5 novos testes (rota `/nivel:level` e método `renderLevelIntro`): **415 testes passando**.
+
 ## [3.2.0] - 2026-05-21
 
 ### ✨ Adicionado — v3.2.0 Features

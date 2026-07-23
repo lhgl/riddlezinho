@@ -23,6 +23,11 @@ export function createPhasesRouter(controller: PhaseController, _phases: Phases)
     controller.getPhaseData(req, res);
   });
 
+  // Páginas de introdução de nível (nivel2, nivel3) — antes da rota dinâmica
+  router.get('/nivel:level', (req: Request, res: Response, next: NextFunction) => {
+    controller.renderLevelIntro(req, res, next);
+  });
+
   // Rota genérica para qualquer fase (deve ser a última)
   router.get('/:phaseId', (req: Request, res: Response, next: NextFunction) => {
     controller.renderPhase(req, res, next);

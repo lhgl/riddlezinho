@@ -27,6 +27,7 @@ const mockPhaseController = {
   renderIndex: jest.fn((req, res) => res.send('index')),
   renderGame: jest.fn((req, res) => res.send('game')),
   renderPhase: jest.fn((req, res) => res.json({ phase: req.params.phaseId })),
+  renderLevelIntro: jest.fn((req, res) => res.send(`nivel: ${req.params.level}`)),
   renderTip: jest.fn((req, res) => res.send(`tip: ${req.params.tipId}`)),
   getPhasesList: jest.fn((req, res) => res.json({ phases: [] })),
   getPhaseData: jest.fn((req, res) => res.json({ id: req.params.phaseId }))
@@ -115,8 +116,8 @@ describe('Phases Router', () => {
     expect(Array.isArray(router.stack)).toBe(true);
   });
 
-  it('deve definir exatamente 3 rotas', () => {
-    expect(router.stack.length).toBe(3);
+  it('deve definir exatamente 4 rotas', () => {
+    expect(router.stack.length).toBe(4);
   });
 
   it('deve chamar getPhasesList na rota /api/list', () => {
@@ -136,10 +137,18 @@ describe('Phases Router', () => {
     expect(mockPhaseController.getPhaseData).toHaveBeenCalled();
   });
 
+  it('deve chamar renderLevelIntro na rota /nivel:level', () => {
+    const mockReq = { params: { level: '2' }, path: '/nivel2', method: 'GET' };
+    const mockRes = { send: jest.fn() };
+    const handler = router.stack[2].route.stack[0].handle;
+    handler(mockReq, mockRes, jest.fn());
+    expect(mockPhaseController.renderLevelIntro).toHaveBeenCalled();
+  });
+
   it('deve chamar renderPhase na rota /:phaseId', () => {
     const mockReq = { params: { phaseId: 'fase1' }, path: '/fase1', method: 'GET' };
     const mockRes = { json: jest.fn() };
-    const handler = router.stack[2].route.stack[0].handle;
+    const handler = router.stack[3].route.stack[0].handle;
     handler(mockReq, mockRes, jest.fn());
     expect(mockPhaseController.renderPhase).toHaveBeenCalled();
   });

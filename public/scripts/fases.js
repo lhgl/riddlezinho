@@ -4,9 +4,13 @@
 
 /**
  * Enviar senha ao pressionar Enter
+ * Aceita o evento explícito (quando passado) ou o window.event global,
+ * garantindo que a tecla Enter funcione mesmo com o handler inline
+ * `onkeyup="enviarSenha();"` usado nas fases.
  */
 function enviarSenha(event) {
-  if (event && event.keyCode === 13) {
+  event = event || (typeof window !== 'undefined' ? window.event : undefined);
+  if (event && (event.key === 'Enter' || event.keyCode === 13)) {
     passarDeFase();
   }
 }
@@ -150,11 +154,54 @@ function voltar() {
   window.history.back();
 }
 
-// Carregar progresso quando DOM estiver pronto
+/**
+ * Oculta imagens que não conseguem carregar.
+ * Várias fases legadas referenciam imagens-pista que ainda não foram
+ * migradas do blog original. Em vez de exibir o ícone de imagem quebrada,
+ * escondemos o elemento para preservar o layout da fase.
+ */
+function ocultarImagensQuebradas() {
+  const imagens = document.querySelectorAll('img');
+  imagens.forEach((img) => {
+    const esconder = () => {
+      img.style.display = 'none';
+    };
+    // Imagem já falhou antes deste script rodar
+    if (img.complete && img.naturalWidth === 0) {
+      esconder();
+    }
+    img.addEventListener('error', esconder);
+  });
+}
+
+/**
+ * Vincula o Enter do campo de senha de forma robusta, independente do
+ * handler inline, cobrindo navegadores que não populam window.event.
+ */
+function vincularEnterSenha() {
+  const senha = document.getElementById('senha');
+  if (senha && !senha.dataset.enterBound) {
+    senha.dataset.enterBound = '1';
+    senha.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        e.preventDefault();
+        passarDeFase();
+      }
+    });
+  }
+}
+
+// Inicialização quando o DOM estiver pronto
+function inicializarFase() {
+  carregarProgressoUsuario();
+  ocultarImagensQuebradas();
+  vincularEnterSenha();
+}
+
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', carregarProgressoUsuario);
+    document.addEventListener('DOMContentLoaded', inicializarFase);
   } else {
-    carregarProgressoUsuario();
+    inicializarFase();
   }
 }

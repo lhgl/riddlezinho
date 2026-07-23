@@ -356,7 +356,7 @@ const phases: Phases = {
     level: 2,
     name: 'Fase 36 - Música portuguesa',
     type: 'passcode',
-    image: '/images/fases/dois_ordens.jpeg',
+    image: '/images/fases/duas_ordens.jpeg',
     hint: 'Saudade e melancolia'
   },
   tomriddle: {

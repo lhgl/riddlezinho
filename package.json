@@ -1,6 +1,6 @@
 {
   "name": "riddlezinho",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "RiddleZinho - Um jogo interativo de charadas",
   "main": "dist/server.js",
   "type": "commonjs",
